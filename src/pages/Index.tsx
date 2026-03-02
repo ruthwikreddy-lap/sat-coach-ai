@@ -101,6 +101,15 @@ export default function Dashboard() {
     );
   }
 
+  const getLevel = (score: number) => {
+    if (score < 800) return "NOOB";
+    if (score < 1000) return "ROOKIE";
+    if (score < 1200) return "PRODIGY";
+    if (score < 1400) return "ADVANCED";
+    if (score < 1550) return "ELITE";
+    return "MASTER";
+  };
+
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="mx-auto max-w-6xl space-y-12 px-6 py-16">
       {/* Premium Compact Hero */}
@@ -145,7 +154,7 @@ export default function Dashboard() {
         <StatCard title="Current" value={currentScore} subtitle="Last Score" icon={<Trophy className="h-5 w-5" />} />
         <StatCard title="Target" value={targetScore} subtitle="My Goal" icon={<Target className="h-5 w-5" />} />
         <StatCard title="Sessions" value={testResults.length} subtitle="Tests Done" icon={<BookOpen className="h-5 w-5" />} />
-        <StatCard title="Status" value="ADVANCED" subtitle="Level" icon={<Brain className="h-5 w-5" />} />
+        <StatCard title="Status" value={getLevel(currentScore)} subtitle="Level" icon={<Brain className="h-5 w-5" />} />
       </motion.div>
 
       {/* Simplified History & Review */}
