@@ -81,16 +81,16 @@ export default function WeakAreas() {
           onClick={() => navigate("/")}
           className="mb-8 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-foreground"
         >
-          <ArrowLeft className="h-3.5 w-3.5" /> Core Systems
+          <ArrowLeft className="h-3.5 w-3.5" /> DASHBOARD
         </button>
 
         <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
           <div className="space-y-4">
             <h1 className="font-display text-5xl font-black tracking-tighter uppercase text-foreground md:text-6xl">
-              Topic<br />Intelligence.
+              Topic<br />Review.
             </h1>
             <p className="max-w-md text-lg font-medium leading-relaxed text-muted-foreground">
-              Deep-layer diagnostic of your cognitive performance across the SAT spectrum.
+              See how you're doing in each SAT topic and where to improve.
             </p>
           </div>
 
@@ -112,10 +112,10 @@ export default function WeakAreas() {
       {/* Stats Summary */}
       <div className="mb-20 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {[
-          { label: "Total Domains", value: performances.length, icon: Brain },
-          { label: "Mastery Rate", value: `${Math.round((strong.length / (performances.length || 1)) * 100)}%`, icon: Target },
-          { label: "Priority Targets", value: weak.length, icon: AlertTriangle },
-          { label: "Audit Accuracy", value: `${Math.round(performances.reduce((a, b) => a + b.accuracy, 0) / (performances.length || 1))}%`, icon: Zap },
+          { label: "Total Topics", value: performances.length, icon: Brain },
+          { label: "Mastered", value: `${Math.round((strong.length / (performances.length || 1)) * 100)}%`, icon: Target },
+          { label: "Need Review", value: weak.length, icon: AlertTriangle },
+          { label: "Avg. Accuracy", value: `${Math.round(performances.reduce((a, b) => a + b.accuracy, 0) / (performances.length || 1))}%`, icon: Zap },
         ].map((s, i) => (
           <motion.div
             key={s.label}
@@ -134,7 +134,7 @@ export default function WeakAreas() {
       {/* Content Sections */}
       <div className="space-y-24">
         {displayedTopics.length > 0 ? (
-          <motion.div variants={item} className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <motion.div variants={item} className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-2">
             {displayedTopics.map((t) => (
               <TopicCard key={t.topic} topic={t} onPractice={() => navigate("/practice")} />
             ))}
@@ -142,8 +142,8 @@ export default function WeakAreas() {
         ) : (
           <motion.div variants={item} className="glass-card flex flex-col items-center justify-center rounded-[3rem] py-32 text-center border-dashed border-2">
             <Filter className="mb-6 h-12 w-12 opacity-10" />
-            <h2 className="font-display text-2xl font-black uppercase tracking-tighter">No Segments Found</h2>
-            <p className="mt-2 max-w-sm font-medium text-muted-foreground">Adjust your filters or complete more simulations to see data.</p>
+            <h2 className="font-display text-2xl font-black uppercase tracking-tighter">No Topics Found</h2>
+            <p className="mt-2 max-w-sm font-medium text-muted-foreground">Adjust your filters or complete more tests to see data.</p>
           </motion.div>
         )}
       </div>

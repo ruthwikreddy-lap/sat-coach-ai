@@ -102,11 +102,6 @@ export default function Tutor() {
                         </div>
                     </div>
                 </div>
-                <div className="hidden items-center gap-4 md:flex">
-                    <div className="flex h-12 items-center justify-center border-4 border-foreground bg-background px-6 font-black uppercase tracking-widest text-[10px]">
-                        <Sparkles className="mr-3 h-4 w-4" /> ENHANCED MODE
-                    </div>
-                </div>
             </motion.div>
 
             {/* Chat area */}

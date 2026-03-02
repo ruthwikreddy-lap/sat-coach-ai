@@ -6,9 +6,8 @@ import { Save, User } from "lucide-react";
 import { toast } from "sonner";
 
 const SUBJECTS = [
-  "Linear Equations", "Quadratic Equations", "Data Interpretation", "Geometry",
-  "Percentages", "Statistics", "Main Idea", "Inference", "Grammar",
-  "Punctuation", "Reading Comprehension", "Vocabulary",
+  "Information & Ideas", "Craft & Structure", "Expression of Ideas", "Standard English Conventions",
+  "Algebra", "Advanced Math", "Problem-Solving & Data Analysis", "Geometry & Trigonometry",
 ];
 
 export default function Profile() {
@@ -58,14 +57,14 @@ export default function Profile() {
             <User className="h-8 w-8" />
           </div>
           <div>
-            <h1 className="font-display text-4xl font-black tracking-tighter uppercase text-foreground">Profile Matrix</h1>
+            <h1 className="font-display text-4xl font-black tracking-tighter uppercase text-foreground">My Profile</h1>
             <p className="font-black uppercase tracking-[0.2em] text-[10px]">{user?.email}</p>
           </div>
         </div>
 
         <div className="space-y-6">
           <div>
-            <label className="mb-2 block text-[10px] font-black uppercase tracking-[0.2em]">Display Identity</label>
+            <label className="mb-2 block text-[10px] font-black uppercase tracking-[0.2em]">Display Name</label>
             <input
               type="text"
               value={displayName}
@@ -76,7 +75,7 @@ export default function Profile() {
 
           <div className="grid grid-cols-2 gap-8">
             <div>
-              <label className="mb-2 block text-[10px] font-black uppercase tracking-[0.2em]">Baseline Score</label>
+              <label className="mb-2 block text-[10px] font-black uppercase tracking-[0.2em]">Current Score</label>
               <input
                 type="number"
                 min={400}
@@ -87,7 +86,7 @@ export default function Profile() {
               />
             </div>
             <div>
-              <label className="mb-2 block text-[10px] font-black uppercase tracking-[0.2em]">Target Vector</label>
+              <label className="mb-2 block text-[10px] font-black uppercase tracking-[0.2em]">Target Score</label>
               <input
                 type="number"
                 min={400}
@@ -100,7 +99,7 @@ export default function Profile() {
           </div>
 
           <div>
-            <label className="mb-2 block text-[10px] font-black uppercase tracking-[0.2em]">Engagement Deadline</label>
+            <label className="mb-2 block text-[10px] font-black uppercase tracking-[0.2em]">Exam Date</label>
             <input
               type="date"
               value={examDate}
@@ -110,15 +109,15 @@ export default function Profile() {
           </div>
 
           <div>
-            <label className="mb-4 block text-[10px] font-black uppercase tracking-[0.2em]">Prioritized Neural Domains</label>
+            <label className="mb-4 block text-[10px] font-black uppercase tracking-[0.2em]">Topics to Focus On</label>
             <div className="flex flex-wrap gap-3">
               {SUBJECTS.map((s) => (
                 <button
                   key={s}
                   onClick={() => toggleSubject(s)}
                   className={`border-4 px-4 py-3 text-[10px] font-black uppercase tracking-widest transition-all ${selectedSubjects.includes(s)
-                      ? "border-foreground bg-foreground text-background"
-                      : "border-foreground bg-background text-foreground hover:bg-foreground hover:text-background"
+                    ? "border-foreground bg-foreground text-background"
+                    : "border-foreground bg-background text-foreground hover:bg-foreground hover:text-background"
                     }`}
                 >
                   {s}
@@ -133,7 +132,7 @@ export default function Profile() {
             className="flex w-full items-center justify-center gap-3 border-4 border-foreground bg-foreground py-6 text-sm font-black uppercase tracking-[0.3em] text-background hover:bg-background hover:text-foreground transition-all mt-12"
           >
             <Save className="h-5 w-5" />
-            {loading ? "Syncing..." : "Update Identity Matrix"}
+            {loading ? "Saving..." : "Save Changes"}
           </button>
         </div>
       </motion.div>

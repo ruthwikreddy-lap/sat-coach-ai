@@ -7,9 +7,8 @@ import { Target, Calendar, BookOpen, ArrowRight, ChevronRight } from "lucide-rea
 import { toast } from "sonner";
 
 const SUBJECTS = [
-  "Linear Equations", "Quadratic Equations", "Data Interpretation", "Geometry",
-  "Percentages", "Statistics", "Main Idea", "Inference", "Grammar",
-  "Punctuation", "Reading Comprehension", "Vocabulary",
+  "Information & Ideas", "Craft & Structure", "Expression of Ideas", "Standard English Conventions",
+  "Algebra", "Advanced Math", "Problem-Solving & Data Analysis", "Geometry & Trigonometry",
 ];
 
 export default function Onboarding() {

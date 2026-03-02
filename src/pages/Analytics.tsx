@@ -133,7 +133,7 @@ export default function Analytics() {
           </div>
           <div>
             <h1 className="font-display text-7xl font-black tracking-tighter uppercase text-foreground leading-[0.8]">ANALYTICS</h1>
-            <p className="font-black uppercase tracking-[0.4em] text-[10px] mt-4 opacity-50">Your complete performance profile</p>
+            <p className="font-black uppercase tracking-[0.4em] text-[10px] mt-4 opacity-50">Your Detailed Progress Report</p>
           </div>
         </div>
       </motion.div>
@@ -144,7 +144,7 @@ export default function Analytics() {
           { label: "Latest Score", value: latest.score || "—", sub: prev ? `${improvement >= 0 ? "+" : ""}${improvement} Points` : "First Test", icon: TrendingUp },
           { label: "Best Score", value: bestScore || "—", sub: "Personal Best", icon: Award },
           { label: "Accuracy", value: `${avgAccuracy}%`, sub: `${performances.length} Topics`, icon: Target },
-          { label: "Questions", value: totalQuestions, sub: "Total Attempted", icon: Zap },
+          { label: "Questions", value: totalQuestions, sub: "Total Solved", icon: Zap },
         ].map((s, i) => (
           <motion.div
             key={s.label}
@@ -153,7 +153,7 @@ export default function Analytics() {
           >
             <div className="mb-6 flex items-center justify-between border-b-2 border-foreground pb-4">
               <s.icon className="h-5 w-5" />
-              {i === 0 && improvement > 0 && <span className="bg-foreground text-background px-2 py-0.5 text-[8px] font-black uppercase tracking-widest">Optimizing</span>}
+              {i === 0 && improvement > 0 && <span className="bg-foreground text-background px-2 py-0.5 text-[8px] font-black uppercase tracking-widest">Improving</span>}
             </div>
             <p className="text-[10px] font-black uppercase tracking-widest">{s.label}</p>
             <p className="mt-1 font-display text-4xl font-black tracking-tighter uppercase">{s.value}</p>
@@ -171,7 +171,7 @@ export default function Analytics() {
           >
             <div className="mb-12 flex items-center justify-between border-b-8 border-foreground pb-8">
               <div>
-                <h3 className="font-display text-4xl font-black uppercase tracking-tighter">Score History</h3>
+                <h3 className="font-display text-4xl font-black uppercase tracking-tighter">My Scores</h3>
                 <p className="text-[10px] font-black uppercase tracking-[0.2em] mt-3 opacity-50">Total score over time</p>
               </div>
               <BarChart3 className="h-10 w-10" />
@@ -223,7 +223,7 @@ export default function Analytics() {
                         <p className="text-[10px] font-black tracking-widest">{comp.label}</p>
                         <p className="text-3xl font-black tracking-tighter mt-1">{comp.score}</p>
                       </div>
-                      <p className="text-[10px] font-black tracking-widest">Mastery: {Math.round((comp.score / comp.total) * 100)}%</p>
+                      <p className="text-[10px] font-black tracking-widest">Proficiency: {Math.round((comp.score / comp.total) * 100)}%</p>
                     </div>
                     <div className="h-4 w-full border-4 border-foreground bg-background">
                       <motion.div

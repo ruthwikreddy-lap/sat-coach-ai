@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
-import { Trophy, Target, BookOpen, Clock, Brain, ArrowRight, Flame, BarChart3, TrendingUp, AlertCircle } from "lucide-react";
+import { Trophy, Target, BookOpen, Clock, Brain, ArrowRight, Flame, BarChart3, TrendingUp, AlertCircle, Sparkles } from "lucide-react";
 import StatCard from "@/components/StatCard";
 import ScoreRing from "@/components/ScoreRing";
 import TopicCard from "@/components/TopicCard";
-import { mockTopicPerformance, mockStudyPlan } from "@/data/mockData";
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, AreaChart, Area } from "recharts";
+import { TopicPerformance } from "@/data/mockData";
+import { ResponsiveContainer, CartesianGrid, AreaChart, Area, XAxis, YAxis, Tooltip } from "recharts";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfile } from "@/hooks/useProfile";
 import { supabase } from "@/integrations/supabase/client";
@@ -25,11 +25,9 @@ const container = {
   show: { opacity: 1, transition: { staggerChildren: 0.1 } },
 };
 const item = {
-  hidden: { opacity: 0, y: 0 },
+  hidden: { opacity: 0, y: 10 },
   show: { opacity: 1, y: 0 },
 };
-
-import { TopicPerformance } from "@/data/mockData";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -37,7 +35,6 @@ export default function Dashboard() {
   const { profile, loading: profileLoading } = useProfile();
   const [testResults, setTestResults] = useState<TestResultRow[]>([]);
   const [performances, setPerformances] = useState<TopicPerformance[]>([]);
-  const [todayTasks, setTodayTasks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -49,7 +46,6 @@ export default function Dashboard() {
   useEffect(() => {
     if (!user) return;
     const fetchData = async () => {
-      // Fetch results for chart
       const { data: results } = await supabase
         .from("test_results")
         .select("score, reading_score, math_score, test_date, weak_topics, time_spent")
@@ -58,7 +54,6 @@ export default function Dashboard() {
         .limit(20);
       if (results) setTestResults(results);
 
-      // Fetch performance for weak areas
       const { data: responses } = await supabase
         .from("question_responses")
         .select("topic, section, is_correct")
@@ -81,17 +76,6 @@ export default function Dashboard() {
         }));
         setPerformances(transformed);
       }
-
-      // Fetch today's study tasks
-      const dayOfWeek = (new Date().getDay() + 6) % 7;
-      const { data: tasks } = await supabase
-        .from("study_plan_tasks")
-        .select("*")
-        .eq("user_id", user.id)
-        .eq("day_of_week", dayOfWeek)
-        .limit(4);
-      if (tasks) setTodayTasks(tasks);
-
       setLoading(false);
     };
     fetchData();
@@ -99,159 +83,120 @@ export default function Dashboard() {
 
   const hasResults = testResults.length > 0;
   const latestResult = hasResults ? testResults[testResults.length - 1] : null;
-  const prevResult = testResults.length > 1 ? testResults[testResults.length - 2] : null;
-  const improvement = latestResult && prevResult ? latestResult.score - prevResult.score : 0;
-
   const currentScore = latestResult?.score ?? profile?.current_score ?? 0;
   const targetScore = profile?.target_score ?? 1500;
-  const readingScore = latestResult?.reading_score ?? (currentScore / 2);
-  const mathScore = latestResult?.math_score ?? (currentScore / 2);
 
   const chartData = hasResults
     ? testResults.map((r) => ({ date: r.test_date.slice(5, 10), score: r.score }))
     : [];
 
   const weakTopics = performances.filter((t) => t.accuracy < 70).sort((a, b) => a.accuracy - b.accuracy);
-
-  const streak = 4; // Mock streak value
-
-  const avgTime = hasResults
-    ? Math.round(testResults.reduce((a, r) => a + (r.time_spent ?? 0), 0) / testResults.length)
-    : 0;
+  const streak = 4; // Mock
 
   if (profileLoading || loading) {
     return (
       <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary/20 border-t-primary" />
+        <Loader2 className="h-12 w-12 animate-spin" />
       </div>
     );
   }
 
   return (
-    <motion.div variants={container} initial="hidden" animate="show" className="mx-auto max-w-7xl space-y-10 px-6 py-12">
-      {/* Hero Section */}
-      <motion.div variants={item} className="relative overflow-hidden border-8 border-foreground bg-foreground px-8 py-16 text-background md:px-14 md:py-24">
-        <div className="relative z-10 grid gap-12 lg:grid-cols-2 lg:items-center">
-          <div className="space-y-10">
-            <div className="flex items-center gap-6">
-              <div className="flex flex-col items-center border-4 border-background bg-background px-6 py-2 text-foreground">
-                <Flame className="h-8 w-8 mb-1" />
-                <span className="text-2xl font-black">{streak}</span>
-                <span className="text-[8px] font-black uppercase tracking-widest">Day Streak</span>
-              </div>
-              <div className="space-y-2">
-                <h1 className="font-display text-6xl font-black leading-[0.8] tracking-tight sm:text-7xl md:text-8xl uppercase">
-                  READY FOR<br />THE SAT?
-                </h1>
-                <p className="max-w-md text-sm font-black uppercase tracking-widest opacity-80">
-                  Welcome back, {profile?.display_name?.split(' ')[0] || "Learner"}.
-                </p>
+    <motion.div variants={container} initial="hidden" animate="show" className="mx-auto max-w-6xl space-y-12 px-6 py-16">
+      {/* Premium Compact Hero */}
+      <motion.div variants={item} className="grid lg:grid-cols-2 gap-8 items-stretch">
+        <div className="bg-foreground text-background p-12 flex flex-col justify-between border-8 border-foreground">
+          <div className="space-y-6">
+            <div className="flex items-center gap-4">
+              <div className="bg-background text-foreground px-4 py-1 text-xs font-black uppercase tracking-widest">Active Streak</div>
+              <div className="flex items-center gap-2 group">
+                <Flame className="h-6 w-6 text-background group-hover:scale-110 transition-transform" fill="white" />
+                <span className="text-3xl font-black">{streak} DAYS</span>
               </div>
             </div>
-
-            <div className="flex flex-wrap gap-6">
-              <Link to="/practice" className="bg-background text-foreground hover:bg-foreground hover:text-background hover:border-background border-4 border-transparent px-10 py-5 font-black uppercase tracking-widest text-base flex items-center gap-4 transition-all">
-                <Target className="h-6 w-6" /> Take a Test
-              </Link>
-              <button onClick={() => navigate("/practice")} className="border-4 border-background text-background hover:bg-background hover:text-foreground px-10 py-5 flex items-center gap-4 font-black uppercase tracking-widest text-base transition-all">
-                Practice More <ArrowRight className="h-6 w-6" />
-              </button>
-            </div>
+            <h1 className="font-display text-7xl font-black uppercase tracking-tighter leading-[0.85]">
+              MASTER<br />THE DIGITAL SAT
+            </h1>
           </div>
 
-          <div className="flex justify-center lg:justify-end">
-            <div className="flex items-center gap-12 border-8 border-background p-10 bg-black">
-              <ScoreRing score={readingScore} maxScore={800} label="Reading" size={140} />
-              <div className="h-24 w-2 bg-white" />
-              <ScoreRing score={mathScore} maxScore={800} label="Math" size={140} />
+          <div className="mt-12 flex flex-wrap gap-4">
+            <Link to="/practice" className="bg-background text-foreground hover:invert px-8 py-5 text-sm font-black uppercase tracking-widest transition-all flex items-center gap-3">
+              START FULL EXAM <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+
+        <div className="border-8 border-foreground p-10 flex flex-col items-center justify-center bg-background relative overflow-hidden group">
+          <Sparkles className="absolute top-10 right-10 h-10 w-10 opacity-10 group-hover:opacity-100 transition-opacity" />
+          <div className="flex items-center gap-8 md:gap-16">
+            <div className="text-center">
+              <ScoreRing score={latestResult?.reading_score ?? 0} maxScore={800} label="R&W" size={140} />
+            </div>
+            <div className="h-32 w-2 bg-foreground" />
+            <div className="text-center">
+              <ScoreRing score={latestResult?.math_score ?? 0} maxScore={800} label="MATH" size={140} />
             </div>
           </div>
         </div>
       </motion.div>
 
       {/* Metrics Row */}
-      <motion.div variants={item} className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard title="Latest Score" value={currentScore} subtitle="Final Simulation" icon={<Trophy className="h-6 w-6" />} trend={improvement > 0 ? "up" : improvement < 0 ? "down" : "stable"} trendValue={`${improvement > 0 ? "+" : ""}${improvement}`} />
-        <StatCard title="Target Score" value={targetScore} subtitle="Goal" icon={<Target className="h-6 w-6" />} />
-        <StatCard title="Tests Taken" value={testResults.length} subtitle="Complete" icon={<BookOpen className="h-6 w-6" />} />
-        <StatCard title="Avg. Time" value={hasResults ? `${avgTime}m` : "—"} subtitle="Per Test" icon={<Clock className="h-6 w-6" />} />
+      <motion.div variants={item} className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        <StatCard title="Current" value={currentScore} subtitle="Last Score" icon={<Trophy className="h-5 w-5" />} />
+        <StatCard title="Target" value={targetScore} subtitle="My Goal" icon={<Target className="h-5 w-5" />} />
+        <StatCard title="Sessions" value={testResults.length} subtitle="Tests Done" icon={<BookOpen className="h-5 w-5" />} />
+        <StatCard title="Status" value="ADVANCED" subtitle="Level" icon={<Brain className="h-5 w-5" />} />
       </motion.div>
 
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
-        {/* Progress Chart */}
-        <motion.div variants={item} className="col-span-1 border-4 border-foreground p-8 lg:col-span-12">
-          <div className="mb-10 flex items-center justify-between underline decoration-8 underline-offset-[16px]">
-            <div>
-              <h2 className="font-display text-4xl font-black uppercase tracking-tighter">Score History</h2>
-              <p className="text-xs font-black uppercase tracking-widest mt-2">Historical Performance Data</p>
-            </div>
-            <TrendingUp className="h-10 w-10 text-foreground" />
+      {/* Simplified History & Review */}
+      <div className="grid lg:grid-cols-3 gap-12">
+        <motion.div variants={item} className="lg:col-span-2 space-y-8">
+          <div className="flex items-center justify-between border-b-8 border-foreground pb-4">
+            <h2 className="font-display text-3xl font-black uppercase tracking-tighter">Score Trends</h2>
+            <TrendingUp className="h-6 w-6" />
           </div>
-
-          <div className="h-[400px] w-full mt-12">
+          <div className="h-[300px] w-full border-4 border-foreground p-6">
             {hasResults ? (
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={chartData}>
-                  <defs>
-                    <pattern id="diagonal-stripe" patternUnits="userSpaceOnUse" width="10" height="10">
-                      <line x1="0" y1="10" x2="10" y2="0" stroke="black" strokeWidth="2" />
-                    </pattern>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eee" />
-                  <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 900, fill: "black" }} dy={15} />
-                  <YAxis domain={[0, 1600]} axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 900, fill: "black" }} />
-                  <Tooltip
-                    cursor={{ stroke: 'black', strokeWidth: 2 }}
-                    contentStyle={{ backgroundColor: "black", border: "none", color: "white", padding: "12px", borderLeft: "8px solid white" }}
-                    labelStyle={{ display: 'none' }}
-                  />
-                  <Area
-                    type="step"
-                    dataKey="score"
-                    stroke="black"
-                    strokeWidth={8}
-                    fill="url(#diagonal-stripe)"
-                    fillOpacity={0.1}
-                    animationDuration={2000}
-                  />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E5E5" />
+                  <XAxis dataKey="date" hide />
+                  <YAxis hide domain={[0, 1600]} />
+                  <Tooltip />
+                  <Area type="monotone" dataKey="score" stroke="black" strokeWidth={6} fill="black" fillOpacity={0.05} />
                 </AreaChart>
               </ResponsiveContainer>
             ) : (
-              <div className="flex h-full flex-col items-center justify-center text-center border-8 border-dashed border-foreground p-20">
-                <BarChart3 className="mb-8 h-24 w-24 opacity-20" />
-                <p className="text-xl font-black uppercase tracking-widest">No Tests Completed Yet</p>
-                <button onClick={() => navigate("/practice")} className="mt-8 bg-foreground text-background px-10 py-4 font-black uppercase tracking-tighter">Initialize first test</button>
+              <div className="flex h-full items-center justify-center text-xs font-black uppercase opacity-20">Data pending...</div>
+            )}
+          </div>
+        </motion.div>
+
+        <motion.div variants={item} className="space-y-8">
+          <div className="flex items-center justify-between border-b-8 border-foreground pb-4">
+            <h2 className="font-display text-3xl font-black uppercase tracking-tighter">Focus Areas</h2>
+            <AlertCircle className="h-6 w-6" />
+          </div>
+          <div className="space-y-4">
+            {weakTopics.slice(0, 3).map((t) => (
+              <div key={t.topic} className="border-4 border-foreground p-6 hover:bg-foreground hover:text-background transition-colors group cursor-pointer" onClick={() => navigate("/practice")}>
+                <p className="text-[10px] font-black uppercase tracking-widest opacity-60 mb-1">{t.section}</p>
+                <div className="flex items-center justify-between">
+                  <span className="font-black uppercase tracking-tight">{t.topic}</span>
+                  <span className="font-black">{t.accuracy}%</span>
+                </div>
               </div>
+            ))}
+            {weakTopics.length === 0 && (
+              <div className="text-center p-12 border-4 border-dashed border-foreground opacity-20 font-black uppercase text-xs">Awaiting Analysis</div>
             )}
           </div>
         </motion.div>
       </div>
-
-      {/* Weak Areas Section */}
-      <motion.div variants={item} className="space-y-6">
-        <div className="flex items-center justify-between border-b-8 border-foreground pb-6">
-          <div className="flex items-center gap-5">
-            <AlertCircle className="h-10 w-10 text-foreground" />
-            <h2 className="font-display text-4xl font-black uppercase tracking-tighter">Weak Topics</h2>
-          </div>
-          <Link to="/weak-areas" className="text-[10px] font-black uppercase tracking-widest bg-foreground text-background px-6 py-2">Full Report →</Link>
-        </div>
-
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {weakTopics.slice(0, 3).map((t) => (
-            <TopicCard key={t.topic} topic={t} onPractice={() => navigate("/practice")} />
-          ))}
-          {weakTopics.length === 0 && (
-            <div className="col-span-full border-8 border-dashed border-foreground p-24 text-center">
-              <p className="text-xl font-black uppercase tracking-widest opacity-30">Everything looks good!</p>
-            </div>
-          )}
-        </div>
-      </motion.div>
     </motion.div>
   );
 }
 
-
-
+const Loader2 = ({ className }: { className?: string }) => (
+  <div className={`h-12 w-12 border-4 border-foreground border-t-transparent animate-spin ${className}`} />
+);

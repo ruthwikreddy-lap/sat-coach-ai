@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { X, Clock, ChevronLeft, ChevronRight, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
+import { X, Clock, ChevronLeft, ChevronRight, CheckCircle, XCircle, AlertTriangle, Hash } from "lucide-react";
+import Calculator from "@/components/Calculator";
 import { useTimer } from "@/hooks/useTimer";
 import { mockQuestions } from "@/data/mockData";
 import { useAuth } from "@/contexts/AuthContext";
@@ -11,10 +12,11 @@ export default function FocusTest() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [currentQ, setCurrentQ] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, number>>({});
+  const [answers, setAnswers] = useState<Record<string, any>>({});
   const [submitted, setSubmitted] = useState(false);
   const [tabSwitchCount, setTabSwitchCount] = useState(0);
   const [showWarning, setShowWarning] = useState(false);
+  const [showCalculator, setShowCalculator] = useState(false);
   const timer = useTimer(35 * 60);
   const questions = mockQuestions;
   const question = questions[currentQ];
@@ -89,11 +91,11 @@ export default function FocusTest() {
           section: q.section,
           topic: q.topic,
           difficulty: q.difficulty,
-          user_answer: answers[q.id] ?? null,
-          correct_answer: q.correctAnswer,
+          user_answer: typeof answers[q.id] === 'number' ? answers[q.id] : 0,
+          correct_answer: typeof q.correctAnswer === 'number' ? q.correctAnswer : 0,
           is_correct: answers[q.id] === q.correctAnswer,
         }));
-        await supabase.from("question_responses").insert(responses);
+        await (supabase.from("question_responses").insert as any)(responses);
       }
 
       // Update profile weaknesses
@@ -127,6 +129,11 @@ export default function FocusTest() {
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-foreground">
+      {question.section === "math" && showCalculator && (
+        <div className="relative">
+          <Calculator />
+        </div>
+      )}
       {/* Tab switch warning overlay */}
       <AnimatePresence>
         {showWarning && (
@@ -176,6 +183,14 @@ export default function FocusTest() {
             <span className="flex items-center gap-2 border-2 border-white px-3 py-1 text-[8px] font-black uppercase tracking-widest text-white">
               <AlertTriangle className="h-3 w-3" /> {tabSwitchCount} SWITCHE{tabSwitchCount > 1 ? "S" : ""}
             </span>
+          )}
+          {question.section === "math" && (
+            <button
+              onClick={() => setShowCalculator(!showCalculator)}
+              className={`flex items-center gap-2 border-2 px-3 py-1 text-[8px] font-black uppercase tracking-widest transition-all ${showCalculator ? 'bg-white text-black' : 'border-white text-white hover:bg-white/10'}`}
+            >
+              <Hash className="h-3 w-3" /> Calculator
+            </button>
           )}
         </div>
         <button

@@ -90,10 +90,10 @@ export default function StudyPlan() {
       }
 
       await fetchTasks();
-      toast.success("Intelligence Matrix updated.");
+      toast.success("Study plan updated.");
     } catch (e: any) {
       console.error(e);
-      toast.error("Generation sequence interrupted.");
+      toast.error("Process interrupted. Please try again.");
     } finally {
       setGenerating(false);
     }
@@ -140,15 +140,15 @@ export default function StudyPlan() {
             onClick={() => navigate("/")}
             className="flex w-fit items-center gap-2 text-xs font-black uppercase tracking-[0.2em] transition-colors border-b-2 border-transparent hover:border-foreground"
           >
-            <ArrowLeft className="h-3.5 w-3.5" /> Intelligence Center
+            <ArrowLeft className="h-3.5 w-3.5" /> DASHBOARD
           </button>
           <div className="flex items-center gap-6">
             <div className="flex h-14 w-14 items-center justify-center border-4 border-foreground bg-foreground text-background">
               <Calendar className="h-7 w-7" />
             </div>
             <div>
-              <h1 className="font-display text-4xl font-black tracking-tighter uppercase text-foreground">Tactical Matrix</h1>
-              <p className="font-black uppercase tracking-[0.2em] text-[10px]">Dynamic SAT Optimization Protocol</p>
+              <h1 className="font-display text-4xl font-black tracking-tighter uppercase text-foreground">Study Schedule</h1>
+              <p className="font-black uppercase tracking-[0.2em] text-[10px]">Your Personalized SAT Roadmap</p>
             </div>
           </div>
         </div>
@@ -159,16 +159,16 @@ export default function StudyPlan() {
           className="border-4 border-foreground bg-foreground px-10 py-5 text-sm font-black uppercase tracking-widest text-background hover:bg-background hover:text-foreground transition-all flex items-center justify-center gap-3"
         >
           {generating ? <Loader2 className="h-5 w-5 animate-spin" /> : <Sparkles className="h-5 w-5" />}
-          <span>{generating ? "Calibrating..." : "Optimize Strategy"}</span>
+          <span>{generating ? "Updating..." : "Update Daily Plan"}</span>
         </button>
       </motion.div>
 
       {/* Overview Cards */}
       <div className="mb-16 grid grid-cols-1 gap-6 md:grid-cols-3">
         {[
-          { label: "Precision Target", value: profile?.target_score || "1500", icon: Target },
-          { label: "Matrix Progress", value: `${completedTasks}/${totalTasks}`, icon: Zap },
-          { label: "Neural Load", value: "3.5h / Week", icon: Brain },
+          { label: "Goal Score", value: profile?.target_score || "1500", icon: Target },
+          { label: "Tasks Done", value: `${completedTasks}/${totalTasks}`, icon: Zap },
+          { label: "Goal Practice", value: "3.5h / Week", icon: Brain },
         ].map((stat, i) => (
           <motion.div
             key={stat.label}
@@ -181,7 +181,7 @@ export default function StudyPlan() {
               <p className="text-[10px] font-black uppercase tracking-widest">{stat.label}</p>
             </div>
             <p className="font-display text-4xl font-black tracking-tighter uppercase">{stat.value}</p>
-            {stat.label === "Matrix Progress" && totalTasks > 0 && (
+            {stat.label === "Tasks Done" && totalTasks > 0 && (
               <div className="mt-6 h-3 w-full border-2 border-foreground bg-background">
                 <motion.div
                   initial={{ width: 0 }}
@@ -199,9 +199,9 @@ export default function StudyPlan() {
         {tasks.length === 0 ? (
           <div className="border-4 border-dashed border-foreground flex flex-col items-center justify-center p-24 text-center">
             <Sparkles className="mb-6 h-12 w-12" />
-            <h2 className="font-display text-2xl font-black uppercase tracking-tighter">No Active Protocols</h2>
-            <p className="mt-2 max-w-sm font-black uppercase tracking-widest text-xs">Initialize matrix for strategic roadmap.</p>
-            <button onClick={generatePlan} className="mt-8 border-4 border-foreground bg-foreground px-12 py-4 text-sm font-black uppercase tracking-widest text-background hover:bg-background hover:text-foreground transition-all">Initialize Matrix</button>
+            <h2 className="font-display text-2xl font-black uppercase tracking-tighter">No Active Plan</h2>
+            <p className="mt-2 max-w-sm font-black uppercase tracking-widest text-xs">Generate your personalized schedule to get started.</p>
+            <button onClick={generatePlan} className="mt-8 border-4 border-foreground bg-foreground px-12 py-4 text-sm font-black uppercase tracking-widest text-background hover:bg-background hover:text-foreground transition-all">Generate My Plan</button>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-12">
@@ -217,7 +217,7 @@ export default function StudyPlan() {
                   <h3 className="font-display text-2xl font-black uppercase tracking-[0.2em] text-foreground">{day}</h3>
                   <div className="h-px flex-1 bg-foreground" />
                   <p className="text-[10px] font-black uppercase tracking-[0.2em]">
-                    AUDIT: {dayTasks.filter((t) => t.completed).length}/{dayTasks.length} COMPLETE
+                    {dayTasks.filter((t) => t.completed).length}/{dayTasks.length} DONE
                   </p>
                 </div>
 
@@ -249,7 +249,7 @@ export default function StudyPlan() {
                       </div>
 
                       <div className="mt-8 flex w-full items-center justify-between border-t border-current pt-4">
-                        <span className="text-[10px] font-black uppercase tracking-widest">Toggle Audit</span>
+                        <span className="text-[10px] font-black uppercase tracking-widest font-black">TOGGLE STATUS</span>
                         <ChevronRight className="h-4 w-4" />
                       </div>
                     </button>
