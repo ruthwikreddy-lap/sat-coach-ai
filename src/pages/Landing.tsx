@@ -1,18 +1,16 @@
 import { useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
-import { Brain, ArrowRight, Shield, Target, Zap, CheckCircle2, Globe, Users, Trophy } from "lucide-react";
+import { Brain, ArrowRight, Shield, Target, Zap, CheckCircle2, Trophy, Clock, Search, BarChart3 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-
-import { Variants } from "framer-motion";
 
 const container: Variants = {
     hidden: { opacity: 0 },
-    show: { opacity: 1, transition: { staggerChildren: 0.15 } },
+    show: { opacity: 1, transition: { staggerChildren: 0.1 } },
 };
 
 const item: Variants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0, transition: { type: "spring", damping: 15 } },
 };
 
@@ -29,120 +27,108 @@ export default function Landing() {
     if (loading || user) return null;
 
     return (
-        <div className="bg-background min-h-screen">
+        <div className="bg-background min-h-screen font-sans selection:bg-foreground selection:text-background">
             {/* Hero Section */}
-            <section className="relative overflow-hidden border-b-8 border-foreground py-24 sm:py-32">
+            <section className="relative overflow-hidden border-b-8 border-foreground py-20 lg:py-32">
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]" />
                 <motion.div
                     variants={container}
                     initial="hidden"
                     animate="show"
-                    className="relative mx-auto max-w-7xl px-6 lg:px-8 text-center"
+                    className="relative mx-auto max-w-5xl px-6 lg:px-8 text-center"
                 >
-                    <motion.div variants={item} className="mb-8 flex justify-center">
-                        <div className="bg-foreground text-background px-6 py-2 text-[10px] font-black uppercase tracking-[0.4em]">
-                            Next-Generation SAT Intelligence
+                    <motion.div variants={item} className="mb-6 flex justify-center">
+                        <div className="bg-foreground text-background px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.3em] rounded-sm">
+                            Updated for 2024 Digital SAT
                         </div>
                     </motion.div>
 
                     <motion.h1
                         variants={item}
-                        className="font-display text-7xl sm:text-9xl font-black uppercase tracking-tighter leading-[0.85] text-foreground mb-8"
+                        className="font-display text-5xl sm:text-8xl font-black uppercase tracking-tighter leading-[0.9] text-foreground mb-8"
                     >
-                        MASTER<br /> THE MATRIX
+                        Get a 1400+ on the SAT<br className="hidden sm:block" /> with real practice
                     </motion.h1>
 
                     <motion.p
                         variants={item}
                         className="mx-auto max-w-2xl text-lg sm:text-xl font-medium text-foreground/60 mb-12"
                     >
-                        The only SAT platform powered by Neural Adaptive Logic. Mirroring the 2024 Bluebook experience with pinpoint precision.
+                        Practice with adaptive modules, real Bluebook-style interface, and instant feedback to improve your score fast.
                     </motion.p>
 
-                    <motion.div variants={item} className="flex flex-col sm:flex-row items-center justify-center gap-6">
+                    <motion.div variants={item} className="flex flex-col sm:flex-row items-center justify-center gap-4">
                         <Link
                             to="/auth"
-                            className="w-full sm:w-auto bg-foreground text-background border-4 border-foreground hover:bg-background hover:text-foreground px-12 py-6 text-sm font-black uppercase tracking-widest transition-all flex items-center justify-center gap-3 group"
+                            className="w-full sm:w-auto bg-foreground text-background border-4 border-foreground hover:bg-background hover:text-foreground px-10 py-5 text-sm font-black uppercase tracking-widest transition-all flex items-center justify-center gap-3 group"
                         >
-                            GET STARTED <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                            Start Free Practice <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                         </Link>
                         <a
-                            href="#features"
-                            className="w-full sm:w-auto bg-background text-foreground border-4 border-foreground hover:invert px-12 py-6 text-sm font-black uppercase tracking-widest transition-all"
+                            href="#how-it-works"
+                            className="w-full sm:w-auto bg-background text-foreground border-4 border-foreground hover:bg-foreground hover:text-background px-10 py-5 text-sm font-black uppercase tracking-widest transition-all text-center"
                         >
-                            VIEW CORE PROTOCOLS
+                            See How It Works
                         </a>
                     </motion.div>
                 </motion.div>
             </section>
 
-            {/* Stats Row */}
-            <section className="bg-foreground text-background py-12 px-6 overflow-hidden">
+            {/* Proof Section */}
+            <section className="bg-foreground text-background py-16 px-6">
                 <div className="mx-auto max-w-7xl">
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 sm:gap-8">
                         {[
-                            { label: "Elite Members", value: "25K+", icon: Users },
-                            { label: "Average Gain", value: "+170", icon: Trophy },
-                            { label: "Global Reach", value: "140+", icon: Globe },
-                            { label: "Neural Speed", value: "0.2ms", icon: Zap },
+                            { label: "Students Practicing", value: "25,000+", icon: Trophy },
+                            { label: "Avg Score Gain", value: "+170 points", icon: BarChart3 },
+                            { label: "Digital Format", value: "2024 Ready", icon: Clock },
                         ].map((stat) => (
-                            <div key={stat.label} className="flex flex-col items-center text-center gap-2">
-                                <stat.icon className="h-5 w-5 opacity-30" />
-                                <div className="text-3xl font-black">{stat.value}</div>
-                                <div className="text-[10px] font-black uppercase tracking-widest opacity-40">{stat.label}</div>
+                            <div key={stat.label} className="flex flex-col items-center text-center gap-3">
+                                <div className="text-4xl font-black tracking-tighter underline decoration-4 decoration-background/20 underline-offset-8">{stat.value}</div>
+                                <div className="text-[11px] font-black uppercase tracking-widest opacity-60 italic">{stat.label}</div>
                             </div>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* Features Grid */}
-            <section id="features" className="py-24 px-6 bg-background">
+            {/* Features Section */}
+            <section id="features" className="py-24 px-6">
                 <div className="mx-auto max-w-7xl">
-                    <div className="mb-20 space-y-4">
-                        <div className="text-[10px] font-black uppercase tracking-[0.4em] text-foreground/40">Core Systems</div>
-                        <h2 className="font-display text-5xl sm:text-7xl font-black uppercase tracking-tighter">ENGINEERED FOR EXCELLENCE</h2>
+                    <div className="mb-20">
+                        <div className="text-[10px] font-black uppercase tracking-[0.4em] text-foreground/40 mb-4">Core Benefits</div>
+                        <h2 className="font-display text-4xl sm:text-6xl font-black uppercase tracking-tighter">Everything you need to succeed</h2>
                     </div>
 
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {[
                             {
-                                title: "Adaptive Neural Logic",
-                                desc: "Our engine uses real performance data to calibrate your Module 2 difficulty with 100% test-day accuracy.",
-                                icon: Brain
+                                title: "Adaptive Practice",
+                                desc: "Questions automatically adjust to your level, just like the real SAT module system.",
+                                icon: Zap
                             },
                             {
-                                title: "Bluebook Parity",
-                                desc: "The exact interface, navigation, and timing systems you will encounter in the official Digital SAT exam.",
+                                title: "Real Test Interface",
+                                desc: "The workspace looks and feels exactly like the official Bluebook exam app.",
                                 icon: Target
                             },
                             {
-                                title: "Non-CAS Desmos",
-                                desc: "Fully integrated, moveable, and resizable Desmos calculator following all College Board safety standards.",
-                                icon: zap
+                                title: "Built-in Calculator",
+                                desc: "Use the same Desmos Graphing Calculator tools allowed on test day.",
+                                icon: Search
                             },
                             {
-                                title: "Distraction Lockdown",
-                                desc: "Our Focus Guard system detects tab switching and monitors attention during proctored sessions.",
-                                icon: Shield
-                            },
-                            {
-                                title: "Blueprint Weighting",
-                                desc: "Questions generated strictly following the official domain percentages (e.g. 35% Algebra).",
-                                icon: CheckCircle2
-                            },
-                            {
-                                title: "Real-Time Tracking",
-                                desc: "Instant analytics showing your weak topics, sessions history, and target score trajectory.",
-                                icon: BarChart3
+                                title: "Instant Feedback",
+                                desc: "See your mistakes immediately and learn how to fix them for next time.",
+                                icon: Brain
                             }
                         ].map((feat) => (
-                            <div key={feat.title} className="border-8 border-foreground p-8 hover:bg-foreground hover:text-background transition-colors group">
-                                <div className="bg-foreground text-background group-hover:bg-background group-hover:text-foreground w-12 h-12 flex items-center justify-center mb-8 transition-colors">
-                                    <feat.icon className="h-6 w-6" />
+                            <div key={feat.title} className="border-4 border-foreground p-8 hover:bg-foreground/5 transition-colors group relative overflow-hidden">
+                                <div className="bg-foreground text-background w-10 h-10 flex items-center justify-center mb-6">
+                                    <feat.icon className="h-5 w-5" />
                                 </div>
-                                <h3 className="font-display text-2xl font-black uppercase tracking-tight mb-4">{feat.title}</h3>
-                                <p className="text-sm font-medium leading-relaxed opacity-60 group-hover:opacity-100">
+                                <h3 className="font-display text-xl font-black uppercase tracking-tight mb-3">{feat.title}</h3>
+                                <p className="text-sm font-medium leading-relaxed text-foreground/60">
                                     {feat.desc}
                                 </p>
                             </div>
@@ -151,64 +137,58 @@ export default function Landing() {
                 </div>
             </section>
 
-            {/* CTA Section */}
-            <section className="bg-foreground py-32 px-6">
-                <div className="mx-auto max-w-3xl text-center">
-                    <h2 className="font-display text-5xl sm:text-7xl font-black uppercase tracking-tighter text-background mb-12">
-                        READY TO BREAK THE LIMIT?
+            {/* How It Works Section */}
+            <section id="how-it-works" className="py-24 px-6 bg-foreground text-background border-y-8 border-foreground">
+                <div className="mx-auto max-w-7xl">
+                    <div className="mb-20 text-center">
+                        <h2 className="font-display text-4xl sm:text-6xl font-black uppercase tracking-tighter">How it works</h2>
+                        <p className="mt-6 text-background/60 font-medium uppercase text-xs tracking-[0.2em]">Four simple steps to a higher score</p>
+                    </div>
+
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        {[
+                            { step: "1", title: "Take a practice test", desc: "Start with a full or focused test to see where you stand." },
+                            { step: "2", title: "Get your score instantly", desc: "No waiting. See your predicted SAT score immediately." },
+                            { step: "3", title: "Improve weak areas", desc: "Our AI identifies exactly what you need to study next." },
+                            { step: "4", title: "Repeat → increase score", desc: "Keep practicing and watch your predicted score climb." }
+                        ].map((step, idx) => (
+                            <div key={idx} className="relative p-6 border-2 border-background/20 rounded-lg">
+                                <div className="text-6xl font-black text-background/10 absolute -top-4 -left-2 select-none">{step.step}</div>
+                                <h3 className="relative font-display text-xl font-black uppercase tracking-tight mb-3 z-10">{step.title}</h3>
+                                <p className="relative text-sm font-medium text-background/60 z-10">{step.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Final CTA */}
+            <section className="py-32 px-6 text-center">
+                <div className="mx-auto max-w-3xl">
+                    <h2 className="font-display text-4xl sm:text-7xl font-black uppercase tracking-tighter mb-12">
+                        Start your first SAT practice test now
                     </h2>
                     <Link
                         to="/auth"
-                        className="inline-flex bg-background text-foreground border-4 border-background hover:invert px-16 py-8 text-lg font-black uppercase tracking-widest transition-all group"
+                        className="inline-flex bg-foreground text-background border-4 border-foreground hover:bg-background hover:text-foreground px-16 py-7 text-lg font-black uppercase tracking-widest transition-all group"
                     >
-                        INITIALIZE CONNECTION <Zap className="ml-4 h-6 w-6 group-hover:scale-110 transition-transform" />
+                        Start Practice <Zap className="ml-3 h-5 w-5 fill-current group-hover:scale-110 transition-transform" />
                     </Link>
                 </div>
             </section>
 
-            {/* Footer */}
-            <footer className="border-t-8 border-foreground py-16 px-6">
-                <div className="mx-auto max-w-7xl flex flex-col md:flex-row justify-between items-center gap-10">
+            {/* Simple Footer */}
+            <footer className="border-t-4 border-foreground py-12 px-6">
+                <div className="mx-auto max-w-7xl flex flex-col sm:flex-row justify-between items-center gap-8">
                     <div className="flex items-center gap-3">
-                        <div className="flex h-12 w-12 items-center justify-center bg-foreground text-background">
-                            <Brain className="h-8 w-8" />
-                        </div>
-                        <span className="font-display text-3xl font-black tracking-tighter text-foreground uppercase">
-                            SATCOACH
-                        </span>
+                        <Brain className="h-6 w-6 text-foreground" />
+                        <span className="font-display text-xl font-black tracking-tighter uppercase">SATCOACH</span>
                     </div>
-
-                    <div className="flex flex-wrap justify-center gap-8 text-[10px] font-black uppercase tracking-widest text-foreground/40">
-                        <a href="#" className="hover:text-foreground transition-colors">Security Proto</a>
-                        <a href="#" className="hover:text-foreground transition-colors">API Keys</a>
-                        <a href="#" className="hover:text-foreground transition-colors">Legal Override</a>
-                        <a href="#" className="hover:text-foreground transition-colors">System Status</a>
-                    </div>
-
-                    <div className="text-[10px] font-black uppercase tracking-widest text-foreground/20">
-                        © 2024 NEURAL INTERFACE LABS
+                    <div className="text-[10px] font-black uppercase tracking-widest text-foreground/40">
+                        &copy; 2024 Built for Student Success
                     </div>
                 </div>
             </footer>
         </div>
     );
 }
-
-// Fixed Lucide icons for mapping
-const zap = Zap;
-const BarChart3 = ({ className }: { className?: string }) => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className={className}
-    >
-        <path d="M3 3v18h18" /><path d="M18 17V9" /><path d="M13 17V5" /><path d="M8 17v-3" />
-    </svg>
-);
