@@ -46,7 +46,7 @@ export default function Onboarding() {
       toast.error("Failed to save profile");
     } else {
       toast.success("Profile set up! Let's get started.");
-      navigate("/");
+      navigate("/dashboard");
     }
   };
 

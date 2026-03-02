@@ -22,7 +22,7 @@ export default function Auth() {
       if (isLogin) {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        navigate("/");
+        navigate("/dashboard");
       } else {
         const { data, error } = await supabase.auth.signUp({
           email,
@@ -35,7 +35,7 @@ export default function Auth() {
         if (error) throw error;
 
         if (data.session) {
-          navigate("/");
+          navigate("/dashboard");
           toast.success("Account created and signed in!");
         } else {
           toast.success("Account created! You can now sign in.");

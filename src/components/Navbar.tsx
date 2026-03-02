@@ -4,7 +4,7 @@ import { LayoutDashboard, BookOpen, Target, Brain, BarChart3, LogOut, User, Mess
 import { useAuth } from "@/contexts/AuthContext";
 
 const navItems = [
-  { path: "/", label: "Dashboard", icon: LayoutDashboard },
+  { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { path: "/practice", label: "Practice", icon: BookOpen },
   { path: "/weak-areas", label: "Review", icon: Brain },
   { path: "/analytics", label: "Analytics", icon: BarChart3 },
@@ -20,7 +20,7 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-50 border-b border-foreground bg-background">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 sm:px-8">
-        <Link to="/" className="flex items-center gap-3 group">
+        <Link to={user ? "/dashboard" : "/"} className="flex items-center gap-3 group">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-foreground text-background">
             <Brain className="h-6 w-6" />
           </div>
