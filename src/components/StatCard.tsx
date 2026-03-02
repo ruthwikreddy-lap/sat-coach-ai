@@ -8,51 +8,38 @@ interface StatCardProps {
   icon: ReactNode;
   trend?: "up" | "down" | "stable";
   trendValue?: string;
-  variant?: "default" | "accent" | "amber" | "success";
 }
 
-const variantStyles = {
-  default: "bg-card border-border",
-  accent: "bg-teal-light border-teal/20",
-  amber: "bg-amber-light border-amber/20",
-  success: "bg-success-light border-success/20",
-};
-
-const iconBgStyles = {
-  default: "bg-secondary",
-  accent: "bg-accent/15",
-  amber: "bg-amber/15",
-  success: "bg-success/15",
-};
-
-export default function StatCard({ title, value, subtitle, icon, trend, trendValue, variant = "default" }: StatCardProps) {
+export default function StatCard({ title, value, subtitle, icon, trend, trendValue }: StatCardProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className={`rounded-xl border p-5 shadow-card ${variantStyles[variant]}`}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="border-4 border-foreground p-8 bg-background flex flex-col justify-between"
     >
       <div className="flex items-start justify-between">
-        <div>
-          <p className="text-sm font-medium text-muted-foreground">{title}</p>
-          <p className="mt-1 font-display text-3xl font-bold text-foreground">{value}</p>
-          {subtitle && <p className="mt-1 text-xs text-muted-foreground">{subtitle}</p>}
+        <div className="space-y-4">
+          <p className="text-[10px] font-black uppercase tracking-[0.2em]">{title}</p>
+          <div className="flex items-baseline gap-2">
+            <h3 className="font-display text-5xl font-black tracking-tighter uppercase">{value}</h3>
+          </div>
           {trend && trendValue && (
-            <div className="mt-2 flex items-center gap-1">
-              <span
-                className={`text-xs font-semibold ${
-                  trend === "up" ? "text-success" : trend === "down" ? "text-danger" : "text-muted-foreground"
-                }`}
-              >
-                {trend === "up" ? "↑" : trend === "down" ? "↓" : "→"} {trendValue}
-              </span>
+            <div className="inline-block bg-foreground text-background px-2 py-1 text-[10px] font-black uppercase tracking-widest">
+              {trend === "up" ? "DELTA +" : trend === "down" ? "DELTA -" : "STABLE"} {trendValue}
             </div>
           )}
+          {subtitle && (
+            <p className="text-[10px] font-black uppercase tracking-widest leading-none">
+              {subtitle}
+            </p>
+          )}
         </div>
-        <div className={`rounded-lg p-2.5 ${iconBgStyles[variant]}`}>
+        <div className="border-2 border-foreground p-3">
           {icon}
         </div>
       </div>
+      <div className="mt-8 h-2 bg-foreground" />
     </motion.div>
   );
 }
+

@@ -31,28 +31,29 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md text-center">
-        <h1 className="font-display text-2xl font-bold text-foreground">Set new password</h1>
-        <form onSubmit={handleSubmit} className="mt-6 space-y-4 text-left">
+    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 bg-background">
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="w-full max-w-md text-center border-4 border-foreground p-12 bg-background">
+        <h1 className="font-display text-4xl font-black tracking-tighter uppercase text-foreground">New Access Key</h1>
+        <p className="mt-4 text-[10px] font-black uppercase tracking-[0.2em]">Define your new authentication sequence</p>
+        <form onSubmit={handleSubmit} className="mt-12 space-y-6 text-left">
           <div className="relative">
-            <Lock className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
+            <Lock className="absolute left-4 top-4 h-5 w-5" />
             <input
               type="password"
-              placeholder="New password"
+              placeholder="NEW ACCESS KEY"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
-              className="w-full rounded-xl border border-border bg-card py-3 pl-11 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+              className="w-full border-4 border-foreground bg-background py-4 pl-12 pr-4 text-[10px] font-black uppercase tracking-widest placeholder:text-foreground focus:bg-foreground focus:text-background outline-none transition-colors"
             />
           </div>
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl gradient-accent py-3 text-sm font-semibold text-accent-foreground disabled:opacity-50"
+            className="w-full border-4 border-foreground bg-foreground py-5 text-xs font-black uppercase tracking-[0.3em] text-background hover:bg-background hover:text-foreground transition-all"
           >
-            {loading ? "Updating..." : "Update Password"}
+            {loading ? "Calibrating..." : "Finalize Key Rotation"}
           </button>
         </form>
       </motion.div>

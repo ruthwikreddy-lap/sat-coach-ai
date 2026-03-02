@@ -12,12 +12,14 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Onboarding from "./pages/Onboarding";
 import PracticeTest from "./pages/PracticeTest";
-import StudyPlan from "./pages/StudyPlan";
 import WeakAreas from "./pages/WeakAreas";
 import Analytics from "./pages/Analytics";
 import FocusTest from "./pages/FocusTest";
 import Profile from "./pages/Profile";
+import Tutor from "./pages/Tutor";
 import NotFound from "./pages/NotFound";
+
+import { MessageSquare } from "lucide-react";
 
 const queryClient = new QueryClient();
 
@@ -36,11 +38,11 @@ const App = () => (
             <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
             <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
             <Route path="/practice" element={<ProtectedRoute><PracticeTest /></ProtectedRoute>} />
-            <Route path="/study-plan" element={<ProtectedRoute><StudyPlan /></ProtectedRoute>} />
             <Route path="/weak-areas" element={<ProtectedRoute><WeakAreas /></ProtectedRoute>} />
             <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
             <Route path="/focus-test" element={<ProtectedRoute><FocusTest /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+            <Route path="/tutor" element={<ProtectedRoute><Tutor /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

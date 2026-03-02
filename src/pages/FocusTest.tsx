@@ -134,27 +134,27 @@ export default function FocusTest() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] flex items-center justify-center bg-foreground/90"
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-black"
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="w-full max-w-sm rounded-2xl border border-danger/30 bg-card p-8 text-center shadow-elevated"
+              className="w-full max-w-md border-8 border-white bg-black p-12 text-center"
             >
-              <AlertTriangle className="mx-auto mb-4 h-12 w-12 text-danger" />
-              <h2 className="font-display text-xl font-bold text-foreground">Tab Switch Detected!</h2>
-              <p className="mt-2 text-sm text-muted-foreground">
-                You left the test window. In a real exam, this would be flagged.
+              <AlertTriangle className="mx-auto mb-6 h-16 w-16 text-white" />
+              <h2 className="font-display text-3xl font-black uppercase tracking-tighter text-white">FOCUS REQUIRED</h2>
+              <p className="mt-4 text-xs font-black uppercase tracking-[0.2em] text-white">
+                YOU STEPPED AWAY FROM THE TEST WINDOW.
               </p>
-              <p className="mt-2 text-xs font-semibold text-danger">
-                Warning #{tabSwitchCount} — Stay focused!
+              <p className="mt-4 text-[10px] font-black uppercase tracking-[0.3em] bg-white text-black py-2">
+                ATTEMPT #{tabSwitchCount} — PLEASE FOCUS
               </p>
               <button
                 onClick={() => setShowWarning(false)}
-                className="mt-6 w-full rounded-xl gradient-accent py-3 text-sm font-semibold text-accent-foreground"
+                className="mt-10 w-full border-4 border-white bg-white py-4 text-xs font-black uppercase tracking-[0.4em] text-black hover:bg-black hover:text-white transition-all"
               >
-                Return to Test
+                CONTINUE
               </button>
             </motion.div>
           </motion.div>
@@ -162,69 +162,68 @@ export default function FocusTest() {
       </AnimatePresence>
 
       {/* Minimal header */}
-      <div className="flex items-center justify-between border-b border-primary-foreground/10 px-6 py-3">
-        <div className={`font-display text-lg font-bold ${
-          timer.seconds < 300 ? "text-danger animate-pulse-glow" : "text-primary-foreground"
-        }`}>
-          <Clock className="mr-2 inline h-4 w-4" />
+      <div className="flex items-center justify-between border-b-4 border-white px-8 py-4 bg-black">
+        <div className={`font-display text-xl font-black uppercase tracking-widest ${timer.seconds < 300 ? "text-white animate-pulse" : "text-white"
+          }`}>
+          <Clock className="mr-3 inline h-5 w-5" />
           {timer.formatted}
         </div>
-        <div className="flex items-center gap-4">
-          <span className="text-sm text-primary-foreground/60">
-            {currentQ + 1} / {questions.length}
+        <div className="flex items-center gap-6">
+          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white">
+            QUESTION {currentQ + 1} // {questions.length}
           </span>
           {tabSwitchCount > 0 && (
-            <span className="flex items-center gap-1 rounded-lg bg-danger/20 px-2 py-1 text-xs font-semibold text-danger">
-              <AlertTriangle className="h-3 w-3" /> {tabSwitchCount} tab switch{tabSwitchCount > 1 ? "es" : ""}
+            <span className="flex items-center gap-2 border-2 border-white px-3 py-1 text-[8px] font-black uppercase tracking-widest text-white">
+              <AlertTriangle className="h-3 w-3" /> {tabSwitchCount} SWITCHE{tabSwitchCount > 1 ? "S" : ""}
             </span>
           )}
         </div>
         <button
           onClick={() => navigate("/practice")}
-          className="rounded-lg p-2 text-primary-foreground/60 transition-colors hover:text-primary-foreground"
+          className="border-2 border-white p-2 text-white hover:bg-white hover:text-black transition-all"
         >
           <X className="h-5 w-5" />
         </button>
       </div>
 
       {/* Question area */}
-      <div className="flex flex-1 items-center justify-center px-6">
-        <div className="w-full max-w-2xl">
-          <motion.div key={question.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-            <h2 className="font-display text-2xl font-bold text-primary-foreground">
+      <div className="flex flex-1 items-center justify-center px-6 bg-black">
+        <div className="w-full max-w-3xl">
+          <motion.div key={question.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-10">
+            <h2 className="font-display text-3xl font-black uppercase tracking-tighter leading-tight text-white">
               {question.question}
             </h2>
-            <div className="space-y-3">
+            <div className="grid grid-cols-1 gap-4">
               {question.options.map((opt, idx) => {
                 const isSelected = answers[question.id] === idx;
                 const isCorrect = question.correctAnswer === idx;
-                let style = "border-primary-foreground/15 hover:border-primary-foreground/30";
+                let style = "border-white bg-transparent text-white hover:bg-white hover:text-black";
                 if (submitted) {
-                  if (isCorrect) style = "border-success bg-success/10";
-                  else if (isSelected) style = "border-danger bg-danger/10";
+                  if (isCorrect) style = "border-white bg-white text-black";
+                  else if (isSelected) style = "border-white bg-transparent text-white line-through";
                 } else if (isSelected) {
-                  style = "border-accent bg-accent/10";
+                  style = "border-white bg-white text-black";
                 }
                 return (
                   <button
                     key={idx}
                     onClick={() => handleAnswer(idx)}
                     disabled={submitted}
-                    className={`flex w-full items-center gap-4 rounded-xl border p-5 text-left transition-all ${style}`}
+                    className={`flex items-start gap-6 border-4 p-6 text-left transition-all ${style}`}
                   >
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full border border-primary-foreground/20 text-sm font-bold text-primary-foreground/60">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-current text-sm font-black uppercase">
                       {String.fromCharCode(65 + idx)}
                     </span>
-                    <span className="text-base font-medium text-primary-foreground">{opt}</span>
-                    {submitted && isCorrect && <CheckCircle className="ml-auto h-5 w-5 text-success" />}
-                    {submitted && isSelected && !isCorrect && <XCircle className="ml-auto h-5 w-5 text-danger" />}
+                    <span className="text-lg font-black uppercase tracking-tight pt-1">{opt}</span>
+                    {submitted && isCorrect && <CheckCircle className="ml-auto h-6 w-6" />}
+                    {submitted && isSelected && !isCorrect && <XCircle className="ml-auto h-6 w-6" />}
                   </button>
                 );
               })}
             </div>
             {submitted && (
-              <div className="rounded-xl border border-primary-foreground/10 bg-primary-foreground/5 p-4">
-                <p className="text-sm text-primary-foreground/60">{question.explanation}</p>
+              <div className="border-4 border-white bg-transparent p-6">
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white">{question.explanation}</p>
               </div>
             )}
           </motion.div>
@@ -232,32 +231,32 @@ export default function FocusTest() {
       </div>
 
       {/* Footer nav */}
-      <div className="flex items-center justify-between border-t border-primary-foreground/10 px-6 py-4">
+      <div className="flex items-center justify-between border-t-4 border-white px-8 py-6 bg-black">
         <button
           onClick={() => setCurrentQ((q) => Math.max(0, q - 1))}
           disabled={currentQ === 0}
-          className="flex items-center gap-1 text-sm text-primary-foreground/60 disabled:opacity-30"
+          className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-white disabled:opacity-30"
         >
-          <ChevronLeft className="h-4 w-4" /> Prev
+          <ChevronLeft className="h-5 w-5" /> PREVIOUS
         </button>
         {!submitted ? (
-          <button onClick={handleSubmit} className="rounded-lg gradient-accent px-6 py-2 text-sm font-semibold text-accent-foreground">
-            Submit
+          <button onClick={handleSubmit} className="border-4 border-white bg-white px-12 py-3 text-xs font-black uppercase tracking-[0.4em] text-black hover:bg-black hover:text-white transition-all">
+            SUBMIT TEST
           </button>
         ) : (
-          <div className="text-center">
-            <span className="font-display text-xl font-bold text-primary-foreground">{score}/{questions.length}</span>
-            <button onClick={() => navigate("/")} className="ml-4 rounded-lg border border-primary-foreground/20 px-4 py-2 text-sm text-primary-foreground">
-              Back to Dashboard
+          <div className="flex items-center gap-8">
+            <span className="font-display text-4xl font-black uppercase tracking-tighter text-white">{score} // {questions.length}</span>
+            <button onClick={() => navigate("/")} className="border-4 border-white px-6 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-white hover:bg-white hover:text-black transition-all">
+              DASHBOARD
             </button>
           </div>
         )}
         <button
           onClick={() => setCurrentQ((q) => Math.min(questions.length - 1, q + 1))}
           disabled={currentQ === questions.length - 1}
-          className="flex items-center gap-1 text-sm text-primary-foreground/60 disabled:opacity-30"
+          className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-white disabled:opacity-30"
         >
-          Next <ChevronRight className="h-4 w-4" />
+          NEXT <ChevronRight className="h-5 w-5" />
         </button>
       </div>
     </div>

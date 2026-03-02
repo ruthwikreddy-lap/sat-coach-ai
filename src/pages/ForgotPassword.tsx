@@ -26,44 +26,44 @@ export default function ForgotPassword() {
 
   return (
     <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md text-center">
-        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl gradient-accent">
-          <Brain className="h-7 w-7 text-accent-foreground" />
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="w-full max-w-md text-center">
+        <div className="mx-auto mb-8 flex h-16 w-16 items-center justify-center border-4 border-foreground bg-foreground text-background">
+          <Brain className="h-8 w-8" />
         </div>
         {sent ? (
           <>
-            <h1 className="font-display text-2xl font-bold text-foreground">Check your email</h1>
-            <p className="mt-2 text-sm text-muted-foreground">We sent a password reset link to {email}</p>
-            <Link to="/auth" className="mt-6 inline-block text-sm font-semibold text-accent hover:underline">
-              Back to sign in
+            <h1 className="font-display text-4xl font-black tracking-tighter uppercase text-foreground">Link Dispatched</h1>
+            <p className="mt-4 text-[10px] font-black uppercase tracking-[0.2em]">ACCESS PROTOCOL SENT TO: {email}</p>
+            <Link to="/auth" className="mt-8 border-4 border-foreground px-8 py-3 inline-block text-[10px] font-black uppercase tracking-[0.2em] hover:bg-foreground hover:text-background transition-colors">
+              Establish Connection
             </Link>
           </>
         ) : (
           <>
-            <h1 className="font-display text-2xl font-bold text-foreground">Reset password</h1>
-            <p className="mt-2 text-sm text-muted-foreground">Enter your email to receive a reset link</p>
-            <form onSubmit={handleSubmit} className="mt-6 space-y-4 text-left">
+            <h1 className="font-display text-4xl font-black tracking-tighter uppercase text-foreground">Recover Key</h1>
+            <p className="mt-2 text-[10px] font-black uppercase tracking-[0.2em]">Input email for reset vector transmission</p>
+            <form onSubmit={handleSubmit} className="mt-12 space-y-6 text-left">
               <div className="relative">
-                <Mail className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
+                <Mail className="absolute left-4 top-4 h-5 w-5" />
                 <input
                   type="email"
-                  placeholder="Email address"
+                  placeholder="EMAIL VECTOR"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full rounded-xl border border-border bg-card py-3 pl-11 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+                  className="w-full border-4 border-foreground bg-background py-4 pl-12 pr-4 text-[10px] font-black uppercase tracking-widest placeholder:text-foreground focus:bg-foreground focus:text-background outline-none transition-colors"
                 />
               </div>
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-xl gradient-accent py-3 text-sm font-semibold text-accent-foreground disabled:opacity-50"
+                className="w-full border-4 border-foreground bg-foreground py-5 text-xs font-black uppercase tracking-[0.3em] text-background hover:bg-background hover:text-foreground transition-all"
               >
-                {loading ? "Sending..." : "Send Reset Link"}
+                {loading ? "Transmitting..." : "Send Reset Vector"}
               </button>
             </form>
-            <Link to="/auth" className="mt-4 inline-block text-sm text-muted-foreground hover:text-foreground">
-              ← Back to sign in
+            <Link to="/auth" className="mt-8 inline-block text-[10px] font-black uppercase tracking-[0.2em] border-b-2 border-foreground hover:bg-foreground hover:text-background transition-colors">
+              ← Return to Access Terminal
             </Link>
           </>
         )}

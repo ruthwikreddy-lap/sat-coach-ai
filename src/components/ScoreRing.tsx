@@ -15,14 +15,18 @@ export default function ScoreRing({ score, maxScore, label, size = 120 }: ScoreR
   const offset = circumference - (percentage / 100) * circumference;
 
   return (
-    <div className="flex flex-col items-center gap-2">
-      <div className="relative" style={{ width: size, height: size }}>
+    <div className="flex flex-col items-center gap-3">
+      <div className="relative group" style={{ width: size, height: size }}>
+        {/* Outer subtle glow */}
+        <div className="absolute inset-0 rounded-full bg-primary/5 blur-2xl group-hover:bg-primary/10 transition-colors" />
+
         <svg width={size} height={size} className="-rotate-90">
           <circle
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke="hsl(var(--border))"
+            stroke="currentColor"
+            className="text-primary/10"
             strokeWidth={strokeWidth}
             fill="none"
           />
@@ -30,22 +34,30 @@ export default function ScoreRing({ score, maxScore, label, size = 120 }: ScoreR
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke="hsl(var(--accent))"
+            stroke="currentColor"
+            className="text-primary"
             strokeWidth={strokeWidth}
             fill="none"
             strokeLinecap="round"
             strokeDasharray={circumference}
             initial={{ strokeDashoffset: circumference }}
             animate={{ strokeDashoffset: offset }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
+            transition={{ duration: 1.5, ease: "circOut" }}
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="font-display text-2xl font-bold text-foreground">{score}</span>
-          <span className="text-[10px] text-muted-foreground">/ {maxScore}</span>
+          <motion.span
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="font-display text-4xl font-black text-foreground"
+          >
+            {score}
+          </motion.span>
+          <span className="text-[10px] uppercase tracking-[0.2em] font-black opacity-40">Pts</span>
         </div>
       </div>
-      <span className="text-sm font-medium text-muted-foreground">{label}</span>
+      <span className="text-xs font-black uppercase tracking-[0.15em] opacity-80">{label}</span>
     </div>
   );
 }
+

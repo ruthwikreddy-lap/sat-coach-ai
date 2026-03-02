@@ -24,7 +24,7 @@ export default function Auth() {
         if (error) throw error;
         navigate("/");
       } else {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -33,7 +33,14 @@ export default function Auth() {
           },
         });
         if (error) throw error;
-        toast.success("Check your email to confirm your account!");
+
+        if (data.session) {
+          navigate("/");
+          toast.success("Account created and signed in!");
+        } else {
+          toast.success("Account created! You can now sign in.");
+          setIsLogin(true);
+        }
       }
     } catch (error: any) {
       toast.error(error.message);
@@ -49,58 +56,58 @@ export default function Auth() {
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-md"
       >
-        <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl gradient-accent">
-            <Brain className="h-7 w-7 text-accent-foreground" />
+        <div className="mb-12 text-center border-b-4 border-foreground pb-8">
+          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center border-4 border-foreground bg-foreground text-background">
+            <Brain className="h-8 w-8" />
           </div>
-          <h1 className="font-display text-3xl font-bold text-foreground">
-            {isLogin ? "Welcome back" : "Create account"}
+          <h1 className="font-display text-4xl font-black tracking-tighter uppercase text-foreground">
+            {isLogin ? "Neural Access" : "Matrix Genesis"}
           </h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            {isLogin ? "Sign in to continue your SAT prep" : "Start your SAT coaching journey"}
+          <p className="mt-4 text-[10px] font-black uppercase tracking-[0.2em]">
+            {isLogin ? "Establish connection to continue SAT protocol" : "Initialize your SAT optimization sequence"}
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {!isLogin && (
             <div className="relative">
-              <User className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
+              <User className="absolute left-4 top-4 h-5 w-5" />
               <input
                 type="text"
-                placeholder="Full name"
+                placeholder="FULL NAME"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required={!isLogin}
-                className="w-full rounded-xl border border-border bg-card py-3 pl-11 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+                className="w-full border-4 border-foreground bg-background py-4 pl-12 pr-4 text-[10px] font-black uppercase tracking-widest placeholder:text-foreground focus:bg-foreground focus:text-background outline-none transition-colors"
               />
             </div>
           )}
           <div className="relative">
-            <Mail className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
+            <Mail className="absolute left-4 top-4 h-5 w-5" />
             <input
               type="email"
-              placeholder="Email address"
+              placeholder="EMAIL VECTOR"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full rounded-xl border border-border bg-card py-3 pl-11 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+              className="w-full border-4 border-foreground bg-background py-4 pl-12 pr-4 text-[10px] font-black uppercase tracking-widest placeholder:text-foreground focus:bg-foreground focus:text-background outline-none transition-colors"
             />
           </div>
           <div className="relative">
-            <Lock className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
+            <Lock className="absolute left-4 top-4 h-5 w-5" />
             <input
               type={showPassword ? "text" : "password"}
-              placeholder="Password"
+              placeholder="ACCESS KEY"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
-              className="w-full rounded-xl border border-border bg-card py-3 pl-11 pr-11 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+              className="w-full border-4 border-foreground bg-background py-4 pl-12 pr-12 text-[10px] font-black uppercase tracking-widest placeholder:text-foreground focus:bg-foreground focus:text-background outline-none transition-colors"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-3 text-muted-foreground"
+              className="absolute right-4 top-4"
             >
               {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
             </button>
@@ -108,8 +115,8 @@ export default function Auth() {
 
           {isLogin && (
             <div className="text-right">
-              <Link to="/forgot-password" className="text-xs font-medium text-accent hover:underline">
-                Forgot password?
+              <Link to="/forgot-password" title="Forgot password?" className="text-[10px] font-black uppercase tracking-widest border-b-2 border-foreground hover:bg-foreground hover:text-background transition-colors">
+                Recover Key
               </Link>
             </div>
           )}
@@ -117,19 +124,19 @@ export default function Auth() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl gradient-accent py-3 text-sm font-semibold text-accent-foreground transition-transform hover:scale-[1.02] disabled:opacity-50"
+            className="w-full border-4 border-foreground bg-foreground py-5 text-xs font-black uppercase tracking-[0.3em] text-background hover:bg-background hover:text-foreground transition-all"
           >
-            {loading ? "Loading..." : isLogin ? "Sign In" : "Create Account"}
+            {loading ? "Establishing..." : isLogin ? "Establish Access" : "Generate Profile"}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-muted-foreground">
-          {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+        <p className="mt-8 text-center text-[10px] font-black uppercase tracking-[0.2em]">
+          {isLogin ? "Matrix status: unauthorized -" : "Matrix status: pending -"}{" "}
           <button
             onClick={() => setIsLogin(!isLogin)}
-            className="font-semibold text-accent hover:underline"
+            className="border-b-2 border-foreground hover:bg-foreground hover:text-background transition-colors"
           >
-            {isLogin ? "Sign up" : "Sign in"}
+            {isLogin ? "Initialize Genesis" : "Establish Access"}
           </button>
         </p>
       </motion.div>

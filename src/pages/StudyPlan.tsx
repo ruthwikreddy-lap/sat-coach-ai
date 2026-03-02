@@ -1,6 +1,21 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Target, Calendar, CheckCircle2, Circle, BookOpen, Brain, Clock, Sparkles, Loader2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Target,
+  Calendar,
+  CheckCircle2,
+  Circle,
+  BookOpen,
+  Brain,
+  Clock,
+  Sparkles,
+  Loader2,
+  ArrowLeft,
+  ChevronRight,
+  ShieldCheck,
+  Zap
+} from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfile } from "@/hooks/useProfile";
 import { supabase } from "@/integrations/supabase/client";
@@ -19,6 +34,7 @@ interface PlanTask {
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
 export default function StudyPlan() {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const { profile } = useProfile();
   const [tasks, setTasks] = useState<PlanTask[]>([]);
@@ -59,10 +75,8 @@ export default function StudyPlan() {
 
       if (error) throw error;
 
-      // Clear old tasks
       await supabase.from("study_plan_tasks").delete().eq("user_id", user.id);
 
-      // Insert new tasks
       const newTasks = (data.tasks || []).map((t: any) => ({
         user_id: user.id,
         topic: t.topic,
@@ -76,10 +90,10 @@ export default function StudyPlan() {
       }
 
       await fetchTasks();
-      toast.success("Study plan generated!");
+      toast.success("Intelligence Matrix updated.");
     } catch (e: any) {
       console.error(e);
-      toast.error(e.message || "Failed to generate plan");
+      toast.error("Generation sequence interrupted.");
     } finally {
       setGenerating(false);
     }
@@ -109,111 +123,144 @@ export default function StudyPlan() {
   if (loading) {
     return (
       <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-accent border-t-transparent" />
+        <Loader2 className="h-10 w-10 animate-spin text-foreground opacity-20" />
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="font-display text-3xl font-bold text-foreground">AI Study Plan</h1>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Personalized weekly plan based on your score and weaknesses
-            </p>
-          </div>
+    <div className="mx-auto max-w-5xl px-6 py-12 md:py-16">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-12 flex flex-col gap-8 md:flex-row md:items-center md:justify-between"
+      >
+        <div className="flex flex-col gap-4">
           <button
-            onClick={generatePlan}
-            disabled={generating}
-            className="flex items-center gap-2 rounded-xl gradient-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground transition-transform hover:scale-105 disabled:opacity-50"
+            onClick={() => navigate("/")}
+            className="flex w-fit items-center gap-2 text-xs font-black uppercase tracking-[0.2em] transition-colors border-b-2 border-transparent hover:border-foreground"
           >
-            {generating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
-            {generating ? "Generating..." : "Generate Plan"}
+            <ArrowLeft className="h-3.5 w-3.5" /> Intelligence Center
           </button>
-        </div>
-      </motion.div>
-
-      {/* Stats */}
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="rounded-xl border border-border bg-card p-4 shadow-card">
-          <p className="text-xs font-medium text-muted-foreground">Current Score</p>
-          <p className="font-display text-3xl font-bold text-foreground">{profile?.current_score || "—"}</p>
-        </div>
-        <div className="rounded-xl border border-border bg-card p-4 shadow-card">
-          <p className="text-xs font-medium text-muted-foreground">Target Score</p>
-          <p className="font-display text-3xl font-bold text-accent">{profile?.target_score || "—"}</p>
-        </div>
-        <div className="rounded-xl border border-border bg-card p-4 shadow-card">
-          <p className="text-xs font-medium text-muted-foreground">Weekly Progress</p>
-          <p className="font-display text-3xl font-bold text-foreground">{completedTasks}/{totalTasks}</p>
-          {totalTasks > 0 && (
-            <div className="mt-2 h-1.5 w-full rounded-full bg-secondary">
-              <div className="h-full rounded-full gradient-accent transition-all" style={{ width: `${(completedTasks / totalTasks) * 100}%` }} />
+          <div className="flex items-center gap-6">
+            <div className="flex h-14 w-14 items-center justify-center border-4 border-foreground bg-foreground text-background">
+              <Calendar className="h-7 w-7" />
             </div>
-          )}
+            <div>
+              <h1 className="font-display text-4xl font-black tracking-tighter uppercase text-foreground">Tactical Matrix</h1>
+              <p className="font-black uppercase tracking-[0.2em] text-[10px]">Dynamic SAT Optimization Protocol</p>
+            </div>
+          </div>
         </div>
+
+        <button
+          onClick={generatePlan}
+          disabled={generating}
+          className="border-4 border-foreground bg-foreground px-10 py-5 text-sm font-black uppercase tracking-widest text-background hover:bg-background hover:text-foreground transition-all flex items-center justify-center gap-3"
+        >
+          {generating ? <Loader2 className="h-5 w-5 animate-spin" /> : <Sparkles className="h-5 w-5" />}
+          <span>{generating ? "Calibrating..." : "Optimize Strategy"}</span>
+        </button>
       </motion.div>
 
-      {/* Tasks */}
-      {tasks.length === 0 ? (
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="mt-8 rounded-xl border border-border bg-card p-8 text-center shadow-card">
-          <Sparkles className="mx-auto mb-3 h-10 w-10 text-muted-foreground" />
-          <h2 className="font-display text-xl font-bold text-foreground">No study plan yet</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Click "Generate Plan" to create an AI-powered study schedule</p>
-        </motion.div>
-      ) : (
-        <div className="mt-8 space-y-4">
-          {groupedByDay.map(({ day, tasks: dayTasks }, dayIdx) => (
-            <motion.div
-              key={day}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15 + dayIdx * 0.05 }}
-              className="rounded-xl border border-border bg-card p-5 shadow-card"
-            >
-              <div className="mb-3 flex items-center gap-3">
-                <Calendar className="h-4 w-4 text-accent" />
-                <h3 className="font-display font-bold text-foreground">{day}</h3>
-                <span className="ml-auto text-xs text-muted-foreground">
-                  {dayTasks.filter((t) => t.completed).length}/{dayTasks.length} done
-                </span>
+      {/* Overview Cards */}
+      <div className="mb-16 grid grid-cols-1 gap-6 md:grid-cols-3">
+        {[
+          { label: "Precision Target", value: profile?.target_score || "1500", icon: Target },
+          { label: "Matrix Progress", value: `${completedTasks}/${totalTasks}`, icon: Zap },
+          { label: "Neural Load", value: "3.5h / Week", icon: Brain },
+        ].map((stat, i) => (
+          <motion.div
+            key={stat.label}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="border-4 border-foreground p-8 bg-background"
+          >
+            <div className="mb-4 flex items-center gap-3 border-b-2 border-foreground pb-4">
+              <stat.icon className="h-5 w-5" />
+              <p className="text-[10px] font-black uppercase tracking-widest">{stat.label}</p>
+            </div>
+            <p className="font-display text-4xl font-black tracking-tighter uppercase">{stat.value}</p>
+            {stat.label === "Matrix Progress" && totalTasks > 0 && (
+              <div className="mt-6 h-3 w-full border-2 border-foreground bg-background">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${(completedTasks / totalTasks) * 100}%` }}
+                  className="h-full bg-foreground"
+                />
               </div>
-              <div className="space-y-2">
-                {dayTasks.map((task) => (
-                  <button
-                    key={task.id}
-                    onClick={() => toggleTask(task.id, task.completed)}
-                    className={`flex w-full items-center gap-3 rounded-lg border p-3 text-left transition-all ${
-                      task.completed ? "border-success/30 bg-success-light" : "border-border bg-background hover:border-accent/30"
-                    }`}
-                  >
-                    {task.completed ? <CheckCircle2 className="h-5 w-5 text-success" /> : <Circle className="h-5 w-5 text-muted-foreground" />}
-                    <div className="flex-1">
-                      <p className={`text-sm font-medium ${task.completed ? "line-through text-muted-foreground" : "text-foreground"}`}>
-                        {task.topic}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className={`rounded-md px-2 py-0.5 text-xs font-medium ${
-                        task.task_type === "test" ? "bg-amber-light text-amber-foreground" :
-                        task.task_type === "practice" ? "bg-teal-light text-accent" :
-                        "bg-secondary text-muted-foreground"
-                      }`}>
-                        {task.task_type}
-                      </span>
-                      <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                        <Clock className="h-3 w-3" /> {task.duration}m
-                      </span>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      )}
+            )}
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Schedule */}
+      <div className="space-y-12">
+        {tasks.length === 0 ? (
+          <div className="border-4 border-dashed border-foreground flex flex-col items-center justify-center p-24 text-center">
+            <Sparkles className="mb-6 h-12 w-12" />
+            <h2 className="font-display text-2xl font-black uppercase tracking-tighter">No Active Protocols</h2>
+            <p className="mt-2 max-w-sm font-black uppercase tracking-widest text-xs">Initialize matrix for strategic roadmap.</p>
+            <button onClick={generatePlan} className="mt-8 border-4 border-foreground bg-foreground px-12 py-4 text-sm font-black uppercase tracking-widest text-background hover:bg-background hover:text-foreground transition-all">Initialize Matrix</button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-12">
+            {groupedByDay.map(({ day, tasks: dayTasks }, dayIdx) => (
+              <motion.section
+                key={day}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: dayIdx * 0.1 }}
+                className="relative"
+              >
+                <div className="mb-8 flex items-baseline gap-6 border-b-4 border-foreground pb-4">
+                  <h3 className="font-display text-2xl font-black uppercase tracking-[0.2em] text-foreground">{day}</h3>
+                  <div className="h-px flex-1 bg-foreground" />
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em]">
+                    AUDIT: {dayTasks.filter((t) => t.completed).length}/{dayTasks.length} COMPLETE
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  {dayTasks.map((task) => (
+                    <button
+                      key={task.id}
+                      onClick={() => toggleTask(task.id, task.completed)}
+                      className={`group relative flex flex-col items-start gap-4 border-4 p-8 text-left transition-all ${task.completed
+                        ? "border-foreground bg-foreground text-background"
+                        : "border-foreground bg-background text-foreground hover:bg-foreground hover:text-background"
+                        }`}
+                    >
+                      <div className="flex w-full items-center justify-between border-b-2 border-current pb-4">
+                        <div className={`flex h-10 w-10 items-center justify-center border-2 border-current`}>
+                          {task.completed ? <CheckCircle2 className="h-5 w-5" /> : <ShieldCheck className="h-5 w-5" />}
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Clock className="h-4 w-4" />
+                          <span className="text-[10px] font-black uppercase tracking-widest">{task.duration}M</span>
+                        </div>
+                      </div>
+
+                      <div className="mt-4 flex-1">
+                        <p className={`text-xl font-black uppercase tracking-tight leading-tight ${task.completed ? "line-through" : ""}`}>
+                          {task.topic}
+                        </p>
+                        <p className="mt-2 text-[10px] font-black uppercase tracking-[0.3em] bg-current text-white px-2 py-0.5" style={{ color: task.completed ? 'black' : 'white', backgroundColor: task.completed ? 'white' : 'black' }}>{task.task_type}</p>
+                      </div>
+
+                      <div className="mt-8 flex w-full items-center justify-between border-t border-current pt-4">
+                        <span className="text-[10px] font-black uppercase tracking-widest">Toggle Audit</span>
+                        <ChevronRight className="h-4 w-4" />
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </motion.section>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
+

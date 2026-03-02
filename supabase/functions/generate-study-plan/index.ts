@@ -10,8 +10,17 @@ serve(async (req) => {
 
   try {
     const { current_score, target_score, exam_date, weak_topics, preferred_subjects } = await req.json();
+    const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY");
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
+
+    const apiKey = OPENAI_API_KEY || LOVABLE_API_KEY;
+    if (!apiKey) throw new Error("No API key configured (OPENAI_API_KEY or LOVABLE_API_KEY)");
+
+    const isOpenAI = !!OPENAI_API_KEY;
+    const apiUrl = isOpenAI
+      ? "https://api.openai.com/v1/chat/completions"
+      : "https://ai.gateway.lovable.dev/v1/chat/completions";
+    const model = isOpenAI ? "gpt-4o" : "google/gemini-pro"; // Or whichever model is appropriate
 
     const daysUntilExam = exam_date
       ? Math.max(1, Math.ceil((new Date(exam_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
@@ -28,14 +37,14 @@ Context:
 
 Return a JSON array of study tasks using this tool.`;
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    const response = await fetch(apiUrl, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
+        model: model,
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: "Generate my personalized SAT study plan for this week. Focus heavily on my weak areas." },
@@ -93,7 +102,7 @@ Return a JSON array of study tasks using this tool.`;
 
     const data = await response.json();
     const toolCall = data.choices?.[0]?.message?.tool_calls?.[0];
-    
+
     if (toolCall?.function?.arguments) {
       const parsed = JSON.parse(toolCall.function.arguments);
       return new Response(JSON.stringify(parsed), {
