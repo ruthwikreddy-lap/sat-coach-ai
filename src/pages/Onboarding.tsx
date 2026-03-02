@@ -125,7 +125,7 @@ export default function Onboarding() {
       <div className="text-center border-b-4 border-foreground pb-8">
         <BookOpen className="mx-auto mb-6 h-12 w-12" />
         <h2 className="font-display text-4xl font-black tracking-tighter uppercase text-foreground">Topics</h2>
-        <p className="mt-4 text-[10px] font-black uppercase tracking-[0.2em]">Select areas you want to study</p>
+        <p className="mt-4 text-[10px] font-black uppercase tracking-[0.2em]">Select what you want to study</p>
       </div>
       <div className="flex flex-wrap gap-3">
         {SUBJECTS.map((s) => (

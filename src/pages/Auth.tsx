@@ -61,10 +61,10 @@ export default function Auth() {
             <Brain className="h-8 w-8" />
           </div>
           <h1 className="font-display text-4xl font-black tracking-tighter uppercase text-foreground">
-            {isLogin ? "Neural Access" : "Matrix Genesis"}
+            {isLogin ? "Sign In" : "Create Account"}
           </h1>
           <p className="mt-4 text-[10px] font-black uppercase tracking-[0.2em]">
-            {isLogin ? "Establish connection to continue SAT protocol" : "Initialize your SAT optimization sequence"}
+            {isLogin ? "Welcome back to SATCOACH" : "Start your journey to a higher score"}
           </p>
         </div>
 
@@ -74,7 +74,7 @@ export default function Auth() {
               <User className="absolute left-4 top-4 h-5 w-5" />
               <input
                 type="text"
-                placeholder="FULL NAME"
+                placeholder="YOUR FULL NAME"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required={!isLogin}
@@ -86,7 +86,7 @@ export default function Auth() {
             <Mail className="absolute left-4 top-4 h-5 w-5" />
             <input
               type="email"
-              placeholder="EMAIL VECTOR"
+              placeholder="EMAIL ADDRESS"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -97,7 +97,7 @@ export default function Auth() {
             <Lock className="absolute left-4 top-4 h-5 w-5" />
             <input
               type={showPassword ? "text" : "password"}
-              placeholder="ACCESS KEY"
+              placeholder="PASSWORD"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -116,7 +116,7 @@ export default function Auth() {
           {isLogin && (
             <div className="text-right">
               <Link to="/forgot-password" title="Forgot password?" className="text-[10px] font-black uppercase tracking-widest border-b-2 border-foreground hover:bg-foreground hover:text-background transition-colors">
-                Recover Key
+                Forgot password?
               </Link>
             </div>
           )}
@@ -126,17 +126,17 @@ export default function Auth() {
             disabled={loading}
             className="w-full border-4 border-foreground bg-foreground py-5 text-xs font-black uppercase tracking-[0.3em] text-background hover:bg-background hover:text-foreground transition-all"
           >
-            {loading ? "Establishing..." : isLogin ? "Establish Access" : "Generate Profile"}
+            {loading ? "Please wait..." : isLogin ? "Sign In" : "Sign Up"}
           </button>
         </form>
 
         <p className="mt-8 text-center text-[10px] font-black uppercase tracking-[0.2em]">
-          {isLogin ? "Matrix status: unauthorized -" : "Matrix status: pending -"}{" "}
+          {isLogin ? "Need an account?" : "Already have an account?"}{" "}
           <button
             onClick={() => setIsLogin(!isLogin)}
             className="border-b-2 border-foreground hover:bg-foreground hover:text-background transition-colors"
           >
-            {isLogin ? "Initialize Genesis" : "Establish Access"}
+            {isLogin ? "Create one here" : "Sign in here"}
           </button>
         </p>
       </motion.div>

@@ -124,13 +124,13 @@ export default function Dashboard() {
               </div>
             </div>
             <h1 className="font-display text-7xl font-black uppercase tracking-tighter leading-[0.85]">
-              MASTER<br />THE DIGITAL SAT
+              GET READY FOR<br />THE DIGITAL SAT
             </h1>
           </div>
 
           <div className="mt-12 flex flex-wrap gap-4">
             <Link to="/practice" className="bg-background text-foreground hover:invert px-8 py-5 text-sm font-black uppercase tracking-widest transition-all flex items-center gap-3">
-              START FULL EXAM <ArrowRight className="h-4 w-4" />
+              START PRACTICE EXAM <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>
@@ -139,7 +139,7 @@ export default function Dashboard() {
           <Sparkles className="absolute top-10 right-10 h-10 w-10 opacity-10 group-hover:opacity-100 transition-opacity" />
           <div className="flex items-center gap-8 md:gap-16">
             <div className="text-center">
-              <ScoreRing score={latestResult?.reading_score ?? 0} maxScore={800} label="R&W" size={140} />
+              <ScoreRing score={latestResult?.reading_score ?? 0} maxScore={800} label="READING" size={140} />
             </div>
             <div className="h-32 w-2 bg-foreground" />
             <div className="text-center">
