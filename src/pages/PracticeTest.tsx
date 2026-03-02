@@ -4,9 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { Clock, ChevronLeft, ChevronRight, CheckCircle, XCircle, Maximize2 } from "lucide-react";
 import { useTimer } from "@/hooks/useTimer";
 import { mockQuestions, SATQuestion } from "@/data/mockData";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function PracticeTest() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [started, setStarted] = useState(false);
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
@@ -26,10 +29,56 @@ export default function PracticeTest() {
     setAnswers((prev) => ({ ...prev, [question.id]: idx }));
   };
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
     timer.pause();
     setSubmitted(true);
-  }, [timer]);
+
+    if (user) {
+      const correct = questions.reduce((a, q) => a + (answers[q.id] === q.correctAnswer ? 1 : 0), 0);
+      const mathQs = questions.filter((q) => q.section.includes("math"));
+      const readQs = questions.filter((q) => !q.section.includes("math"));
+      const mathCorrect = mathQs.filter((q) => answers[q.id] === q.correctAnswer).length;
+      const readCorrect = readQs.filter((q) => answers[q.id] === q.correctAnswer).length;
+      const weakTopics = Object.entries(
+        questions.reduce<Record<string, { c: number; t: number }>>((acc, q) => {
+          if (!acc[q.topic]) acc[q.topic] = { c: 0, t: 0 };
+          acc[q.topic].t++;
+          if (answers[q.id] === q.correctAnswer) acc[q.topic].c++;
+          return acc;
+        }, {})
+      ).filter(([, v]) => v.t > 0 && v.c / v.t < 0.7).map(([k]) => k);
+
+      const { data: testResult } = await supabase.from("test_results").insert({
+        user_id: user.id,
+        score: Math.round((correct / questions.length) * 1600),
+        reading_score: readQs.length > 0 ? Math.round((readCorrect / readQs.length) * 800) : 0,
+        math_score: mathQs.length > 0 ? Math.round((mathCorrect / mathQs.length) * 800) : 0,
+        weak_topics: weakTopics,
+        time_spent: Math.round((35 * 60 - timer.seconds) / 60),
+        total_questions: questions.length,
+        correct_answers: correct,
+      }).select("id").single();
+
+      if (testResult) {
+        const responses = questions.map((q) => ({
+          user_id: user.id,
+          test_result_id: testResult.id,
+          question_id: q.id,
+          section: q.section,
+          topic: q.topic,
+          difficulty: q.difficulty,
+          user_answer: answers[q.id] ?? null,
+          correct_answer: q.correctAnswer,
+          is_correct: answers[q.id] === q.correctAnswer,
+        }));
+        await supabase.from("question_responses").insert(responses);
+      }
+
+      if (weakTopics.length > 0) {
+        await supabase.from("user_profiles").update({ weaknesses: weakTopics }).eq("user_id", user.id);
+      }
+    }
+  }, [timer, answers, user, questions]);
 
   const score = questions.reduce(
     (acc, q) => acc + (answers[q.id] === q.correctAnswer ? 1 : 0),
