@@ -5,6 +5,36 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+async function callLovableAI(messages: any[]) {
+  const key = Deno.env.get("LOVABLE_API_KEY");
+  if (!key) throw new Error("LOVABLE_API_KEY not configured");
+
+  const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ model: "google/gemini-2.5-flash", messages }),
+  });
+
+  if (!response.ok) throw new Error(`Lovable AI error: ${response.status}`);
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
+
+async function callOpenAI(messages: any[]) {
+  const key = Deno.env.get("OPENAI_API_KEY");
+  if (!key) throw new Error("No fallback API key");
+
+  const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ model: "gpt-4o", messages }),
+  });
+
+  if (!response.ok) throw new Error(`OpenAI error: ${response.status}`);
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
@@ -24,31 +54,24 @@ ${userAnswer !== null && userAnswer !== undefined ? `Student's Answer: ${options
 
 Provide a detailed, structured, and encouraging explanation.`;
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${Deno.env.get("LOVABLE_API_KEY")}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: context || "Please explain this question to me in detail." },
-        ],
-      }),
-    });
+    const messages = [
+      { role: "system", content: systemPrompt },
+      { role: "user", content: context || "Please explain this question to me in detail." },
+    ];
 
-    if (!response.ok) {
-      const errText = await response.text();
-      console.error("AI error:", response.status, errText);
-      throw new Error("AI gateway error");
+    let reply: string;
+    try {
+      reply = await callLovableAI(messages);
+    } catch (e) {
+      console.warn("Lovable AI failed, trying OpenAI:", e);
+      try {
+        reply = await callOpenAI(messages);
+      } catch (e2) {
+        throw new Error("All AI providers failed");
+      }
     }
 
-    const data = await response.json();
-    return new Response(JSON.stringify({
-      reply: data.choices[0].message.content,
-    }), {
+    return new Response(JSON.stringify({ reply }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {
