@@ -10,23 +10,12 @@ serve(async (req) => {
 
   try {
     const { current_score, target_score, exam_date, weak_topics, preferred_subjects } = await req.json();
-    const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY");
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-
-    const apiKey = OPENAI_API_KEY || LOVABLE_API_KEY;
-    if (!apiKey) throw new Error("No API key configured (OPENAI_API_KEY or LOVABLE_API_KEY)");
-
-    const isOpenAI = !!OPENAI_API_KEY;
-    const apiUrl = isOpenAI
-      ? "https://api.openai.com/v1/chat/completions"
-      : "https://ai.gateway.lovable.dev/v1/chat/completions";
-    const model = isOpenAI ? "gpt-4o" : "google/gemini-pro"; // Or whichever model is appropriate
 
     const daysUntilExam = exam_date
       ? Math.max(1, Math.ceil((new Date(exam_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
       : 30;
 
-    const systemPrompt = `You are an expert SAT tutor and study plan generator. Create a personalized 7-day study plan.
+    const systemPrompt = `You are an expert SAT tutor. Create a personalized 7-day study plan.
 
 Context:
 - Current score: ${current_score || 1200}
@@ -35,86 +24,48 @@ Context:
 - Weak topics: ${(weak_topics || []).join(", ") || "not yet identified"}
 - Preferred subjects: ${(preferred_subjects || []).join(", ") || "all subjects"}
 
-Return a JSON array of study tasks using this tool.`;
+Return a JSON object with a "tasks" array. Each task should have:
+- topic (string): The SAT topic to study
+- task_type (string): "practice", "review", or "test"
+- duration (number): Duration in minutes (15-60)
+- day_of_week (number): 0=Monday through 6=Sunday
 
-    const response = await fetch(apiUrl, {
+Create 3-5 tasks per day, focusing heavily on weak areas. Vary task types.
+Return ONLY valid JSON: {"tasks": [...]}`;
+
+    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        "Authorization": `Bearer ${Deno.env.get("LOVABLE_API_KEY")}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: model,
+        model: "google/gemini-2.5-flash",
         messages: [
           { role: "system", content: systemPrompt },
-          { role: "user", content: "Generate my personalized SAT study plan for this week. Focus heavily on my weak areas." },
+          { role: "user", content: "Generate my personalized SAT study plan for this week." },
         ],
-        tools: [
-          {
-            type: "function",
-            function: {
-              name: "generate_study_plan",
-              description: "Generate a structured weekly study plan with daily tasks",
-              parameters: {
-                type: "object",
-                properties: {
-                  tasks: {
-                    type: "array",
-                    items: {
-                      type: "object",
-                      properties: {
-                        topic: { type: "string", description: "The topic to study" },
-                        task_type: { type: "string", enum: ["practice", "review", "test"], description: "Type of activity" },
-                        duration: { type: "number", description: "Duration in minutes" },
-                        day_of_week: { type: "number", description: "0=Monday, 6=Sunday" },
-                        priority: { type: "string", enum: ["high", "medium", "low"] },
-                      },
-                      required: ["topic", "task_type", "duration", "day_of_week"],
-                    },
-                  },
-                },
-                required: ["tasks"],
-              },
-            },
-          },
-        ],
-        tool_choice: { type: "function", function: { name: "generate_study_plan" } },
+        response_format: { type: "json_object" },
       }),
     });
 
     if (!response.ok) {
-      if (response.status === 429) {
-        return new Response(JSON.stringify({ error: "Rate limit exceeded. Please try again later." }), {
-          status: 429,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      if (response.status === 402) {
-        return new Response(JSON.stringify({ error: "AI credits exhausted. Please add credits." }), {
-          status: 402,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
       const errText = await response.text();
       console.error("AI error:", response.status, errText);
       throw new Error("AI gateway error");
     }
 
     const data = await response.json();
-    const toolCall = data.choices?.[0]?.message?.tool_calls?.[0];
+    const content = data.choices[0].message.content;
+    const parsed = JSON.parse(content);
 
-    if (toolCall?.function?.arguments) {
-      const parsed = JSON.parse(toolCall.function.arguments);
-      return new Response(JSON.stringify(parsed), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    throw new Error("No study plan generated");
+    return new Response(JSON.stringify({ tasks: parsed.tasks || [] }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   } catch (e) {
     console.error("generate-study-plan error:", e);
     return new Response(
-      JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }),
+      JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error", tasks: [] }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
