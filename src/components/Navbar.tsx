@@ -13,12 +13,14 @@ import {
   X,
   Moon,
   Sun,
+  Zap,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 
 const navItems = [
   { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { path: "/practice", label: "Practice", icon: BookOpen },
+  { path: "/drill", label: "Drill", icon: Zap },
   { path: "/weak-areas", label: "Review", icon: Brain },
   { path: "/analytics", label: "Analytics", icon: BarChart3 },
   { path: "/tutor", label: "Tutor", icon: MessageSquare },
