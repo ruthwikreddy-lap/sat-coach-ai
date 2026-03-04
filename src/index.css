@@ -131,6 +131,12 @@
     border-color: var(--glass-border);
   }
 
+  .glass-nav {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
+  }
+
   .btn-premium {
     @apply relative overflow-hidden rounded-xl px-6 py-3 font-semibold transition-all hover:scale-[1.02] active:scale-[0.98];
     background: var(--gradient-accent);
@@ -151,6 +157,10 @@
 @layer utilities {
   .font-display {
     font-family: 'Space Grotesk', system-ui, sans-serif;
+  }
+
+  .text-balance {
+    text-wrap: balance;
   }
 
   .gradient-hero {
