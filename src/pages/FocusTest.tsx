@@ -205,9 +205,12 @@ export default function FocusTest() {
       <div className="flex flex-1 items-center justify-center px-6 bg-black">
         <div className="w-full max-w-3xl">
           <motion.div key={question.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-10">
-            <h2 className="font-display text-3xl font-black uppercase tracking-tighter leading-tight text-white">
-              {question.question}
-            </h2>
+            <div className="space-y-4">
+              <span className="inline-block bg-white/20 text-white px-3 py-1 text-xs tracking-wider rounded border border-white/30">Single choice question — Select one option</span>
+              <h2 className="text-2xl font-semibold leading-relaxed text-white">
+                {question.question}
+              </h2>
+            </div>
             <div className="grid grid-cols-1 gap-4">
               {question.options.map((opt, idx) => {
                 const isSelected = answers[question.id] === idx;
@@ -226,10 +229,10 @@ export default function FocusTest() {
                     disabled={submitted}
                     className={`flex items-start gap-6 border-4 p-6 text-left transition-all ${style}`}
                   >
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-current text-sm font-black uppercase">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-current text-sm font-bold">
                       {String.fromCharCode(65 + idx)}
                     </span>
-                    <span className="text-lg font-black uppercase tracking-tight pt-1">{opt}</span>
+                    <span className="text-lg font-medium pt-1">{opt}</span>
                     {submitted && isCorrect && <CheckCircle className="ml-auto h-6 w-6" />}
                     {submitted && isSelected && !isCorrect && <XCircle className="ml-auto h-6 w-6" />}
                   </button>

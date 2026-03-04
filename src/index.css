@@ -56,8 +56,10 @@
     --shadow-card: none;
     --shadow-elevated: none;
 
-    --glass-bg: rgba(255, 255, 255, 1);
-    --glass-border: rgba(0, 0, 0, 1);
+    --glass-bg: rgba(255, 255, 255, 0.75);
+    --glass-border: rgba(0, 0, 0, 0.08);
+    --landing-glass-bg: rgba(255, 255, 255, 0.8);
+    --landing-glass-border: rgba(0, 0, 0, 0.07);
   }
 
   .dark {
@@ -92,8 +94,10 @@
     --shadow-card: none;
     --shadow-elevated: none;
 
-    --glass-bg: rgba(0, 0, 0, 1);
-    --glass-border: rgba(255, 255, 255, 1);
+    --glass-bg: rgba(10, 10, 10, 0.8);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --landing-glass-bg: rgba(10, 10, 10, 0.82);
+    --landing-glass-border: rgba(255, 255, 255, 0.09);
   }
 }
 
@@ -133,8 +137,16 @@
 
   .glass-nav {
     background: var(--glass-bg);
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--glass-border);
+  }
+
+  .landing-glass {
+    background: var(--landing-glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--landing-glass-border);
   }
 
   .btn-premium {

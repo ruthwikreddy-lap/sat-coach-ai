@@ -518,34 +518,37 @@ export default function PracticeTest() {
               <motion.div key={question?.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-12">
                 {/* Question Content */}
                 {question?.passage && (
-                  <div className="border-8 border-foreground p-12 bg-black text-white text-lg leading-relaxed font-black uppercase tracking-tighter italic">
+                  <div className="border-8 border-foreground p-8 bg-black text-white text-lg leading-relaxed font-medium">
                     {question.passage}
                   </div>
                 )}
 
                 <div className="space-y-10">
-                  <h2 className="font-display text-4xl font-black uppercase tracking-tight leading-none">{question?.question}</h2>
+                  <div className="space-y-4">
+                    <span className="inline-block bg-foreground/10 text-foreground px-3 py-1 text-xs tracking-wider rounded border border-foreground/20">Single choice question — Select one option</span>
+                    <h2 className="text-3xl font-semibold leading-relaxed">{question?.question}</h2>
+                  </div>
 
                   {question?.type === "grid-in" ? (
                     <div className="space-y-4">
-                      <p className="text-[10px] font-black uppercase tracking-widest opacity-40">Student-Produced Response (Type your answer below)</p>
+                      <p className="text-sm font-medium opacity-60">Student-Produced Response (Type your answer below)</p>
                       <input
                         type="text"
                         value={answers[question.id] || ''}
                         onChange={(e) => setAnswers(prev => ({ ...prev, [question.id]: e.target.value }))}
                         placeholder="Type answer here..."
-                        className="w-full border-8 border-foreground p-10 font-black text-4xl uppercase tracking-tighter outline-none focus:bg-foreground focus:text-background transition-all"
+                        className="w-full border-8 border-foreground p-10 font-semibold text-3xl outline-none focus:bg-foreground focus:text-background transition-all"
                       />
                     </div>
                   ) : (
                     <div className="grid grid-cols-1 gap-4">
                       {question?.options.map((opt, idx) => (
                         <button key={idx} onClick={() => setAnswers(prev => ({ ...prev, [question.id]: idx }))}
-                          className={`flex items-center gap-8 border-4 p-8 text-left transition-all ${answers[question.id] === idx ? "bg-foreground text-background" : "hover:bg-foreground hover:text-background border-foreground bg-background"}`}>
-                          <div className={`h-10 w-10 flex items-center justify-center border-4 font-black ${answers[question.id] === idx ? "bg-background text-foreground border-background" : "border-foreground"}`}>
+                          className={`flex items-center gap-8 border-4 p-6 text-left transition-all ${answers[question.id] === idx ? "bg-foreground text-background" : "hover:bg-foreground hover:text-background border-foreground bg-background"}`}>
+                          <div className={`h-10 w-10 shrink-0 flex items-center justify-center border-4 font-bold ${answers[question.id] === idx ? "bg-background text-foreground border-background" : "border-foreground"}`}>
                             {String.fromCharCode(65 + idx)}
                           </div>
-                          <span className="text-xl font-black uppercase">{opt}</span>
+                          <span className="text-lg font-medium">{opt}</span>
                         </button>
                       ))}
                     </div>

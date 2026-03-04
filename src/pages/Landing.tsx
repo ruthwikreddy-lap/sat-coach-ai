@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence, Variants } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowRight,
@@ -7,142 +7,260 @@ import {
   Zap,
   Calculator,
   BarChart3,
-  Sparkles,
   Brain,
+  Menu,
+  X,
+  Moon,
+  Sun,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 
-const container: Variants = {
-  hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.1 } },
-};
+/* ─────────── Easing ─────────── */
+const ease = [0.22, 1, 0.36, 1] as const;
 
-const item: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { type: "spring", damping: 15 } },
-};
+/* ─────────── Landing Navbar ─────────── */
+function LandingNav({
+  isDark,
+  toggleTheme,
+}: {
+  isDark: boolean;
+  toggleTheme: () => void;
+}) {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-/* ───────────── Hero ───────────── */
-function Hero() {
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 30);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const navLinks = ["About", "Features", "How It Works"];
+
   return (
-    <section className="relative overflow-hidden py-24 lg:py-40">
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(var(--foreground)/0.04)_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--foreground)/0.04)_1px,transparent_1px)] bg-[size:60px_60px]" />
-      <motion.div
-        variants={container}
-        initial="hidden"
-        animate="show"
-        className="relative mx-auto max-w-5xl px-6 lg:px-8 text-center"
-      >
-        <motion.div variants={item} className="mb-8 flex justify-center">
-          <span className="inline-flex items-center gap-2 border border-foreground/20 bg-foreground/5 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground/70 rounded-full">
-            <Sparkles className="h-3.5 w-3.5" /> Updated for 2024 Digital SAT
-          </span>
-        </motion.div>
+    <nav
+      className={`fixed z-50 transition-all duration-500 ${scrolled ? "top-4" : "top-6"
+        } left-1/2 -translate-x-1/2 w-[92%] max-w-5xl`}
+    >
+      <div className="landing-glass rounded-full px-6 py-3 flex items-center justify-between shadow-2xl shadow-black/10">
+        {/* Logo */}
+        <Link to="/" className="font-black tracking-tighter text-xl text-foreground uppercase">
+          SATCOACH
+        </Link>
 
-        <motion.h1
-          variants={item}
-          className="font-display text-5xl sm:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.9] text-foreground mb-8"
-        >
-          Master the <br className="hidden sm:block" /> Digital SAT
-        </motion.h1>
+        {/* Desktop links */}
+        <div className="hidden md:flex items-center gap-8">
+          {navLinks.map((l) => (
+            <a
+              key={l}
+              href={`#${l.toLowerCase().replace(" ", "-")}`}
+              className="text-[11px] font-bold uppercase tracking-[0.18em] text-foreground/50 hover:text-foreground transition-colors"
+            >
+              {l}
+            </a>
+          ))}
+        </div>
 
-        <motion.p
-          variants={item}
-          className="mx-auto max-w-2xl text-lg sm:text-xl font-medium text-foreground/50 mb-12 text-balance"
-        >
-          The only platform that perfectly replicates the Bluebook interface with
-          adaptive modules and instant AI feedback.
-        </motion.p>
+        {/* Right actions */}
+        <div className="flex items-center gap-2">
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-full text-foreground/50 hover:text-foreground hover:bg-foreground/5 transition-all"
+            aria-label="Toggle theme"
+          >
+            {isDark ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
 
-        <motion.div
-          variants={item}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
           <Link
             to="/auth"
-            className="w-full sm:w-auto bg-foreground text-background px-10 py-4 text-sm font-bold uppercase tracking-widest transition-all hover:opacity-90 flex items-center justify-center gap-3 group rounded-lg"
+            className="hidden sm:block text-[11px] font-bold uppercase tracking-widest text-foreground/60 hover:text-foreground px-4 py-2 rounded-full transition-colors"
           >
-            Start Practice Now
-            <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            Sign In
           </Link>
-          <a
-            href="#how-it-works"
-            className="w-full sm:w-auto border-2 border-foreground/20 text-foreground px-10 py-4 text-sm font-bold uppercase tracking-widest transition-all hover:border-foreground/40 text-center rounded-lg"
+
+          <Link
+            to="/auth"
+            className="bg-foreground text-background text-[11px] font-bold uppercase tracking-widest px-5 py-2.5 rounded-full hover:opacity-90 active:scale-95 transition-all"
           >
-            See the Interface
-          </a>
+            Start Free
+          </Link>
+
+          {/* Mobile toggle */}
+          <button
+            className="md:hidden p-2 text-foreground/60 hover:text-foreground transition-colors"
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile dropdown */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97, y: -10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.97, y: -10 }}
+            transition={{ duration: 0.2, ease }}
+            className="absolute top-full left-0 right-0 mt-3 landing-glass rounded-3xl p-8 md:hidden shadow-2xl shadow-black/15"
+          >
+            <div className="flex flex-col gap-5">
+              {navLinks.map((l) => (
+                <a
+                  key={l}
+                  href={`#${l.toLowerCase().replace(" ", "-")}`}
+                  onClick={() => setMobileOpen(false)}
+                  className="text-lg font-black tracking-tight uppercase border-b border-foreground/5 pb-4 text-foreground/70 hover:text-foreground transition-colors"
+                >
+                  {l}
+                </a>
+              ))}
+              <Link
+                to="/auth"
+                className="w-full bg-foreground text-background py-4 rounded-2xl font-black text-base uppercase tracking-widest text-center mt-2"
+              >
+                Get Started Free
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </nav>
+  );
+}
+
+/* ─────────── Hero ─────────── */
+function Hero() {
+  return (
+    <section className="relative min-h-[95vh] flex items-center justify-center pt-28 pb-16 overflow-hidden">
+      {/* Dot grid background */}
+      <div
+        className="absolute inset-0 -z-10 opacity-[0.035]"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle, currentColor 1px, transparent 1px)",
+          backgroundSize: "38px 38px",
+        }}
+      />
+
+      <div className="mx-auto max-w-5xl px-6 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease }}
+        >
+          <h1 className="font-display text-[clamp(3rem,10vw,8rem)] font-black tracking-tighter leading-[0.9] text-foreground mb-8 text-balance">
+            Master the
+            <br className="hidden sm:block" /> Digital SAT
+          </h1>
+
+          <p className="text-lg md:text-xl font-medium text-foreground/50 max-w-2xl mx-auto mb-12 text-balance leading-relaxed">
+            The only platform that perfectly replicates the Bluebook interface
+            with adaptive modules and instant AI feedback.
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              to="/auth"
+              className="w-full sm:w-auto bg-foreground text-background px-9 py-4 rounded-full font-bold text-sm uppercase tracking-widest flex items-center justify-center gap-2 group hover:opacity-90 hover:scale-[1.02] transition-all shadow-xl shadow-black/10"
+            >
+              Start Practice Now
+              <ArrowRight
+                size={16}
+                className="group-hover:translate-x-1 transition-transform"
+              />
+            </Link>
+            <a
+              href="#how-it-works"
+              className="w-full sm:w-auto border-2 border-foreground/15 text-foreground px-9 py-4 rounded-full font-bold text-sm uppercase tracking-widest hover:border-foreground/35 hover:bg-foreground/5 transition-all text-center"
+            >
+              See How It Works
+            </a>
+          </div>
         </motion.div>
 
         {/* Stats */}
         <motion.div
-          variants={item}
-          className="mt-20 grid grid-cols-3 gap-8 mx-auto max-w-lg"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.9, ease }}
+          className="mt-24 pt-12 border-t border-foreground/8 grid grid-cols-3 gap-8 max-w-xl mx-auto"
         >
           {[
-            { value: "25,000+", label: "Active Students" },
-            { value: "+170 PTS", label: "Average Gain" },
-            { value: "100%", label: "Digital Ready" },
+            { v: "25,000+", l: "Active Students" },
+            { v: "+170 PTS", l: "Average Gain" },
+            { v: "100%", l: "Digital Ready" },
           ].map((s) => (
-            <div key={s.label} className="text-center">
-              <div className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
-                {s.value}
+            <div key={s.l} className="text-center">
+              <div className="text-3xl sm:text-4xl font-black tracking-tighter text-foreground mb-1">
+                {s.v}
               </div>
-              <div className="text-[10px] font-semibold uppercase tracking-widest text-foreground/40 mt-1">
-                {s.label}
+              <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-foreground/35">
+                {s.l}
               </div>
             </div>
           ))}
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 }
 
-/* ───────────── About ───────────── */
+/* ─────────── About ─────────── */
 function About() {
   return (
-    <section id="about" className="py-24 px-6 border-t border-foreground/10">
+    <section id="about" className="py-28 border-t border-foreground/8 px-6">
       <div className="mx-auto max-w-5xl">
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
-          <div>
-            <div className="text-[10px] font-bold uppercase tracking-[0.4em] text-foreground/40 mb-3">
-              About
-            </div>
-            <h2 className="font-display text-4xl sm:text-5xl font-black tracking-tighter mb-6">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease }}
+          >
+            <div className="text-[10px] font-bold uppercase tracking-[0.35em] text-foreground/35 mb-4">
               What is SATCOACH?
-            </h2>
-            <p className="text-sm font-semibold uppercase tracking-widest text-foreground/50 mb-6">
+            </div>
+            <h2 className="font-display text-4xl sm:text-5xl font-black tracking-tighter mb-8 leading-[1.05]">
               AI-powered Digital SAT prep platform
-            </p>
-            <p className="text-foreground/60 leading-relaxed mb-4">
+            </h2>
+            <p className="text-foreground/55 leading-relaxed mb-5 text-[15px]">
               SATCOACH is a full-stack web application that helps high school
               students prepare for the Digital SAT. Instead of buying expensive
               prep books or paying for tutors, students get an intelligent,
               adaptive practice environment that works exactly like the real exam
               — inside a browser.
             </p>
-            <p className="text-foreground/60 leading-relaxed">
+            <p className="text-foreground/55 leading-relaxed text-[15px]">
               The core idea: every time you take a practice test, the app learns
               what you're bad at, tells you immediately, and builds a study plan
               around it. The more you use it, the better it gets at pointing you
               toward what actually needs work.
             </p>
-          </div>
-          <div className="border border-foreground/10 rounded-2xl p-8 bg-foreground/[0.02]">
-            <div className="flex items-center gap-3 mb-4">
-              <Monitor className="h-5 w-5 text-foreground/60" />
-              <span className="text-sm font-semibold text-foreground/60">
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.94 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease }}
+            className="aspect-video rounded-[2rem] bg-foreground/[0.03] border border-foreground/8 flex items-center justify-center"
+          >
+            <div className="text-center px-8">
+              <Brain size={48} className="mx-auto mb-4 text-foreground/15" />
+              <div className="text-[11px] font-bold uppercase tracking-[0.25em] text-foreground/35">
                 Mirroring the 2024 Bluebook Experience
-              </span>
+              </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
   );
 }
 
-/* ───────────── Problem ───────────── */
+/* ─────────── Problem ─────────── */
 function Problem() {
   const problems = [
     "Official SAT practice tests are few and not adaptive",
@@ -152,36 +270,39 @@ function Problem() {
   ];
 
   return (
-    <section className="py-24 px-6 border-t border-foreground/10">
+    <section className="py-28 bg-foreground text-background px-6">
       <div className="mx-auto max-w-5xl">
-        <div className="mb-16 max-w-xl">
-          <div className="text-[10px] font-bold uppercase tracking-[0.4em] text-foreground/40 mb-3">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease }}
+          className="text-center max-w-3xl mx-auto mb-16"
+        >
+          <div className="text-[10px] font-bold uppercase tracking-[0.35em] text-background/35 mb-4">
             The Problem It Solves
           </div>
-          <h2 className="font-display text-4xl sm:text-5xl font-black tracking-tighter mb-4">
+          <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter mb-6 leading-[1.05]">
             Bridging the gap in SAT prep
           </h2>
-          <p className="text-foreground/60 leading-relaxed">
-            SATCOACH fills the gap with AI-generated, adaptive questions that
+          <p className="text-background/55 text-[15px] leading-relaxed">
+            SATCOACH fills this gap with AI-generated, adaptive questions that
             match the real College Board blueprint — for free.
           </p>
-        </div>
-        <div className="grid sm:grid-cols-2 gap-4">
+        </motion.div>
+
+        <div className="grid sm:grid-cols-2 gap-5 max-w-4xl mx-auto">
           {problems.map((p, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="flex items-start gap-4 border border-foreground/10 rounded-xl p-6 hover:bg-foreground/[0.02] transition-colors"
+              transition={{ delay: i * 0.1, duration: 0.6, ease }}
+              className="flex items-start gap-4 p-6 rounded-2xl bg-background/5 border border-background/10"
             >
-              <div className="mt-0.5 h-6 w-6 rounded-full bg-foreground/10 flex items-center justify-center flex-shrink-0">
-                <span className="text-xs font-bold text-foreground/60">
-                  {i + 1}
-                </span>
-              </div>
-              <p className="text-sm font-medium text-foreground/70">{p}</p>
+              <X size={18} className="text-background/30 mt-0.5 flex-shrink-0" />
+              <p className="font-medium text-background/75 text-[14px] leading-relaxed">{p}</p>
             </motion.div>
           ))}
         </div>
@@ -190,63 +311,72 @@ function Problem() {
   );
 }
 
-/* ───────────── Features ───────────── */
+/* ─────────── Features ─────────── */
 function Features() {
   const features = [
     {
-      icon: <Zap className="h-5 w-5" />,
+      icon: <Zap size={22} />,
       title: "Adaptive Practice",
       desc: "Questions automatically adjust to your level, just like the real SAT module system.",
     },
     {
-      icon: <Monitor className="h-5 w-5" />,
+      icon: <Monitor size={22} />,
       title: "Real Test Interface",
       desc: "The workspace looks and feels exactly like the official Bluebook exam app.",
     },
     {
-      icon: <Calculator className="h-5 w-5" />,
+      icon: <Calculator size={22} />,
       title: "Built-in Calculator",
       desc: "Use the same Desmos Graphing Calculator tools allowed on test day.",
     },
     {
-      icon: <BarChart3 className="h-5 w-5" />,
+      icon: <BarChart3 size={22} />,
       title: "Instant Feedback",
       desc: "See your mistakes immediately and learn how to fix them for next time.",
     },
   ];
 
   return (
-    <section id="features" className="py-24 px-6 border-t border-foreground/10">
+    <section id="features" className="py-28 px-6 border-t border-foreground/8">
       <div className="mx-auto max-w-5xl">
-        <div className="mb-16 text-center">
-          <div className="text-[10px] font-bold uppercase tracking-[0.4em] text-foreground/40 mb-3">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.7, ease }}
+          className="max-w-2xl mb-16"
+        >
+          <div className="text-[10px] font-bold uppercase tracking-[0.35em] text-foreground/35 mb-4">
             Core Benefits
           </div>
-          <h2 className="font-display text-4xl sm:text-5xl font-black tracking-tighter mb-4">
+          <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter mb-6 leading-[1.05]">
             Everything you need to succeed
           </h2>
-          <p className="text-foreground/50 max-w-xl mx-auto">
+          <p className="text-foreground/55 text-[15px] leading-relaxed">
             Our platform is designed to mirror the real 2024 College Board
-            Bluebook experience.
+            Bluebook experience, providing a seamless transition from practice
+            to test day.
           </p>
-        </div>
+        </motion.div>
+
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((f, i) => (
             <motion.div
               key={f.title}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.08 }}
-              className="group border border-foreground/10 rounded-2xl p-6 hover:border-foreground/30 transition-colors"
+              transition={{ delay: i * 0.1, duration: 0.6, ease }}
+              whileHover={{ y: -8 }}
+              className="group p-7 rounded-3xl bg-foreground/[0.03] border border-foreground/8 hover:bg-foreground/[0.06] hover:border-foreground/15 transition-all cursor-default"
             >
-              <div className="h-10 w-10 rounded-xl bg-foreground/10 flex items-center justify-center mb-5 group-hover:bg-foreground group-hover:text-background transition-colors">
+              <div className="w-11 h-11 rounded-2xl bg-foreground text-background flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform">
                 {f.icon}
               </div>
-              <h3 className="font-display text-lg font-bold tracking-tight mb-2">
+              <h3 className="font-display text-base font-black tracking-tight uppercase mb-3">
                 {f.title}
               </h3>
-              <p className="text-sm text-foreground/50 leading-relaxed">
+              <p className="text-[13px] text-foreground/50 leading-relaxed font-medium">
                 {f.desc}
               </p>
             </motion.div>
@@ -257,45 +387,77 @@ function Features() {
   );
 }
 
-/* ───────────── How It Works ───────────── */
+/* ─────────── How It Works ─────────── */
 function HowItWorks() {
   const steps = [
-    { n: "01", title: "Take a practice test", desc: "Start with a full or focused test to see where you stand." },
-    { n: "02", title: "Get your score instantly", desc: "No waiting. See your predicted SAT score immediately." },
-    { n: "03", title: "Improve weak areas", desc: "Our AI identifies exactly what you need to study next." },
-    { n: "04", title: "Repeat → increase score", desc: "Keep practicing and watch your predicted score climb." },
+    {
+      n: "01",
+      title: "Take a practice test",
+      desc: "Start with a full or focused test to see where you stand.",
+    },
+    {
+      n: "02",
+      title: "Get your score instantly",
+      desc: "No waiting. See your predicted SAT score immediately.",
+    },
+    {
+      n: "03",
+      title: "Improve weak areas",
+      desc: "Our AI identifies exactly what you need to study next.",
+    },
+    {
+      n: "04",
+      title: "Repeat → increase score",
+      desc: "Keep practicing and watch your predicted score climb.",
+    },
   ];
 
   return (
-    <section id="how-it-works" className="py-24 px-6 bg-foreground text-background">
+    <section
+      id="how-it-works"
+      className="py-28 px-6 bg-foreground text-background"
+    >
       <div className="mx-auto max-w-5xl">
-        <div className="mb-16 text-center">
-          <h2 className="font-display text-4xl sm:text-5xl font-black tracking-tighter mb-4">
-            How it works
-          </h2>
-          <p className="text-background/50 text-sm uppercase tracking-widest">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.7, ease }}
+          className="text-center max-w-3xl mx-auto mb-20"
+        >
+          <div className="text-[10px] font-bold uppercase tracking-[0.35em] text-background/35 mb-4">
+            How It Works
+          </div>
+          <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter mb-6 leading-[1.05]">
             Four simple steps to a higher score
+          </h2>
+          <p className="text-background/55 text-[15px] leading-relaxed">
+            Our intelligent system guides you through a continuous cycle of
+            assessment and improvement.
           </p>
-        </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        </motion.div>
+
+        <div className="grid sm:grid-cols-2 gap-12 max-w-4xl mx-auto">
           {steps.map((s, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="border border-background/10 rounded-2xl p-6"
+              transition={{ delay: i * 0.1, duration: 0.6, ease }}
+              className="flex gap-7 group"
             >
-              <div className="text-4xl font-black text-background/10 mb-4">
+              <div className="text-7xl font-black text-background/[0.06] tracking-tighter leading-none group-hover:text-background/10 transition-colors select-none">
                 {s.n}
               </div>
-              <h3 className="font-display text-lg font-bold tracking-tight mb-2">
-                {s.title}
-              </h3>
-              <p className="text-sm text-background/50 leading-relaxed">
-                {s.desc}
-              </p>
+              <div className="pt-1">
+                <h3 className="font-display text-xl font-black tracking-tight uppercase mb-2 text-background">
+                  {s.title}
+                </h3>
+                <p className="text-background/55 text-[14px] leading-relaxed font-medium">
+                  {s.desc}
+                </p>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -304,36 +466,50 @@ function HowItWorks() {
   );
 }
 
-/* ───────────── Tech Stack ───────────── */
+/* ─────────── Tech Stack ─────────── */
 function TechStack() {
   const tech = [
     { label: "Frontend", value: "React 18 + TypeScript + Vite" },
     { label: "Styling", value: "Tailwind CSS + Radix UI" },
     { label: "Animations", value: "Framer Motion" },
-    { label: "Backend", value: "Lovable Cloud" },
-    { label: "AI Engine", value: "Edge Functions + Gemini" },
+    { label: "Backend", value: "Supabase (Postgres + Auth)" },
+    { label: "AI Engine", value: "Supabase Edge Functions" },
     { label: "State", value: "TanStack React Query" },
   ];
 
   return (
-    <section className="py-24 px-6 border-t border-foreground/10">
-      <div className="mx-auto max-w-3xl text-center">
-        <h2 className="font-display text-3xl sm:text-4xl font-black tracking-tighter mb-12">
-          Modern Tech Stack
-        </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-          {tech.map((t) => (
-            <div
+    <section className="py-28 px-6 border-t border-foreground/8">
+      <div className="mx-auto max-w-5xl">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease }}
+          className="text-center mb-14"
+        >
+          <div className="text-[10px] font-bold uppercase tracking-[0.35em] text-foreground/35 mb-4">
+            Modern Tech Stack
+          </div>
+
+        </motion.div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          {tech.map((t, i) => (
+            <motion.div
               key={t.label}
-              className="border border-foreground/10 rounded-xl p-4 text-left"
+              initial={{ opacity: 0, scale: 0.92 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.05, duration: 0.5, ease }}
+              className="p-5 rounded-2xl bg-foreground/[0.03] border border-foreground/8 text-center hover:bg-foreground/[0.06] transition-colors"
             >
-              <div className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 mb-1">
+              <div className="text-[9px] font-bold uppercase tracking-[0.2em] text-foreground/35 mb-2">
                 {t.label}
               </div>
-              <div className="text-sm font-semibold text-foreground/80">
+              <div className="text-[12px] font-bold text-foreground/75 leading-snug">
                 {t.value}
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -341,66 +517,110 @@ function TechStack() {
   );
 }
 
-/* ───────────── CTA ───────────── */
-function CTASection() {
+/* ─────────── CTA ─────────── */
+function CTA() {
   return (
-    <section className="py-32 px-6">
-      <div className="mx-auto max-w-3xl text-center relative">
-        <h2 className="font-display text-4xl sm:text-6xl font-black tracking-tighter mb-8">
-          Start your journey <br /> to a 1400+ score
-        </h2>
-        <Link
-          to="/auth"
-          className="inline-flex bg-foreground text-background px-14 py-5 text-sm font-bold uppercase tracking-widest transition-all hover:opacity-90 rounded-lg"
-        >
-          Start Practice
-        </Link>
-      </div>
+    <section className="py-24 px-6">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7, ease }}
+        className="mx-auto max-w-5xl bg-foreground rounded-[3rem] p-12 md:p-24 text-center text-background relative overflow-hidden shadow-2xl shadow-foreground/20"
+      >
+        {/* Decorative rings */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.04]">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[160%] aspect-square border-2 border-background rounded-full" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] aspect-square border border-background rounded-full" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] aspect-square border border-background rounded-full" />
+        </div>
+
+        <div className="relative z-10">
+          <h2 className="font-display text-4xl sm:text-6xl lg:text-7xl font-black tracking-tighter mb-10 leading-[1.05] text-balance text-background">
+            Start your journey
+            <br className="hidden sm:block" /> to a 1400+ score
+          </h2>
+          <Link
+            to="/auth"
+            className="inline-flex bg-background text-foreground px-12 py-4 rounded-full font-black text-sm uppercase tracking-widest hover:scale-105 active:scale-95 transition-transform shadow-xl"
+          >
+            Start Practice Free
+          </Link>
+        </div>
+      </motion.div>
     </section>
   );
 }
 
-/* ───────────── Main ───────────── */
+/* ─────────── Footer ─────────── */
+function Footer() {
+  return (
+    <footer className="py-16 px-6 border-t border-foreground/8">
+      <div className="mx-auto max-w-5xl flex flex-col md:flex-row items-center justify-between gap-8">
+        <span className="font-display font-black tracking-tighter text-xl uppercase text-foreground">
+          SATCOACH
+        </span>
+
+        <div className="flex gap-10 text-[10px] font-black uppercase tracking-[0.3em] text-foreground/35">
+          <a href="#" className="hover:text-foreground transition-colors">
+            Privacy
+          </a>
+          <a href="#" className="hover:text-foreground transition-colors">
+            Terms
+          </a>
+          <a href="#" className="hover:text-foreground transition-colors">
+            Contact
+          </a>
+        </div>
+
+        <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-foreground/30">
+          © 2024 Built for Student Success
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* ─────────── Page ─────────── */
 export default function Landing() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
 
+  const [isDark, setIsDark] = useState(() => {
+    const saved = localStorage.getItem("theme");
+    return (
+      saved === "dark" ||
+      (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches)
+    );
+  });
+
   useEffect(() => {
-    if (user && !loading) {
-      navigate("/dashboard");
-    }
+    if (user && !loading) navigate("/dashboard");
   }, [user, loading, navigate]);
+
+  // Sync theme toggle on landing page
+  const toggleTheme = () => {
+    const next = !isDark;
+    setIsDark(next);
+    document.documentElement.classList.toggle("dark", next);
+    localStorage.setItem("theme", next ? "dark" : "light");
+  };
 
   if (loading || user) return null;
 
   return (
     <div className="bg-background min-h-screen selection:bg-foreground selection:text-background">
-      <Hero />
-      <About />
-      <Problem />
-      <Features />
-      <HowItWorks />
-      <TechStack />
-      <CTASection />
-
-      <footer className="border-t border-foreground/10 py-12 px-6">
-        <div className="mx-auto max-w-5xl flex flex-col sm:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-2">
-            <Brain className="h-5 w-5 text-foreground" />
-            <span className="font-display text-lg font-black tracking-tighter uppercase">
-              SATCOACH
-            </span>
-          </div>
-          <div className="flex gap-6 text-xs font-medium text-foreground/40">
-            <span>Privacy</span>
-            <span>Terms</span>
-            <span>Contact</span>
-          </div>
-          <div className="text-[10px] font-semibold uppercase tracking-widest text-foreground/30">
-            © 2024 Built for Student Success
-          </div>
-        </div>
-      </footer>
+      <LandingNav isDark={isDark} toggleTheme={toggleTheme} />
+      <main>
+        <Hero />
+        <About />
+        <Problem />
+        <Features />
+        <HowItWorks />
+        <TechStack />
+        <CTA />
+      </main>
+      <Footer />
     </div>
   );
 }

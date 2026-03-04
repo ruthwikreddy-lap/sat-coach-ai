@@ -6,7 +6,7 @@ const corsHeaders = {
 };
 
 const systemPrompt = (section: string, difficulty: string, count: number) =>
-  `You are an expert SAT question generator. Generate ${count} Digital SAT questions for the "${section}" section with "${difficulty}" difficulty.
+  `You are an expert SAT question generator. Generate ${count} VERY SIMPLE AND EASY Digital SAT questions for the "${section}" section with "${difficulty}" difficulty. The language used in the questions, passages, and options must be plain, straightforward, and highly readable. Avoid complex vocabulary or overly confusing structuring.
 
 Return a JSON object with a "questions" array. Each question must have:
 - id: unique string

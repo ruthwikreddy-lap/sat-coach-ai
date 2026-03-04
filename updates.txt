@@ -1,0 +1,981 @@
+SATCOACH Toggle theme SIGN IN Updated for 2024 Digital SAT Get a 1400+ on the SAT with real practice Practice with adaptive modules, real Bluebook-style interface, and instant feedback to improve your score fast. Start Free Practice See How It Works 25,000+ Students Practicing +170 points Avg Score Gain 2024 Ready Digital Format Core Benefits Everything you need to succeed Adaptive Practice Questions automatically adjust to your level, just like the real SAT module system. Real Test Interface The workspace looks and feels exactly like the official Bluebook exam app. Built-in Calculator Use the same Desmos Graphing Calculator tools allowed on test day. Instant Feedback See your mistakes immediately and learn how to fix them for next time. How it works Four simple steps to a higher score Take a practice test Start with a full or focused test to see where you stand. Get your score instantly No waiting. See your predicted SAT score immediately. Improve weak areas Our AI identifies exactly what you need to study next. Repeat → increase score Keep practicing and watch your predicted score climb. Start your first SAT practice test now Start Practice SATCOACH © 2024 Built for Student Success make a landing page html the navigation bar take inspiration make it the best like before things make it the best of the bestest in the world make the navigation floating glass thing make it greyscale theme make it the best
+Gemini 3 Flash Preview
+Ran for 92s
+
+summarize_auto
+Action history
+chevron_right
+Here are key actions taken for the app:
+
+edit
+Edited 3 files
+metadata.json
+check_circle
+src/index.css
+check_circle
+src/App.tsx
+check_circle
+build
+Built
+I've built the SATCOACH landing page with a premium, high-end greyscale aesthetic. It features a sophisticated floating glassmorphism navigation bar, bold typography, and smooth interactive animations.
+Key Features:
+Floating Glassmorphism Nav: A sleek, blurred navigation bar that follows the user, featuring a theme toggle and responsive mobile menu.
+Greyscale "Best of the Best" Theme: A curated palette using deep inks and soft papers, creating a focused, professional environment for students.
+High-Impact Hero Section: Massive, confident typography with real-time stats (25k+ students, +170 avg gain).
+Interactive Benefit Cards: Hover-animated cards highlighting adaptive practice, real test interfaces, and instant feedback.
+Systematic "How it Works": A clear, four-step guide using oversized numeric anchors to lead the user through the process.
+Dark Mode Support: A fully integrated dark variant that maintains the premium greyscale look.
+The application is built using React, Tailwind CSS, and Framer Motion for a truly "crafted" feel.
+📋 Setup Note:
+The application is ready to view. You can toggle between light and dark modes using the sun/moon icon in the navigation bar to see how the greyscale theme adapts to different lighting conditions.
+Checkpoint
+change the hero and the navigtion remove the logo keep the text of Satcoach and also Add scroll-based fade-in animations to the Features, How it Works, and CTA sections so they animate into view as the user scrolls down the page.Implement a dark mode toggle button in the navigation bar that switches between the light and dark themes defined in the CSS. The current theme preference should be persisted using local storage.
+Gemini 3 Flash Preview
+Ran for 112s
+
+summarize_auto
+Action history
+chevron_right
+Here are key actions taken for the app:
+
+edit
+Edited 1 file
+src/App.tsx
+check_circle
+build
+Built
+I've updated the SATCOACH landing page with a more dramatic, editorial design and enhanced interactivity.
+Key Enhancements:
+Refined Navigation: Removed the logo icon to keep a clean, text-only "SATCOACH" branding in a bold, black font.
+Massive Hero Section: Redesigned the hero with oversized, high-impact typography ("MASTER THE DIGITAL SAT") and a subtle technical grid background pattern.
+Scroll-Based Animations:
+Features: Section headers and benefit cards now glide into view with staggered delays as you scroll.
+How it Works: Steps slide in from the sides, creating a dynamic reading experience.
+CTA: The final call-to-action section scales up smoothly when it enters the viewport.
+Persistent Dark Mode:
+The theme toggle in the navigation bar now saves your preference.
+It uses localStorage to remember your choice (Light or Dark) even after you refresh the page.
+The transition between themes is smoothed with a CSS transition for a premium feel.
+The design remains strictly greyscale, utilizing deep blacks and off-whites to maintain a professional, high-stakes testing atmosphere.
+Checkpoint
+the texts feel too large and clumpsy and also texts are not white where the black bg and black buttons are there esceptially the navigation bar the theme is only working for the navgation bar
+Gemini 3 Flash Preview
+Ran for 102s
+
+summarize_auto
+Action history
+chevron_right
+Here are key actions taken for the app:
+
+edit
+Edited 2 files
+src/index.css
+check_circle
+src/App.tsx
+check_circle
+build
+Built
+I've refined the design to address the typography and theme issues.
+Key Improvements:
+Balanced Typography: Scaled down the hero heading from 10rem to a more elegant 8xl (on large screens) with improved line spacing. This removes the "clumsy" feel while maintaining a bold, professional look.
+Global Theme Sync: Fixed the dark mode so it now correctly affects the entire page, not just the navigation bar. The background and text colors now swap seamlessly across all sections.
+Enhanced Contrast:
+Updated the CSS to use dynamic variables (--ink and --paper) that flip in dark mode.
+Ensured that text on dark backgrounds (like buttons and accent sections) is always high-contrast (pure white/off-white on black).
+Refined Layout: Adjusted the padding and spacing across sections to feel more "breathable" and less cramped.
+Smooth Transitions: Added a duration-300 transition to the body background and text colors for a smoother theme-switching experience.
+The site now feels much more cohesive and accessible in both light and dark modes.
+Checkpoint
+remove this Updated for 2024 Digital SAT
+Gemini 3 Flash Preview
+Ran for 60s
+
+summarize_auto
+Action history
+chevron_right
+Here are key actions taken for the app:
+
+edit
+Edited 1 file
+src/App.tsx
+check_circle
+build
+Built
+I have removed the "Updated for 2024 Digital SAT" badge from the Hero section as requested. The layout now starts directly with the main heading for a cleaner, more focused entrance.
+Checkpoint
+add more sections Add introductory text or subheadings to the 'Features' and 'How it Works' sections to provide more context and guide the user's reading experience.
+SATCOACH
+AI-powered Digital SAT prep platform — adaptive practice tests, instant scoring, personalized study plans, and a built-in AI tutor. Built to mirror the real 2024 College Board Bluebook experience.
+What is SATCOACH?
+SATCOACH is a full-stack web application that helps high school students prepare for the Digital SAT. Instead of buying expensive prep books or paying for tutors, students get an intelligent, adaptive practice environment that works exactly like the real exam — inside a browser.
+The core idea: every time you take a practice test, the app learns what you're bad at, tells you immediately, and builds a study plan around it. The more you use it, the better it gets at pointing you toward what actually needs work.
+The Problem It Solves
+Official SAT practice tests are few and not adaptive
+Expensive tutors and courses aren't accessible to most students
+Static prep books don't give instant feedback or adapt to your level
+No free tool currently mirrors the 2024 Digital SAT's adaptive module system
+SATCOACH fills this gap with AI-generated, adaptive questions that match the real College Board blueprint — for free.
+Tech Stack
+Layer	Technology
+Frontend	React 18 + TypeScript + Vite
+Styling	Tailwind CSS + Radix UI
+Animations	Framer Motion
+Routing	React Router v6
+Backend / DB	Supabase (Postgres + Auth + Edge Functions)
+AI Questions	Supabase Edge Functions (Deno) → AI model
+AI Tutor	Supabase Edge Functions → AI model
+Charts	Recharts
+PDF Export	react-to-pdf
+Form Handling	React Hook Form + Zod
+State/Data	TanStack React Query
+Project Structure
+code
+Code
+sat-coach-ai/
+├── src/
+│   ├── pages/          # All page-level components (14 pages)
+│   ├── components/     # Shared UI components
+│   ├── services/       # AI question generation service
+│   ├── hooks/          # Custom React hooks
+│   ├── contexts/       # Auth context
+│   ├── data/           # Mock question data and types
+│   └── integrations/   # Supabase client setup
+├── supabase/
+│   ├── functions/      # Edge Functions (AI question gen, tutor, study plan)
+│   └── migrations/     # Database schema SQL
+Database Schema
+Four tables, all secured with Row Level Security (RLS):
+user_profiles
+Stores each user's SAT goals and progress metadata.
+user_id — links to Supabase Auth
+current_score, target_score — their starting point and goal
+exam_date — when they're sitting the real test
+preferred_subjects, strengths, weaknesses — topic preferences
+onboarding_completed — gates access to the dashboard
+test_results
+One row per completed practice test session.
+score — overall predicted SAT score (200–1600)
+reading_score, math_score — section scores (200–800 each)
+weak_topics — array of topics where accuracy was below 70%
+time_spent, total_questions, correct_answers
+test_date
+question_responses
+One row per individual question answered in any test.
+question_id, section, topic, difficulty
+user_answer, correct_answer, is_correct
+Links to test_results via test_result_id
+study_plan_tasks
+AI-generated weekly study tasks.
+topic, task_type (practice, review, etc.)
+duration — minutes per session
+day_of_week — which day of the week (0=Monday, 6=Sunday)
+completed, completed_at
+Triggers:
+on_auth_user_created — auto-creates a user_profiles row when a new user signs up
+update_user_profiles_updated_at — keeps the updated_at timestamp current
+Supabase Edge Functions
+Three AI-powered backend functions deployed on Deno:
+Function	What It Does
+generate-questions	Generates SAT questions given section, module, difficulty, and count. Uses the College Board blueprint to ensure topic distribution accuracy.
+ask-ai-tutor	Powers the AI Tutor chat interface. Accepts a user question and returns a markdown-formatted reply from the AI.
+generate-study-plan	Takes the user's current score, target score, exam date, and weak topics — returns a structured weekly schedule of tasks.
+What's Working Right Now
+✅ Authentication
+Email/password sign up and sign in (/auth)
+Forgot password flow with email link (/forgot-password)
+Reset password page (/reset-password)
+Supabase Auth with JWT session management
+Protected routes — unauthenticated users get redirected
+Auto-profile creation on sign up (via DB trigger)
+✅ Onboarding (/onboarding)
+3-step wizard shown to new users before they reach the dashboard:
+Set current SAT score and target score (with slider)
+Set their exam date
+Pick which SAT topics they want to focus on
+Saves to user_profiles and marks onboarding_completed = true.
+✅ Dashboard (/dashboard)
+Main home screen after login. Shows:
+Current and target score side by side
+Section score rings (Reading/Writing vs Math, each out of 800)
+Level system based on score (NOOB → ROOKIE → PRODIGY → ADVANCED → ELITE → MASTER)
+Score trend chart (area chart over all past tests)
+Focus areas: topics where accuracy is below 70%, sorted worst first
+Total tests taken, daily streak counter
+✅ Practice Test (/practice) — The Core Feature
+Full-length adaptive practice tests powered by AI-generated questions.
+Three modes:
+Full Test — Complete 2 hr 14 min simulation: Reading/Writing (2 modules × 27 questions) + break + Math (2 modules × 22 questions)
+Reading & Writing only — Just the RW section
+Math only — Just the Math section
+How the adaptive system works:
+Module 1 is always medium difficulty
+After Module 1, your score is calculated
+If you got ≥70% correct → Module 2 is hard (higher scoring ceiling)
+If you got <70% correct → Module 2 is easy (lower scoring ceiling)
+This exactly mirrors how the real 2024 Digital SAT works
+Question loading:
+First 3 questions load immediately so you can start right away
+Remaining questions load in background batches of 6 to avoid blocking
+Questions are cached in sessionStorage for the review screen
+During the test:
+Live countdown timer (32 min RW / 35 min Math per module)
+Question navigation grid showing answered/unanswered status
+Built-in Desmos-style calculator (Math sections)
+Question type label: "Single choice question — Select one option"
+Support for grid-in (student-produced response) question type
+Section break screen between RW and Math for Full Test mode
+"Preparing your test" loading overlay with rotating SAT tips
+On submission:
+Calculates overall score (scaled to 200–1600 range)
+Identifies weak topics (any topic with <70% accuracy)
+Saves test result and all individual question responses to Supabase
+Navigates to detailed review screen
+Test review:
+Shows final score in big numbers
+Lists every wrong answer with: your answer, correct answer, full explanation
+Shows focus areas (weak topics) with topic priority callouts
+Overall accuracy percentage with progress bar
+Back to previous tests from the lobby (loads from test_results table)
+✅ Focus Test (/focus-test)
+A shorter, distraction-free test mode using a curated set of mock questions.
+Full-screen black interface (immersive mode)
+Tab-switch detection — if you leave the window, it logs it and shows a warning overlay with the count of infractions
+Automatic timer (35 min)
+Calculator support for Math questions
+Saves results to the same test_results + question_responses tables
+Updates user_profiles.weaknesses after the test
+✅ Analytics (/analytics)
+Detailed progress report for all completed tests.
+Latest score, personal best, average accuracy, total questions solved
+Score over time chart (area chart, 0–1600 range)
+Reading & Writing vs Math breakdown with animated progress bars
+Topic accuracy bar chart (top 5 topics)
+Export to PDF — one-click download of the full analytics page as a PDF
+✅ Topic Review / Weak Areas (/weak-areas)
+Breaks down performance by every SAT topic you've answered questions in.
+Filter by All / Weak (< 70%) / Strong (≥ 70%)
+Shows topic name, section, accuracy, questions attempted
+Summary stats: total topics, % mastered, topics needing review, avg accuracy
+Click any topic card to jump straight into practice
+✅ Study Plan (/study-plan)
+AI-generated weekly study schedule personalized to your goals.
+Button to generate or regenerate your plan (calls generate-study-plan edge function)
+Passes your current score, target, exam date, and weak topics to the AI
+Displays tasks grouped by day of week (Monday–Sunday)
+Each task shows: topic, task type, duration in minutes
+Toggle tasks complete/incomplete (persists to study_plan_tasks table)
+Progress bar showing tasks done / total tasks
+Goal score and weekly practice time shown as overview stats
+✅ AI Tutor (/tutor)
+Conversational AI chat interface for SAT help.
+Persistent chat history within the session
+Supports markdown formatting in AI replies (bold, lists, code, etc.)
+Animated message bubbles with user/AI distinction
+Loading indicator while AI is thinking
+Powered by the ask-ai-tutor edge function
+Press Enter or click Send to submit
+✅ Profile (/profile)
+User profile management page.
+Update display name, target score, exam date, and subject preferences
+✅ Built-in Calculator
+A functional calculator component available during Math sections:
+Accessible from Practice Test and Focus Test
+Toggle button shows/hides it
+Positioned for non-intrusive use alongside questions
+✅ UI/UX System
+Dark mode default with light mode toggle (next-themes)
+Bold brutalist design system: thick borders, uppercase typography, high contrast
+Framer Motion animations throughout (staggered lists, page transitions, loading states)
+Responsive layout (mobile + desktop)
+Space Grotesk as the display font
+Toast notifications for success/error feedback (Sonner)
+Routes
+Path	Page	Auth Required
+/	Landing page	No
+/auth	Sign in / Sign up	No
+/forgot-password	Forgot password	No
+/reset-password	Reset password	No
+/dashboard	Main dashboard	Yes
+/onboarding	First-time setup wizard	Yes
+/practice	Practice test center	Yes
+/focus-test	Immersive focus test	Yes
+/analytics	Progress analytics	Yes
+/weak-areas	Topic-by-topic review	Yes
+/study-plan	Weekly study schedule	Yes
+/tutor	AI Tutor chat	Yes
+/profile	Profile settings	Yes
+Running Locally
+Prerequisites
+Node.js 18+
+A Supabase project with the migration applied and edge functions deployed
+A .env file with your Supabase URL and anon key
+Setup
+code
+Bash
+# Install dependencies
+npm install
+
+# Start the dev server
+npm run dev
+The app runs at http://localhost:5173 by default.
+Environment Variables
+code
+Env
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+Database
+Apply the migration in /supabase/migrations/ to your Supabase project, either via the Supabase CLI or by running the SQL directly in the SQL editor.
+Edge Functions
+Deploy the three edge functions in /supabase/functions/ to your Supabase project:
+generate-questions
+ask-ai-tutor
+generate-study-plan
+What's Not Done Yet (Planned)
+
+Real score normalization (currently uses a linear approximation of 200–1600)
+
+Passage-based Reading questions (currently mostly standalone questions)
+
+Streak tracking backed by a database (currently a mock value)
+
+Social features / leaderboards
+
+Email digest / progress reports
+
+Mobile app wrapper
+Gemini 3 Flash Preview
+Ran for 88s
+
+summarize_auto
+Action history
+chevron_right
+Here are key actions taken for the app:
+
+edit
+Edited 1 file
+src/App.tsx
+check_circle
+build
+Built
+I have expanded the SATCOACH landing page with several new sections and enhanced context to guide the user's reading experience.
+New & Updated Sections:
+"What is SATCOACH?" (About): A new section explaining the core mission of the platform—providing an intelligent, adaptive practice environment that mirrors the real exam.
+"The Problem It Solves": A high-contrast section highlighting the gaps in current SAT prep (lack of accessibility, static materials, and non-adaptive tests) and how SATCOACH bridges them.
+Enhanced Features & How It Works: Added introductory subheadings and descriptive text to these sections to provide better context before diving into the specific benefits and steps.
+"Modern Tech Stack": A new grid-based section showcasing the professional-grade technologies used to build the platform (React 18, Supabase, Framer Motion, etc.), signaling performance and reliability.
+Scroll-Based Animations: All new sections are integrated with the existing animation system, smoothly fading and sliding into view as the user scrolls down the page.
+The design remains consistent with the premium greyscale aesthetic, using bold typography and high-contrast elements to maintain a professional, focused atmosphere.
+Checkpoint
+remove Built for performance
+Gemini 3 Flash Preview
+Ran for 85s
+
+summarize_auto
+Action history
+chevron_right
+Here are key actions taken for the app:
+
+edit
+Edited 1 file
+src/App.tsx
+check_circle
+build
+Built
+I have removed the "Built for performance" heading from the Modern Tech Stack section as requested. The section now cleanly displays the "Modern Tech Stack" label above the technology cards.
+Checkpoint
+Review and refine the existing scroll-based fade-in animations to ensure they are smooth and not overly distracting, adjusting timings and easing functions as needed.
+/src/App.tsx
+#91:92
+Gemini 3 Flash Preview
+Ran for 95s
+
+summarize_auto
+Action history
+chevron_right
+Here are key actions taken for the app:
+
+edit
+Edited 1 file
+src/App.tsx
+check_circle
+build
+Built
+I have refined the scroll-based animations across the entire landing page to ensure a smoother, more premium feel.
+Key Refinements:
+Standardized Easing: Implemented a consistent easeOutQuart easing function ([0.22, 1, 0.36, 1]) for all entrance animations, providing a more sophisticated and natural motion.
+Subtle Offsets: Reduced the vertical entrance offset from 40px to 20px. This makes the animations feel less "clumpy" and distracting while still providing a clear sense of movement.
+Optimized Timings: Adjusted durations to a snappier 0.7s for major sections, improving the overall responsiveness of the page as the user scrolls.
+Consistency: Applied these refined parameters to all sections, including the Hero, About, Problem, Features, How It Works, Tech Stack, and CTA sections.
+These changes ensure that the animations enhance the user experience without overwhelming the content, maintaining the high-end greyscale aesthetic of SATCOACH.
+Checkpoint
+
+
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { 
+  ArrowRight, 
+  Monitor, 
+  Zap, 
+  Calculator, 
+  BarChart3, 
+  Menu,
+  X,
+  Moon,
+  Sun,
+  Sparkles
+} from 'lucide-react';
+
+const Navbar = ({ isDarkMode, toggleTheme }: { isDarkMode: boolean, toggleTheme: () => void }) => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <nav className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 w-[90%] max-w-5xl ${isScrolled ? 'top-4' : 'top-8'}`}>
+      <div className="glass-nav rounded-full px-6 py-3 flex items-center justify-between shadow-xl shadow-black/5">
+        <div className="flex items-center gap-2">
+          <span className="font-black tracking-tighter text-2xl">SATCOACH</span>
+        </div>
+
+        {/* Desktop Nav */}
+        <div className="hidden md:flex items-center gap-8">
+          {['Practice', 'Interface', 'Pricing', 'About'].map((item) => (
+            <a 
+              key={item} 
+              href={`#${item.toLowerCase()}`} 
+              className="text-sm font-semibold opacity-60 hover:opacity-100 transition-opacity uppercase tracking-widest"
+            >
+              {item}
+            </a>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={toggleTheme}
+            className="p-2.5 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+            aria-label="Toggle theme"
+          >
+            {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+          
+          <button className="hidden sm:block text-xs font-bold px-6 py-2.5 rounded-full border border-ink/10 hover:bg-ink hover:text-paper transition-all uppercase tracking-widest">
+            SIGN IN
+          </button>
+          
+          <button className="bg-ink text-paper text-xs font-bold px-6 py-2.5 rounded-full hover:scale-105 active:scale-95 transition-all uppercase tracking-widest">
+            START FREE
+          </button>
+
+          <button 
+            className="md:hidden p-2"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: -20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: -20 }}
+            className="absolute top-full left-0 right-0 mt-4 glass-nav rounded-3xl p-8 md:hidden shadow-2xl"
+          >
+            <div className="flex flex-col gap-6">
+              {['Practice', 'Interface', 'Pricing', 'About'].map((item) => (
+                <a 
+                  key={item} 
+                  href={`#${item.toLowerCase()}`} 
+                  className="text-xl font-bold py-2 border-b border-ink/5 uppercase tracking-tighter"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {item}
+                </a>
+              ))}
+              <button className="w-full bg-ink text-paper py-5 rounded-2xl font-black text-lg mt-4 uppercase tracking-widest">
+                GET STARTED
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </nav>
+  );
+};
+
+const Hero = () => {
+  return (
+    <section className="relative min-h-[90vh] flex items-center justify-center pt-20 overflow-hidden">
+      <div className="container mx-auto px-6 text-center relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-8 leading-[1.1] text-balance">
+            Master the <br className="hidden md:block" /> Digital SAT
+          </h1>
+          <p className="text-lg md:text-xl text-ink/60 max-w-2xl mx-auto mb-10 text-balance leading-relaxed font-medium">
+            The only platform that perfectly replicates the Bluebook interface with adaptive modules and instant AI feedback.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <button className="w-full sm:w-auto bg-ink text-paper px-8 py-4 rounded-full font-bold text-base flex items-center justify-center gap-2 group hover:scale-105 transition-all shadow-xl shadow-ink/10">
+              Start Practice Now
+              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </button>
+            <button className="w-full sm:w-auto px-8 py-4 rounded-full font-bold text-base border-2 border-ink/10 hover:bg-ink/5 transition-all">
+              See the Interface
+            </button>
+          </div>
+        </motion.div>
+
+        {/* Stats */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 1 }}
+          className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-12 max-w-4xl mx-auto border-t border-ink/5 pt-12"
+        >
+          <div className="flex flex-col items-center">
+            <div className="text-4xl font-black mb-1 tracking-tighter">25,000+</div>
+            <div className="text-[10px] font-bold text-ink/40 uppercase tracking-[0.15em]">Active Students</div>
+          </div>
+          <div className="flex flex-col items-center">
+            <div className="text-4xl font-black mb-1 tracking-tighter">+170 PTS</div>
+            <div className="text-[10px] font-bold text-ink/40 uppercase tracking-[0.15em]">Average Gain</div>
+          </div>
+          <div className="flex flex-col items-center">
+            <div className="text-4xl font-black mb-1 tracking-tighter">100%</div>
+            <div className="text-[10px] font-bold text-ink/40 uppercase tracking-[0.15em]">Digital Ready</div>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Background Grid Pattern */}
+      <div className="absolute inset-0 -z-10 opacity-[0.03] dark:opacity-[0.05] text-ink" 
+           style={{ backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+    </section>
+  );
+};
+
+const About = () => {
+  return (
+    <section id="about" className="py-24 border-t border-ink/5">
+      <div className="container mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <span className="text-ink/40 font-bold uppercase tracking-[0.3em] text-[10px] mb-4 block">What is SATCOACH?</span>
+            <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-8 leading-tight">AI-powered Digital SAT prep platform</h2>
+            <p className="text-lg text-ink/60 leading-relaxed mb-6">
+              SATCOACH is a full-stack web application that helps high school students prepare for the Digital SAT. Instead of buying expensive prep books or paying for tutors, students get an intelligent, adaptive practice environment that works exactly like the real exam — inside a browser.
+            </p>
+            <p className="text-lg text-ink/60 leading-relaxed">
+              The core idea: every time you take a practice test, the app learns what you're bad at, tells you immediately, and builds a study plan around it. The more you use it, the better it gets at pointing you toward what actually needs work.
+            </p>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="bg-ink/5 rounded-[2rem] p-8 aspect-video flex items-center justify-center border border-ink/5"
+          >
+            <div className="text-center">
+              <Sparkles size={48} className="mx-auto mb-4 text-ink/20" />
+              <div className="text-sm font-bold text-ink/40 uppercase tracking-widest">Mirroring the 2024 Bluebook Experience</div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Problem = () => {
+  const problems = [
+    "Official SAT practice tests are few and not adaptive",
+    "Expensive tutors and courses aren't accessible to most students",
+    "Static prep books don't give instant feedback or adapt to your level",
+    "No free tool currently mirrors the 2024 Digital SAT's adaptive system"
+  ];
+
+  return (
+    <section className="py-24 bg-ink text-paper">
+      <div className="container mx-auto px-6">
+        <div className="max-w-4xl mx-auto text-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <span className="text-paper/40 font-bold uppercase tracking-[0.3em] text-[10px] mb-4 block">The Problem It Solves</span>
+            <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-8 leading-tight">Bridging the gap in SAT prep</h2>
+            <p className="text-lg text-paper/60 leading-relaxed">
+              SATCOACH fills the gap with AI-generated, adaptive questions that match the real College Board blueprint — for free.
+            </p>
+          </motion.div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          {problems.map((problem, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+              className="flex items-start gap-4 p-6 rounded-2xl bg-white/5 border border-white/10"
+            >
+              <div className="mt-1">
+                <X size={20} className="text-red-400/60" />
+              </div>
+              <p className="font-medium text-paper/80">{problem}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Features = () => {
+  const features = [
+    {
+      icon: <Zap className="w-6 h-6" />,
+      title: "Adaptive Practice",
+      description: "Questions automatically adjust to your level, just like the real SAT module system."
+    },
+    {
+      icon: <Monitor className="w-6 h-6" />,
+      title: "Real Test Interface",
+      description: "The workspace looks and feels exactly like the official Bluebook exam app."
+    },
+    {
+      icon: <Calculator className="w-6 h-6" />,
+      title: "Built-in Calculator",
+      description: "Use the same Desmos Graphing Calculator tools allowed on test day."
+    },
+    {
+      icon: <BarChart3 className="w-6 h-6" />,
+      title: "Instant Feedback",
+      description: "See your mistakes immediately and learn how to fix them for next time."
+    }
+  ];
+
+  return (
+    <section id="practice" className="py-24 transition-colors duration-300">
+      <div className="container mx-auto px-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-3xl mb-16"
+        >
+          <span className="text-ink/40 font-bold uppercase tracking-[0.3em] text-[10px] mb-4 block">Core Benefits</span>
+          <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-6 leading-tight">Everything you need to succeed</h2>
+          <p className="text-lg text-ink/60 leading-relaxed">
+            Our platform is designed to mirror the real 2024 College Board Bluebook experience, providing a seamless transition from practice to test day.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {features.map((feature, idx) => (
+            <motion.div 
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ y: -10 }}
+              className="p-8 rounded-3xl bg-ink/5 border border-ink/10 hover:bg-ink/10 transition-all group"
+            >
+              <div className="w-12 h-12 rounded-2xl bg-ink text-paper flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform">
+                {feature.icon}
+              </div>
+              <h3 className="text-xl font-black mb-3 tracking-tight uppercase">{feature.title}</h3>
+              <p className="text-ink/60 leading-relaxed font-medium text-sm">
+                {feature.description}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const HowItWorks = () => {
+  const steps = [
+    {
+      number: "01",
+      title: "Take a practice test",
+      description: "Start with a full or focused test to see where you stand."
+    },
+    {
+      number: "02",
+      title: "Get your score instantly",
+      description: "No waiting. See your predicted SAT score immediately."
+    },
+    {
+      number: "03",
+      title: "Improve weak areas",
+      description: "Our AI identifies exactly what you need to study next."
+    },
+    {
+      number: "04",
+      title: "Repeat → increase score",
+      description: "Keep practicing and watch your predicted score climb."
+    }
+  ];
+
+  return (
+    <section id="interface" className="py-24 bg-ink text-paper">
+      <div className="container mx-auto px-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center max-w-3xl mx-auto mb-20"
+        >
+          <span className="text-paper/40 font-bold uppercase tracking-[0.3em] text-[10px] mb-4 block">How it works</span>
+          <h2 className="text-4xl md:text-6xl font-black tracking-tighter leading-tight">Four simple steps to a higher score</h2>
+          <p className="text-lg text-paper/60 leading-relaxed mt-6">
+            Our intelligent system guides you through a continuous cycle of assessment and improvement.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+          {steps.map((step, idx) => (
+            <motion.div 
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: idx * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="flex gap-8 group"
+            >
+              <div className="text-6xl font-black text-paper/5 tracking-tighter group-hover:text-paper/10 transition-colors leading-none">
+                {step.number}
+              </div>
+              <div className="pt-1">
+                <h3 className="text-2xl font-black mb-2 tracking-tight uppercase">{step.title}</h3>
+                <p className="text-paper/60 leading-relaxed font-medium">
+                  {step.description}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const TechStack = () => {
+  const tech = [
+    { label: "Frontend", value: "React 18 + TypeScript + Vite" },
+    { label: "Styling", value: "Tailwind CSS + Radix UI" },
+    { label: "Animations", value: "Framer Motion" },
+    { label: "Backend", value: "Supabase (Postgres + Auth)" },
+    { label: "AI Engine", value: "Supabase Edge Functions" },
+    { label: "State", value: "TanStack React Query" }
+  ];
+
+  return (
+    <section className="py-24 border-t border-ink/5">
+      <div className="container mx-auto px-6">
+        <div className="text-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <span className="text-ink/40 font-bold uppercase tracking-[0.3em] text-[10px] mb-4 block">Modern Tech Stack</span>
+          </motion.div>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+          {tech.map((item, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.05 }}
+              className="text-center p-6 rounded-2xl bg-ink/5 border border-ink/5"
+            >
+              <div className="text-[10px] font-bold text-ink/40 uppercase tracking-widest mb-2">{item.label}</div>
+              <div className="font-bold text-sm leading-tight">{item.value}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const CTA = () => {
+  return (
+    <section className="py-24 px-6">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        className="max-w-5xl mx-auto bg-ink rounded-[3rem] p-12 md:p-24 text-center text-paper relative overflow-hidden shadow-2xl"
+      >
+        <div className="relative z-10">
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter mb-10 leading-tight text-balance">
+            Start your journey <br className="hidden md:block" /> to a 1400+ score
+          </h2>
+          <button className="bg-paper text-ink px-10 py-4 rounded-full font-black text-lg hover:scale-105 transition-transform shadow-xl uppercase tracking-widest">
+            Start Practice
+          </button>
+        </div>
+        
+        {/* Decorative elements */}
+        <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] border-2 border-paper rounded-full" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] border border-paper rounded-full" />
+        </div>
+      </motion.div>
+    </section>
+  );
+};
+
+const Footer = () => {
+  return (
+    <footer className="py-20 border-t border-ink/5">
+      <div className="container mx-auto px-6">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-12">
+          <div className="flex items-center gap-2">
+            <span className="font-black tracking-tighter text-2xl">SATCOACH</span>
+          </div>
+          
+          <div className="flex gap-12 text-[10px] font-black text-ink/40 uppercase tracking-[0.3em]">
+            <a href="#" className="hover:text-ink transition-colors">Privacy</a>
+            <a href="#" className="hover:text-ink transition-colors">Terms</a>
+            <a href="#" className="hover:text-ink transition-colors">Contact</a>
+          </div>
+          
+          <div className="text-[10px] font-black text-ink/40 uppercase tracking-[0.2em]">
+            © 2024 Built for Student Success
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default function App() {
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const saved = localStorage.getItem('theme');
+    return saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  });
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]);
+
+  const toggleTheme = () => setIsDarkMode(!isDarkMode);
+
+  return (
+    <div className="min-h-screen font-sans selection:bg-ink selection:text-paper transition-colors duration-500">
+      <Navbar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+      <main>
+        <Hero />
+        <About />
+        <Problem />
+        <Features />
+        <HowItWorks />
+        <TechStack />
+        <CTA />
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
+  --color-glass: var(--glass-bg);
+  --color-glass-border: var(--glass-border);
+}
+
+:root {
+  --ink: #0a0a0a;
+  --paper: #ffffff;
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(0, 0, 0, 0.08);
+}
+
+.dark {
+  --ink: #ffffff;
+  --paper: #0a0a0a;
+  --glass-bg: rgba(10, 10, 10, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+@layer base {
+  body {
+    @apply bg-paper text-ink antialiased selection:bg-ink selection:text-paper transition-colors duration-300;
+  }
+}
+
+.glass-nav {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}

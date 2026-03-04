@@ -25,9 +25,11 @@ import {
   Zap,
   Activity,
   BarChart3,
-  ShieldCheck
+  ShieldCheck,
+  Download
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { usePDF } from 'react-to-pdf';
 
 const container = {
   hidden: { opacity: 0 },
@@ -45,6 +47,7 @@ export default function Analytics() {
   const [results, setResults] = useState<any[]>([]);
   const [performances, setPerformances] = useState<TopicPerformance[]>([]);
   const [loading, setLoading] = useState(true);
+  const { toPDF, targetRef } = usePDF({ filename: 'sat_progress_report.pdf' });
 
   useEffect(() => {
     if (!user) return;
@@ -114,19 +117,32 @@ export default function Analytics() {
 
   return (
     <motion.div
+      ref={targetRef}
       variants={container}
       initial="hidden"
       animate="show"
       className="mx-auto max-w-6xl px-6 py-12 md:py-16"
+      style={{ background: "inherit", color: "inherit" }}
     >
       {/* Header */}
       <motion.div variants={item} className="mb-16">
-        <button
-          onClick={() => navigate("/")}
-          className="mb-8 flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] text-foreground transition-colors border-4 border-foreground px-4 py-2 hover:bg-foreground hover:text-background"
-        >
-          <ArrowLeft className="h-4 w-4" /> DASHBOARD
-        </button>
+        <div className="mb-8 flex items-center justify-between">
+          <button
+            onClick={() => navigate("/")}
+            className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] text-foreground transition-colors border-4 border-foreground px-4 py-2 hover:bg-foreground hover:text-background"
+          >
+            <ArrowLeft className="h-4 w-4" /> DASHBOARD
+          </button>
+
+          {results.length > 0 && (
+            <button
+              onClick={() => toPDF()}
+              className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] bg-foreground text-background transition-colors border-4 border-foreground px-4 py-2 hover:bg-background hover:text-foreground"
+            >
+              EXPORT PDF <Download className="h-4 w-4" />
+            </button>
+          )}
+        </div>
         <div className="flex items-center gap-8">
           <div className="flex h-20 w-20 items-center justify-center border-8 border-foreground bg-foreground text-background">
             <Activity className="h-10 w-10" />
