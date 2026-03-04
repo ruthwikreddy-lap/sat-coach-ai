@@ -18,9 +18,8 @@ import Analytics from "./pages/Analytics";
 import FocusTest from "./pages/FocusTest";
 import Profile from "./pages/Profile";
 import Tutor from "./pages/Tutor";
+import TimedDrill from "./pages/TimedDrill";
 import NotFound from "./pages/NotFound";
-
-import { MessageSquare } from "lucide-react";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +44,7 @@ const App = () => (
             <Route path="/focus-test" element={<ProtectedRoute><FocusTest /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
             <Route path="/tutor" element={<ProtectedRoute><Tutor /></ProtectedRoute>} />
+            <Route path="/drill" element={<ProtectedRoute><TimedDrill /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
