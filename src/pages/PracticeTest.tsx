@@ -633,9 +633,9 @@ export default function PracticeTest() {
                           <p className="text-[10px] font-black uppercase opacity-40 mb-2">Your Answer</p>
                           <p className="font-black uppercase">{resp.user_answer !== null ? q.options[resp.user_answer] : "VOID"}</p>
                         </div>
-                        <div className="p-6 border-4 border-foreground bg-foreground text-background">
-                          <p className="text-[10px] font-black uppercase opacity-40 mb-2">Correct Answer</p>
-                          <p className="font-black uppercase">{q.options[q.correctAnswer]}</p>
+                        <div className="relative p-6 border-4 border-foreground bg-foreground text-background glowing-border-correct">
+                          <p className="text-[10px] font-black uppercase opacity-40 mb-2 relative z-10">Correct Answer</p>
+                          <p className="font-black uppercase relative z-10">{q.options[q.correctAnswer]}</p>
                         </div>
                       </div>
                       <div className="p-8 bg-foreground/5 border-t-8 border-foreground">

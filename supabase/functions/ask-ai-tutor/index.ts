@@ -39,24 +39,32 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { question, options, correctAnswer, userAnswer, context } = await req.json();
+    const { question, options, correctAnswer, userAnswer, context, imageBase64 } = await req.json();
 
-    const systemPrompt = `You are an expert SAT Tutor. Provide high-quality, structured explanations:
+    const systemPrompt = `You are an expert SAT Tutor. Your goal is to help the student learn using the Socratic Method.
+Do NOT just give away the correct answer or provide a static explanation immediately.
+Instead, guide the student to the answer by asking probing questions.
+For example, if the student answers incorrectly, say: "You chose [their answer], but notice [a specific clue]. What is the [underlying concept]?"
+- Provide high-quality, structured explanations when appropriate, but prioritize guiding questions.
 - Use **bold** for key terms and concepts.
-- Use bullet points for lists.
-- Use numbered lists for sequential steps.
-- Be concise but thorough.
+- Be concise, encouraging, and highly interactive.
+- If the student is completely stuck, you can provide more direct help.
 
 ${question ? `Question: ${question}` : ""}
 ${options?.length ? `Options: ${options.join(", ")}` : ""}
 ${correctAnswer !== undefined ? `Correct Answer: ${options?.[correctAnswer] || correctAnswer}` : ""}
-${userAnswer !== null && userAnswer !== undefined ? `Student's Answer: ${options?.[userAnswer] || userAnswer}` : ""}
+${userAnswer !== null && userAnswer !== undefined ? `Student's Answer: ${options?.[userAnswer] || userAnswer}` : ""}`;
 
-Provide a detailed, structured, and encouraging explanation.`;
+    const userContent = imageBase64
+      ? [
+        { type: "text", text: context || "Please help me with this image." },
+        { type: "image_url", image_url: { url: imageBase64 } }
+      ]
+      : context || "Please help me with this.";
 
     const messages = [
       { role: "system", content: systemPrompt },
-      { role: "user", content: context || "Please explain this question to me in detail." },
+      { role: "user", content: userContent },
     ];
 
     let reply: string;

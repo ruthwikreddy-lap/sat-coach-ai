@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Brain, Send, User, Loader2, Command } from "lucide-react";
+import { Brain, Send, User, Loader2, Command, Paperclip, X, Image as ImageIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import ReactMarkdown from "react-markdown";
@@ -15,8 +15,10 @@ export default function Tutor() {
     { role: "assistant", content: "Hi! I'm your SAT Tutor. How can I help you study today?" }
   ]);
   const [input, setInput] = useState("");
+  const [imageBase64, setImageBase64] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -24,12 +26,31 @@ export default function Tutor() {
     }
   }, [messages, loading]);
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setImageBase64(base64String);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSend = async () => {
-    if (!input.trim() || loading) return;
+    if ((!input.trim() && !imageBase64) || loading) return;
 
     const userMsg = input.trim();
     setInput("");
-    setMessages(prev => [...prev, { role: "user", content: userMsg }]);
+
+    // Create a display message that might include an image indicator if we wanted, 
+    // but we can just show the text for now.
+    const messageContent = userMsg || (imageBase64 ? "[Image Uploaded]" : "");
+    const currentImage = imageBase64;
+    setImageBase64(null); // Clear early for better UX
+
+    setMessages(prev => [...prev, { role: "user", content: messageContent }]);
     setLoading(true);
 
     try {
@@ -39,7 +60,8 @@ export default function Tutor() {
           question: "",
           options: [],
           correctAnswer: 0,
-          userAnswer: null
+          userAnswer: null,
+          imageBase64: currentImage
         },
       });
 
@@ -115,14 +137,41 @@ export default function Tutor() {
       </div>
 
       <div className="relative mt-10">
+        {imageBase64 && (
+          <div className="absolute -top-16 left-0 right-0 flex items-center justify-between border-4 border-foreground bg-background px-4 py-2">
+            <div className="flex items-center gap-2">
+              <ImageIcon className="h-4 w-4" />
+              <span className="text-xs font-black uppercase tracking-widest text-foreground">Image Attached</span>
+            </div>
+            <button
+              onClick={() => setImageBase64(null)}
+              className="hover:bg-foreground hover:text-background p-1 transition-colors"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        )}
         <div className="flex gap-4">
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            className="hidden"
+          />
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            className="flex h-20 w-20 shrink-0 items-center justify-center border-4 border-foreground bg-background text-foreground hover:bg-foreground hover:text-background transition-all"
+          >
+            <Paperclip className="h-8 w-8" />
+          </button>
           <div className="relative flex-1">
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSend()}
-              placeholder="TYPE YOUR QUESTION HERE..."
+              placeholder="TYPE YOUR QUESTION OR UPLOAD AN IMAGE..."
               className="w-full h-20 border-4 border-foreground bg-background px-8 py-4 text-base font-black uppercase tracking-tight text-foreground placeholder:text-foreground placeholder:opacity-30 outline-none focus:bg-foreground focus:text-background transition-all"
             />
             <div className="absolute right-6 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-3">
@@ -132,7 +181,7 @@ export default function Tutor() {
           </div>
           <button
             onClick={handleSend}
-            disabled={loading || !input.trim()}
+            disabled={loading || (!input.trim() && !imageBase64)}
             className="flex h-20 w-20 shrink-0 items-center justify-center border-4 border-foreground bg-foreground text-background hover:bg-background hover:text-foreground transition-all disabled:opacity-20"
           >
             <Send className="h-8 w-8" />
