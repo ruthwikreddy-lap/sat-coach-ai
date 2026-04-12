@@ -21,6 +21,8 @@ import { useProfile } from "@/hooks/useProfile";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
+const ease = [0.22, 1, 0.36, 1] as const;
+
 interface PlanTask {
   id: string;
   topic: string;
@@ -122,33 +124,39 @@ export default function StudyPlan() {
 
   if (loading) {
     return (
-      <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center">
-        <Loader2 className="h-10 w-10 animate-spin text-foreground opacity-20" />
+      <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-black">
+        <Loader2 className="h-10 w-10 animate-spin text-white/20" />
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-12 md:py-16">
+    <div className="mx-auto max-w-5xl px-6 py-12 md:py-16 bg-black particle-bg min-h-screen">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease }}
         className="mb-12 flex flex-col gap-8 md:flex-row md:items-center md:justify-between"
       >
         <div className="flex flex-col gap-4">
           <button
             onClick={() => navigate("/")}
-            className="flex w-fit items-center gap-2 text-xs font-black uppercase tracking-[0.2em] transition-colors border-b-2 border-transparent hover:border-foreground"
+            className="glass-button flex w-fit items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-white rounded-xl"
           >
             <ArrowLeft className="h-3.5 w-3.5" /> DASHBOARD
           </button>
           <div className="flex items-center gap-6">
-            <div className="flex h-14 w-14 items-center justify-center border-4 border-foreground bg-foreground text-background">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, duration: 0.5, type: "spring" }}
+              className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 border border-white/20 text-white"
+            >
               <Calendar className="h-7 w-7" />
-            </div>
+            </motion.div>
             <div>
-              <h1 className="font-display text-4xl font-black tracking-tighter uppercase text-foreground">Study Schedule</h1>
-              <p className="font-black uppercase tracking-[0.2em] text-[10px]">Your Personalized SAT Roadmap</p>
+              <h1 className="font-display text-4xl font-black tracking-tighter uppercase gradient-text">Study Schedule</h1>
+              <p className="font-black uppercase tracking-[0.2em] text-[10px] text-white/40">Your Personalized SAT Roadmap</p>
             </div>
           </div>
         </div>
@@ -156,7 +164,7 @@ export default function StudyPlan() {
         <button
           onClick={generatePlan}
           disabled={generating}
-          className="border-4 border-foreground bg-foreground px-10 py-5 text-sm font-black uppercase tracking-widest text-background hover:bg-background hover:text-foreground transition-all flex items-center justify-center gap-3"
+          className="bg-white text-black px-10 py-5 text-sm font-black uppercase tracking-widest rounded-xl hover:bg-white/90 glow-soft flex items-center justify-center gap-3"
         >
           {generating ? <Loader2 className="h-5 w-5 animate-spin" /> : <Sparkles className="h-5 w-5" />}
           <span>{generating ? "Updating..." : "Update Daily Plan"}</span>
@@ -174,19 +182,21 @@ export default function StudyPlan() {
             key={stat.label}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="border-4 border-foreground p-8 bg-background"
+            transition={{ delay: i * 0.1, duration: 0.5, ease }}
+            className="glass-card-depth rounded-2xl p-8 border-glow"
           >
-            <div className="mb-4 flex items-center gap-3 border-b-2 border-foreground pb-4">
-              <stat.icon className="h-5 w-5" />
-              <p className="text-[10px] font-black uppercase tracking-widest">{stat.label}</p>
+            <div className="mb-4 flex items-center gap-3 border-b border-white/10 pb-4">
+              <stat.icon className="h-5 w-5 text-white/40" />
+              <p className="text-[10px] font-black uppercase tracking-widest text-white/40">{stat.label}</p>
             </div>
-            <p className="font-display text-4xl font-black tracking-tighter uppercase">{stat.value}</p>
+            <p className="font-display text-4xl font-black tracking-tighter uppercase text-white">{stat.value}</p>
             {stat.label === "Tasks Done" && totalTasks > 0 && (
-              <div className="mt-6 h-3 w-full border-2 border-foreground bg-background">
+              <div className="mt-6 h-3 w-full border border-white/10 bg-white/5 rounded-full overflow-hidden">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${(completedTasks / totalTasks) * 100}%` }}
-                  className="h-full bg-foreground"
+                  transition={{ duration: 1, ease }}
+                  className="h-full bg-white rounded-full"
                 />
               </div>
             )}
@@ -197,11 +207,11 @@ export default function StudyPlan() {
       {/* Schedule */}
       <div className="space-y-12">
         {tasks.length === 0 ? (
-          <div className="border-4 border-dashed border-foreground flex flex-col items-center justify-center p-24 text-center">
-            <Sparkles className="mb-6 h-12 w-12" />
-            <h2 className="font-display text-2xl font-black uppercase tracking-tighter">No Active Plan</h2>
-            <p className="mt-2 max-w-sm font-black uppercase tracking-widest text-xs">Generate your personalized schedule to get started.</p>
-            <button onClick={generatePlan} className="mt-8 border-4 border-foreground bg-foreground px-12 py-4 text-sm font-black uppercase tracking-widest text-background hover:bg-background hover:text-foreground transition-all">Generate My Plan</button>
+          <div className="glass-card-depth rounded-3xl border-dashed border border-white/20 flex flex-col items-center justify-center p-24 text-center">
+            <Sparkles className="mb-6 h-12 w-12 text-white/10" />
+            <h2 className="font-display text-2xl font-black uppercase tracking-tighter text-white">No Active Plan</h2>
+            <p className="mt-2 max-w-sm font-black uppercase tracking-widest text-xs text-white/40">Generate your personalized schedule to get started.</p>
+            <button onClick={generatePlan} className="mt-8 bg-white text-black px-12 py-4 text-sm font-black uppercase tracking-widest rounded-xl hover:bg-white/90 glow-soft">Generate My Plan</button>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-12">
@@ -210,13 +220,13 @@ export default function StudyPlan() {
                 key={day}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: dayIdx * 0.1 }}
+                transition={{ delay: dayIdx * 0.1, duration: 0.5, ease }}
                 className="relative"
               >
-                <div className="mb-8 flex items-baseline gap-6 border-b-4 border-foreground pb-4">
-                  <h3 className="font-display text-2xl font-black uppercase tracking-[0.2em] text-foreground">{day}</h3>
-                  <div className="h-px flex-1 bg-foreground" />
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em]">
+                <div className="mb-8 flex items-baseline gap-6 border-b border-white/10 pb-4">
+                  <h3 className="font-display text-2xl font-black uppercase tracking-[0.2em] text-white">{day}</h3>
+                  <div className="h-px flex-1 bg-white/10" />
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">
                     {dayTasks.filter((t) => t.completed).length}/{dayTasks.length} DONE
                   </p>
                 </div>
@@ -226,31 +236,31 @@ export default function StudyPlan() {
                     <button
                       key={task.id}
                       onClick={() => toggleTask(task.id, task.completed)}
-                      className={`group relative flex flex-col items-start gap-4 border-4 p-8 text-left transition-all ${task.completed
-                        ? "border-foreground bg-foreground text-background"
-                        : "border-foreground bg-background text-foreground hover:bg-foreground hover:text-background"
+                      className={`group relative flex flex-col items-start gap-4 border p-8 text-left transition-all rounded-xl ${task.completed
+                        ? "border-white/20 bg-white/10 text-white"
+                        : "border-white/10 bg-white/5 text-white hover:bg-white/10"
                         }`}
                     >
-                      <div className="flex w-full items-center justify-between border-b-2 border-current pb-4">
-                        <div className={`flex h-10 w-10 items-center justify-center border-2 border-current`}>
-                          {task.completed ? <CheckCircle2 className="h-5 w-5" /> : <ShieldCheck className="h-5 w-5" />}
+                      <div className="flex w-full items-center justify-between border-b border-white/10 pb-4">
+                        <div className={`flex h-10 w-10 items-center justify-center border border-white/20 rounded-lg`}>
+                          {task.completed ? <CheckCircle2 className="h-5 w-5 text-white" /> : <ShieldCheck className="h-5 w-5 text-white/60" />}
                         </div>
                         <div className="flex items-center gap-2">
-                          <Clock className="h-4 w-4" />
-                          <span className="text-[10px] font-black uppercase tracking-widest">{task.duration}M</span>
+                          <Clock className="h-4 w-4 text-white/40" />
+                          <span className="text-[10px] font-black uppercase tracking-widest text-white/40">{task.duration}M</span>
                         </div>
                       </div>
 
                       <div className="mt-4 flex-1">
-                        <p className={`text-xl font-black uppercase tracking-tight leading-tight ${task.completed ? "line-through" : ""}`}>
+                        <p className={`text-xl font-black uppercase tracking-tight leading-tight text-white ${task.completed ? "line-through opacity-60" : ""}`}>
                           {task.topic}
                         </p>
-                        <p className="mt-2 text-[10px] font-black uppercase tracking-[0.3em] bg-current text-white px-2 py-0.5" style={{ color: task.completed ? 'black' : 'white', backgroundColor: task.completed ? 'white' : 'black' }}>{task.task_type}</p>
+                        <p className="mt-2 text-[10px] font-black uppercase tracking-[0.3em] bg-white/10 text-white px-2 py-0.5 rounded">{task.task_type}</p>
                       </div>
 
-                      <div className="mt-8 flex w-full items-center justify-between border-t border-current pt-4">
-                        <span className="text-[10px] font-black uppercase tracking-widest font-black">TOGGLE STATUS</span>
-                        <ChevronRight className="h-4 w-4" />
+                      <div className="mt-8 flex w-full items-center justify-between border-t border-white/10 pt-4">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-white/40">TOGGLE STATUS</span>
+                        <ChevronRight className="h-4 w-4 text-white/40" />
                       </div>
                     </button>
                   ))}

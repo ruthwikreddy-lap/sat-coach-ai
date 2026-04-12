@@ -11,6 +11,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useProfile } from "@/hooks/useProfile";
 import { supabase } from "@/integrations/supabase/client";
 
+const ease = [0.22, 1, 0.36, 1] as const;
+
 interface TestResultRow {
   score: number;
   reading_score: number;
@@ -111,37 +113,37 @@ export default function Dashboard() {
   };
 
   return (
-    <motion.div variants={container} initial="hidden" animate="show" className="mx-auto max-w-6xl space-y-12 px-6 py-16">
+    <motion.div variants={container} initial="hidden" animate="show" className="mx-auto max-w-6xl space-y-12 px-6 py-16 bg-black particle-bg min-h-screen">
       {/* Premium Compact Hero */}
       <motion.div variants={item} className="grid lg:grid-cols-2 gap-8 items-stretch">
-        <div className="bg-foreground text-background p-12 flex flex-col justify-between border-8 border-foreground">
+        <div className="glass-card-depth rounded-3xl p-12 flex flex-col justify-between border-glow">
           <div className="space-y-6">
             <div className="flex items-center gap-4">
-              <div className="bg-background text-foreground px-4 py-1 text-xs font-black uppercase tracking-widest">Active Streak</div>
+              <div className="bg-white/10 text-white px-4 py-1 text-xs font-black uppercase tracking-widest rounded-xl border border-white/20">Active Streak</div>
               <div className="flex items-center gap-2 group">
-                <Flame className="h-6 w-6 text-background group-hover:scale-110 transition-transform" fill="white" />
-                <span className="text-3xl font-black">{streak} DAYS</span>
+                <Flame className="h-6 w-6 text-white group-hover:scale-110 transition-transform" fill="white" />
+                <span className="text-3xl font-black text-white">{streak} DAYS</span>
               </div>
             </div>
-            <h1 className="font-display text-7xl font-black uppercase tracking-tighter leading-[0.85]">
+            <h1 className="font-display text-5xl md:text-7xl font-black uppercase tracking-tighter leading-[0.85] gradient-text">
               GET READY FOR<br />THE DIGITAL SAT
             </h1>
           </div>
 
           <div className="mt-12 flex flex-wrap gap-4">
-            <Link to="/practice" className="bg-background text-foreground hover:invert px-8 py-5 text-sm font-black uppercase tracking-widest transition-all flex items-center gap-3">
+            <Link to="/practice" className="bg-white text-black hover:bg-white/90 px-8 py-5 text-sm font-black uppercase tracking-widest transition-all flex items-center gap-3 rounded-xl glow-soft">
               START PRACTICE EXAM <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>
 
-        <div className="border-8 border-foreground p-10 flex flex-col items-center justify-center bg-background relative overflow-hidden group">
-          <Sparkles className="absolute top-10 right-10 h-10 w-10 opacity-10 group-hover:opacity-100 transition-opacity" />
+        <div className="glass-card-depth rounded-3xl p-10 flex flex-col items-center justify-center border-glow relative overflow-hidden group">
+          <Sparkles className="absolute top-10 right-10 h-10 w-10 opacity-10 group-hover:opacity-100 transition-opacity text-white" />
           <div className="flex items-center gap-8 md:gap-16">
             <div className="text-center">
               <ScoreRing score={latestResult?.reading_score ?? 0} maxScore={800} label="READING" size={140} />
             </div>
-            <div className="h-32 w-2 bg-foreground" />
+            <div className="h-32 w-2 bg-white/20 rounded-full" />
             <div className="text-center">
               <ScoreRing score={latestResult?.math_score ?? 0} maxScore={800} label="MATH" size={140} />
             </div>
@@ -160,44 +162,44 @@ export default function Dashboard() {
       {/* Simplified History & Review */}
       <div className="grid lg:grid-cols-3 gap-12">
         <motion.div variants={item} className="lg:col-span-2 space-y-8">
-          <div className="flex items-center justify-between border-b-8 border-foreground pb-4">
-            <h2 className="font-display text-3xl font-black uppercase tracking-tighter">Score Trends</h2>
-            <TrendingUp className="h-6 w-6" />
+          <div className="flex items-center justify-between border-b border-white/10 pb-4">
+            <h2 className="font-display text-3xl font-black uppercase tracking-tighter gradient-text">Score Trends</h2>
+            <TrendingUp className="h-6 w-6 text-white" />
           </div>
-          <div className="h-[300px] w-full border-4 border-foreground p-6">
+          <div className="h-[300px] w-full glass-card-depth rounded-2xl p-6">
             {hasResults ? (
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={chartData}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E5E5" />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.1)" />
                   <XAxis dataKey="date" hide />
                   <YAxis hide domain={[0, 1600]} />
                   <Tooltip />
-                  <Area type="monotone" dataKey="score" stroke="black" strokeWidth={6} fill="black" fillOpacity={0.05} />
+                  <Area type="monotone" dataKey="score" stroke="white" strokeWidth={3} fill="white" fillOpacity={0.1} />
                 </AreaChart>
               </ResponsiveContainer>
             ) : (
-              <div className="flex h-full items-center justify-center text-xs font-black uppercase opacity-20">Data pending...</div>
+              <div className="flex h-full items-center justify-center text-xs font-black uppercase text-white/20">Data pending...</div>
             )}
           </div>
         </motion.div>
 
         <motion.div variants={item} className="space-y-8">
-          <div className="flex items-center justify-between border-b-8 border-foreground pb-4">
-            <h2 className="font-display text-3xl font-black uppercase tracking-tighter">Focus Areas</h2>
-            <AlertCircle className="h-6 w-6" />
+          <div className="flex items-center justify-between border-b border-white/10 pb-4">
+            <h2 className="font-display text-3xl font-black uppercase tracking-tighter gradient-text">Focus Areas</h2>
+            <AlertCircle className="h-6 w-6 text-white" />
           </div>
           <div className="space-y-4">
             {weakTopics.slice(0, 3).map((t) => (
-              <div key={t.topic} className="border-4 border-foreground p-6 hover:bg-foreground hover:text-background transition-colors group cursor-pointer" onClick={() => navigate("/practice")}>
-                <p className="text-[10px] font-black uppercase tracking-widest opacity-60 mb-1">{t.section}</p>
+              <div key={t.topic} className="glass-card-depth rounded-xl p-6 hover:bg-white/10 transition-all group cursor-pointer border-glow" onClick={() => navigate("/practice")}>
+                <p className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-1">{t.section}</p>
                 <div className="flex items-center justify-between">
-                  <span className="font-black uppercase tracking-tight">{t.topic}</span>
-                  <span className="font-black">{t.accuracy}%</span>
+                  <span className="font-black uppercase tracking-tight text-white">{t.topic}</span>
+                  <span className="font-black text-white">{t.accuracy}%</span>
                 </div>
               </div>
             ))}
             {weakTopics.length === 0 && (
-              <div className="text-center p-12 border-4 border-dashed border-foreground opacity-20 font-black uppercase text-xs">Awaiting Analysis</div>
+              <div className="text-center p-12 border border-dashed border-white/10 rounded-xl opacity-20 font-black uppercase text-xs text-white">Awaiting Analysis</div>
             )}
           </div>
         </motion.div>

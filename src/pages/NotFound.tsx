@@ -9,11 +9,11 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-black">
-      <div className="text-center border-8 border-white p-20 bg-black">
-        <h1 className="mb-6 text-8xl font-black uppercase tracking-tighter text-white">404</h1>
-        <p className="mb-8 text-xs font-black uppercase tracking-[0.4em] text-white">COORDINATES NOT FOUND IN MATRIX</p>
-        <a href="/" className="inline-block border-4 border-white bg-white px-8 py-4 text-[10px] font-black uppercase tracking-[0.3em] text-black hover:bg-black hover:text-white transition-all">
+    <div className="flex min-h-screen items-center justify-center bg-black particle-bg">
+      <div className="glass-card-depth rounded-3xl p-20 text-center border-glow">
+        <h1 className="mb-6 text-8xl font-black uppercase tracking-tighter gradient-text">404</h1>
+        <p className="mb-8 text-xs font-black uppercase tracking-[0.4em] text-white/40">COORDINATES NOT FOUND IN MATRIX</p>
+        <a href="/" className="inline-block bg-white text-black px-8 py-4 text-[10px] font-black uppercase tracking-[0.3em] rounded-xl hover:bg-white/90 glow-soft">
           RETURN TO HOME
         </a>
       </div>

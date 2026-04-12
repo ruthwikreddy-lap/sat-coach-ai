@@ -12,6 +12,8 @@ import ReactMarkdown from "react-markdown";
 import StatCard from "@/components/StatCard";
 import Calculator from "@/components/Calculator";
 
+const ease = [0.22, 1, 0.36, 1] as const;
+
 type ViewState = "lobby" | "testing" | "review" | "break";
 type TestType = "full" | "reading" | "math";
 type SectionType = "reading-writing" | "math";
@@ -337,22 +339,22 @@ export default function PracticeTest() {
   }, [timer, answers, user, questions]);
 
   const LoadingOverlay = () => (
-    <div className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-background px-10">
+    <div className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-black px-10">
       <div className="w-full max-w-4xl space-y-24">
         <div className="flex flex-col items-center gap-10">
           <div className="relative">
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-              className="h-48 w-48 border-[12px] border-foreground border-t-transparent"
+              className="h-48 w-48 border-[12px] border-white/20 border-t-transparent rounded-full"
             />
-            <Brain className="absolute inset-0 m-auto h-16 w-16 text-foreground" />
+            <Brain className="absolute inset-0 m-auto h-16 w-16 text-white" />
           </div>
           <div className="text-center space-y-4">
-            <h2 className="font-display text-7xl font-black uppercase tracking-tighter">PREPARING YOUR TEST</h2>
-            <div className="h-4 w-full bg-foreground/10 overflow-hidden border-4 border-foreground">
+            <h2 className="font-display text-7xl font-black uppercase tracking-tighter gradient-text">PREPARING YOUR TEST</h2>
+            <div className="h-4 w-full bg-white/10 overflow-hidden rounded-full border border-white/20">
               <motion.div
-                className="h-full bg-foreground"
+                className="h-full bg-white rounded-full"
                 initial={{ width: 0 }}
                 animate={{ width: "100%" }}
                 transition={{ duration: 4, repeat: Infinity }}
@@ -367,13 +369,13 @@ export default function PracticeTest() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -40 }}
-            className="border-8 border-foreground p-12 bg-black text-white relative overflow-hidden"
+            className="glass-card-depth rounded-3xl p-12 text-white relative overflow-hidden border-glow"
           >
             <div className="absolute top-0 right-0 p-4 opacity-10">
               <Sparkles className="h-20 w-20" />
             </div>
-            <p className="text-[10px] font-black uppercase tracking-[0.5em] mb-6 opacity-40">SAT Prep Tip</p>
-            <p className="text-4xl font-black uppercase tracking-tight leading-[0.9] italic">"{SAT_TIPS[currentTip]}"</p>
+            <p className="text-[10px] font-black uppercase tracking-[0.5em] mb-6 text-white/40">SAT Prep Tip</p>
+            <p className="text-4xl font-black uppercase tracking-tight leading-[0.9] italic gradient-text">"{SAT_TIPS[currentTip]}"</p>
           </motion.div>
         </AnimatePresence>
       </div>
@@ -382,60 +384,64 @@ export default function PracticeTest() {
 
   if (view === "lobby") {
     return (
-      <div className="mx-auto max-w-6xl px-6 py-16">
+      <div className="mx-auto max-w-6xl px-6 py-16 bg-black particle-bg min-h-screen">
         {isGenerating && <LoadingOverlay />}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-16">
-          <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between border-b-[12px] border-foreground pb-12">
-            <h1 className="font-display text-8xl font-black tracking-tighter uppercase leading-[0.8]">PRACTICE<br />CENTER</h1>
-            <p className="text-[12px] font-black uppercase tracking-[0.4em] opacity-40">Personalized Practice Tests</p>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease }} className="space-y-16">
+          <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between border-b border-white/10 pb-12">
+            <h1 className="font-display text-8xl font-black tracking-tighter uppercase leading-[0.8] gradient-text">PRACTICE<br />CENTER</h1>
+            <p className="text-[12px] font-black uppercase tracking-[0.4em] text-white/40">Personalized Practice Tests</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-8 border-foreground">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               { id: 'full', title: 'FULL TEST', icon: Target, desc: 'Complete 2 hour 14 min simulation' },
               { id: 'reading', title: 'READING & WRITING', icon: Brain, desc: 'Practice your English skills' },
               { id: 'math', title: 'MATH', icon: BarChart3, desc: 'Practice your Math skills' },
             ].map((opt, idx) => (
-              <button
+              <motion.button
                 key={opt.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.1, duration: 0.5, ease }}
+                whileHover={{ y: -8, scale: 1.02 }}
                 onClick={() => startNewTest(opt.id as any)}
-                className={`group p-12 text-left hover:bg-foreground hover:text-background transition-all border-foreground ${idx !== 2 ? 'md:border-r-4' : ''}`}
+                className="group p-12 text-left glass-card-depth rounded-3xl border-glow"
               >
-                <opt.icon className="h-10 w-10 mb-8" />
-                <h3 className="text-4xl font-black uppercase tracking-tighter mb-4">{opt.title}</h3>
-                <p className="text-[10px] font-black uppercase tracking-widest opacity-50 leading-relaxed">{opt.desc}</p>
-              </button>
+                <opt.icon className="h-10 w-10 mb-8 text-white" />
+                <h3 className="text-4xl font-black uppercase tracking-tighter mb-4 text-white">{opt.title}</h3>
+                <p className="text-[10px] font-black uppercase tracking-widest text-white/40 leading-relaxed">{opt.desc}</p>
+              </motion.button>
             ))}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-16 border-t-8 border-foreground">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-16 border-t border-white/10">
             <div className="space-y-8">
               <div className="flex items-center gap-4">
-                <History className="h-8 w-8 text-foreground" />
-                <h2 className="font-display text-4xl font-black uppercase tracking-tighter">Recent Scores</h2>
+                <History className="h-8 w-8 text-white" />
+                <h2 className="font-display text-4xl font-black uppercase tracking-tighter gradient-text">Recent Scores</h2>
               </div>
-              {loading ? <Loader2 className="animate-spin" /> : pastTests.length > 0 ? (
+              {loading ? <Loader2 className="animate-spin text-white/20" /> : pastTests.length > 0 ? (
                 <div className="space-y-4">
                   {pastTests.map(t => (
-                    <div key={t.id} className="border-4 border-foreground p-8 flex items-center justify-between hover:bg-black hover:text-white transition-colors cursor-pointer group" onClick={() => handleReviewTest(t)}>
+                    <div key={t.id} className="glass-card-depth rounded-2xl p-8 flex items-center justify-between hover:bg-white/10 transition-all cursor-pointer group border-glow" onClick={() => handleReviewTest(t)}>
                       <div className="flex items-center gap-6">
-                        <div className="text-5xl font-black">{t.score}</div>
+                        <div className="text-5xl font-black text-white">{t.score}</div>
                         <div>
-                          <p className="text-[10px] font-black uppercase tracking-widest opacity-50">{new Date(t.test_date).toLocaleDateString()}</p>
-                          <p className="font-black uppercase">{t.accuracy}% Accuracy</p>
+                          <p className="text-[10px] font-black uppercase tracking-widest text-white/40">{new Date(t.test_date).toLocaleDateString()}</p>
+                          <p className="font-black uppercase text-white">{t.accuracy}% Accuracy</p>
                         </div>
                       </div>
-                      <ArrowRight className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <ArrowRight className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity text-white" />
                     </div>
                   ))}
                 </div>
-              ) : <div className="p-12 border-4 border-dashed border-foreground opacity-20 font-black uppercase text-center">No Data Available</div>}
+              ) : <div className="glass-card-depth rounded-2xl p-12 border-dashed border border-white/20 text-white/20 font-black uppercase text-center">No Data Available</div>}
             </div>
 
-            <div className="border-8 border-foreground bg-black text-white p-12">
-              <ShieldCheck className="h-12 w-12 mb-8" />
-              <h3 className="text-5xl font-black uppercase tracking-tighter mb-6 leading-tight">PREMIUM<br />SIMULATION</h3>
-              <p className="text-sm font-black uppercase tracking-widest leading-relaxed opacity-60">
+            <div className="glass-card-depth rounded-3xl p-12 border-glow">
+              <ShieldCheck className="h-12 w-12 mb-8 text-white" />
+              <h3 className="text-5xl font-black uppercase tracking-tighter mb-6 leading-tight gradient-text">PREMIUM<br />SIMULATION</h3>
+              <p className="text-sm font-black uppercase tracking-widest leading-relaxed text-white/60">
                 Our AI matches the College Board's blueprint exactly. Each session is unique, adaptive, and calibrated to the latest 2024 digital standards.
               </p>
             </div>
@@ -450,16 +456,16 @@ export default function PracticeTest() {
     const isMath = testState.section === "math";
 
     return (
-      <div className={`mx-auto px-4 py-8 ${isMath ? 'max-w-[1400px]' : 'max-w-4xl'}`}>
+      <div className={`mx-auto px-4 py-8 ${isMath ? 'max-w-[1400px]' : 'max-w-4xl'} bg-black min-h-screen`}>
         {isGenerating && <LoadingOverlay />}
 
         {/* Header */}
-        <div className="mb-8 flex items-center justify-between border-b-8 border-foreground pb-8">
+        <div className="mb-8 flex items-center justify-between border-b border-white/10 pb-8">
           <div className="flex items-center gap-6">
-            <div className="flex items-center gap-3 bg-foreground text-background px-6 py-3 font-display text-2xl font-black uppercase">
+            <div className="flex items-center gap-3 bg-white/10 text-white px-6 py-3 font-display text-2xl font-black uppercase rounded-xl border border-white/20">
               <Clock className="h-6 w-6" /> {timer.formatted}
             </div>
-            <div className="font-black uppercase tracking-[0.2em] text-xs opacity-50">
+            <div className="font-black uppercase tracking-[0.2em] text-xs text-white/40">
               {testState.section === 'reading-writing' ? 'Reading & Writing' : 'Math'} — Module {testState.module}
             </div>
           </div>
@@ -467,12 +473,12 @@ export default function PracticeTest() {
             {isMath && (
               <button
                 onClick={() => setShowCalculator(!showCalculator)}
-                className={`flex items-center gap-3 border-4 px-6 py-4 text-[10px] font-black uppercase transition-all ${showCalculator ? 'bg-foreground text-background shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] scale-105' : 'border-foreground hover:bg-foreground/10'}`}
+                className={`glass-button flex items-center gap-3 px-6 py-4 text-[10px] font-black uppercase transition-all rounded-xl ${showCalculator ? 'bg-white/20' : ''}`}
               >
                 <Hash className="h-4 w-4" /> Calculator
               </button>
             )}
-            <button onClick={testState.module === 1 ? handleNextModule : handleSubmit} className="border-4 border-foreground bg-foreground px-6 py-4 text-[10px] font-black uppercase text-background hover:invert transition-all">
+            <button onClick={testState.module === 1 ? handleNextModule : handleSubmit} className="bg-white text-black px-6 py-4 text-[10px] font-black uppercase rounded-xl hover:bg-white/90 glow-soft">
               {testState.module === 1 ? "Next Module" : "Submit Test"}
             </button>
           </div>
@@ -488,11 +494,11 @@ export default function PracticeTest() {
           <div className="flex-1 w-full space-y-12">
             {/* Progress Bar & Navigation Grid */}
             <div className="mb-8 space-y-6">
-              <div className="h-6 w-full border-4 border-foreground bg-background">
-                <motion.div className="h-full bg-foreground" initial={{ width: 0 }} animate={{ width: `${((currentQ + 1) / questions.length) * 100}%` }} transition={{ duration: 0.3 }} />
+              <div className="h-6 w-full bg-white/10 rounded-full overflow-hidden border border-white/20">
+                <motion.div className="h-full bg-white rounded-full" initial={{ width: 0 }} animate={{ width: `${((currentQ + 1) / questions.length) * 100}%` }} transition={{ duration: 0.3 }} />
               </div>
 
-              <div className="flex flex-wrap gap-3 py-6 border-t-8 border-foreground">
+              <div className="flex flex-wrap gap-3 py-6 border-t border-white/10">
                 {questions.map((q, idx) => {
                   const isAnswered = answers[q.id] !== undefined;
                   const isCurrent = currentQ === idx;
@@ -500,13 +506,13 @@ export default function PracticeTest() {
                     <button
                       key={idx}
                       onClick={() => setCurrentQ(idx)}
-                      className={`h-12 w-12 flex items-center justify-center border-4 font-black transition-all text-xs relative
-                        ${isCurrent ? 'bg-foreground text-background scale-110 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]' :
-                          isAnswered ? 'bg-foreground/10 border-foreground text-foreground' : 'border-foreground/20 text-foreground/40 hover:border-foreground/60'}`}
+                      className={`h-12 w-12 flex items-center justify-center border font-black transition-all text-xs relative rounded-xl
+                        ${isCurrent ? 'bg-white text-black scale-110 border-white' :
+                          isAnswered ? 'bg-white/10 border-white/20 text-white' : 'border-white/10 text-white/40 hover:border-white/30'}`}
                     >
                       {idx + 1}
                       {isAnswered && !isCurrent && (
-                        <div className="absolute -top-1 -right-1 h-3 w-3 bg-foreground rounded-full" />
+                        <div className="absolute -top-1 -right-1 h-3 w-3 bg-white rounded-full" />
                       )}
                     </button>
                   );
@@ -518,34 +524,34 @@ export default function PracticeTest() {
               <motion.div key={question?.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-12">
                 {/* Question Content */}
                 {question?.passage && (
-                  <div className="border-8 border-foreground p-8 bg-black text-white text-lg leading-relaxed font-medium">
+                  <div className="glass-card-depth rounded-3xl p-8 text-white text-lg leading-relaxed font-medium">
                     {question.passage}
                   </div>
                 )}
 
                 <div className="space-y-10">
                   <div className="space-y-4">
-                    <span className="inline-block bg-foreground/10 text-foreground px-3 py-1 text-xs tracking-wider rounded border border-foreground/20">Single choice question — Select one option</span>
-                    <h2 className="text-3xl font-semibold leading-relaxed">{question?.question}</h2>
+                    <span className="inline-block bg-white/10 text-white px-3 py-1 text-xs tracking-wider rounded-lg border border-white/20">Single choice question — Select one option</span>
+                    <h2 className="text-3xl font-semibold leading-relaxed text-white">{question?.question}</h2>
                   </div>
 
                   {question?.type === "grid-in" ? (
                     <div className="space-y-4">
-                      <p className="text-sm font-medium opacity-60">Student-Produced Response (Type your answer below)</p>
+                      <p className="text-sm font-medium text-white/60">Student-Produced Response (Type your answer below)</p>
                       <input
                         type="text"
                         value={answers[question.id] || ''}
                         onChange={(e) => setAnswers(prev => ({ ...prev, [question.id]: e.target.value }))}
                         placeholder="Type answer here..."
-                        className="w-full border-8 border-foreground p-10 font-semibold text-3xl outline-none focus:bg-foreground focus:text-background transition-all"
+                        className="w-full border border-white/20 bg-white/5 p-10 font-semibold text-3xl outline-none focus:bg-white/10 focus:border-white/30 transition-all rounded-xl text-white"
                       />
                     </div>
                   ) : (
                     <div className="grid grid-cols-1 gap-4">
                       {question?.options.map((opt, idx) => (
                         <button key={idx} onClick={() => setAnswers(prev => ({ ...prev, [question.id]: idx }))}
-                          className={`flex items-center gap-8 border-4 p-6 text-left transition-all ${answers[question.id] === idx ? "bg-foreground text-background" : "hover:bg-foreground hover:text-background border-foreground bg-background"}`}>
-                          <div className={`h-10 w-10 shrink-0 flex items-center justify-center border-4 font-bold ${answers[question.id] === idx ? "bg-background text-foreground border-background" : "border-foreground"}`}>
+                          className={`flex items-center gap-8 border p-6 text-left transition-all rounded-xl ${answers[question.id] === idx ? "bg-white text-black border-white" : "hover:bg-white/10 hover:text-white border-white/10 bg-transparent text-white"}`}>
+                          <div className={`h-10 w-10 shrink-0 flex items-center justify-center border font-bold rounded-lg ${answers[question.id] === idx ? "bg-black text-white border-black" : "border-white/20"}`}>
                             {String.fromCharCode(65 + idx)}
                           </div>
                           <span className="text-lg font-medium">{opt}</span>
@@ -556,31 +562,31 @@ export default function PracticeTest() {
                 </div>
 
                 {/* Question Navigation */}
-                <div className="flex items-center justify-between pt-12 border-t-8 border-foreground">
+                <div className="flex items-center justify-between pt-12 border-t border-white/10">
                   <button
                     onClick={() => setCurrentQ(prev => Math.max(0, prev - 1))}
                     disabled={currentQ === 0}
-                    className="flex items-center gap-4 border-4 border-foreground px-8 py-4 font-black uppercase text-xs hover:bg-foreground hover:text-background transition-all disabled:opacity-20"
+                    className="glass-button flex items-center gap-4 px-8 py-4 font-black uppercase text-xs transition-all rounded-xl disabled:opacity-20"
                   >
                     <ChevronLeft className="h-4 w-4" /> Previous
                   </button>
 
-                  <div className="hidden sm:block font-display text-2xl font-black uppercase tracking-tighter text-center">
+                  <div className="hidden sm:block font-display text-2xl font-black uppercase tracking-tighter text-center text-white">
                     Question {currentQ + 1} of {questions.length}
-                    <div className="text-[8px] opacity-40">Section {testState.section}</div>
+                    <div className="text-[8px] text-white/40">Section {testState.section}</div>
                   </div>
 
                   {currentQ < questions.length - 1 ? (
                     <button
                       onClick={() => setCurrentQ(prev => Math.min(questions.length - 1, prev + 1))}
-                      className="flex items-center gap-4 border-4 border-foreground bg-foreground px-10 py-4 font-black uppercase text-xs text-background hover:bg-background hover:text-foreground transition-all"
+                      className="bg-white text-black px-10 py-4 font-black uppercase text-xs rounded-xl hover:bg-white/90 glow-soft"
                     >
                       Next Question <ChevronRight className="h-4 w-4" />
                     </button>
                   ) : (
                     <button
                       onClick={testState.module === 1 ? handleNextModule : handleSubmit}
-                      className="flex items-center gap-4 border-4 border-foreground bg-red-600 px-10 py-4 font-black uppercase text-xs text-white hover:bg-background hover:text-foreground transition-all"
+                      className="bg-white text-black px-10 py-4 font-black uppercase text-xs rounded-xl hover:bg-white/90 glow-soft"
                     >
                       {testState.module === 1 ? "Next Module" : "Submit Test"} <CheckCircle className="h-4 w-4" />
                     </button>
@@ -597,81 +603,81 @@ export default function PracticeTest() {
   if (view === "review" && selectedTest) {
     const wrongAnswers = testResponses.filter(r => !r.is_correct);
     return (
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-7xl px-8 py-20 pb-40">
-        <div className="mb-24 flex flex-col gap-10 md:flex-row md:items-end md:justify-between border-b-[16px] border-foreground pb-12">
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-7xl px-8 py-20 pb-40 bg-black min-h-screen">
+        <div className="mb-24 flex flex-col gap-10 md:flex-row md:items-end md:justify-between border-b border-white/10 pb-12">
           <div>
-            <button onClick={() => setView("lobby")} className="mb-8 flex items-center gap-2 font-black uppercase text-xs hover:gap-4 transition-all">
+            <button onClick={() => setView("lobby")} className="mb-8 flex items-center gap-2 font-black uppercase text-xs hover:gap-4 transition-all text-white/40 hover:text-white">
               <ChevronLeft className="h-4 w-4" /> Back to Practice
             </button>
-            <h1 className="font-display text-9xl font-black tracking-tighter uppercase leading-[0.75]">TEST<br />RESULTS</h1>
+            <h1 className="font-display text-9xl font-black tracking-tighter uppercase leading-[0.75] gradient-text">TEST<br />RESULTS</h1>
           </div>
-          <div className="bg-foreground text-background p-12 border-8 border-foreground">
-            <p className="text-[10px] font-black uppercase tracking-[0.4em] mb-4 opacity-40 text-center">Final Score</p>
-            <div className="text-9xl font-black leading-none">{selectedTest.score}</div>
+          <div className="glass-card-depth rounded-3xl p-12 border-glow">
+            <p className="text-[10px] font-black uppercase tracking-[0.4em] mb-4 text-white/40 text-center">Final Score</p>
+            <div className="text-9xl font-black leading-none text-white">{selectedTest.score}</div>
           </div>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-20">
           <div className="lg:col-span-2 space-y-16">
-            <h3 className="font-display text-5xl font-black uppercase tracking-tighter border-l-[12px] border-foreground pl-8">REVIEW MISTAKES ({wrongAnswers.length})</h3>
+            <h3 className="font-display text-5xl font-black uppercase tracking-tighter border-l-4 border-white/20 pl-8 text-white">REVIEW MISTAKES ({wrongAnswers.length})</h3>
             <div className="space-y-12">
               {wrongAnswers.length > 0 ? wrongAnswers.map((resp, i) => {
                 const sessionCache = JSON.parse(sessionStorage.getItem('sat_questions_cache') || '{}');
                 const q = sessionCache[resp.question_id] || mockQuestions.find(m => m.id === resp.question_id);
-                if (!q) return <div key={i} className="p-8 border-4 border-dashed border-foreground opacity-20 font-black">Question data expired.</div>;
+                if (!q) return <div key={i} className="p-8 border border-dashed border-white/20 glass-card-depth rounded-2xl text-white/20 font-black">Question data expired.</div>;
                 return (
-                  <div key={resp.id} className="border-8 border-foreground">
-                    <div className="bg-foreground text-background px-8 py-4 flex items-center justify-between">
+                  <div key={resp.id} className="glass-card-depth rounded-3xl border-glow">
+                    <div className="bg-white/10 text-white px-8 py-4 flex items-center justify-between rounded-t-3xl border-b border-white/10">
                       <span className="text-sm font-black uppercase tracking-widest">{q.topic}</span>
                       <span className="text-[10px] font-black uppercase tracking-[0.2em]">{q.section}</span>
                     </div>
                     <div className="p-12 space-y-8">
-                      {q.passage && <div className="p-8 bg-black text-white text-sm font-black uppercase italic mb-8 border-l-[12px] border-white">{q.passage}</div>}
-                      <p className="text-3xl font-black uppercase tracking-tight leading-none">{q.question}</p>
+                      {q.passage && <div className="p-8 bg-black/50 text-white text-sm font-black uppercase italic mb-8 border-l-4 border-white/20 rounded-xl">{q.passage}</div>}
+                      <p className="text-3xl font-black uppercase tracking-tight leading-none text-white">{q.question}</p>
                       <div className="grid grid-cols-2 gap-4">
-                        <div className="p-6 border-4 border-foreground">
-                          <p className="text-[10px] font-black uppercase opacity-40 mb-2">Your Answer</p>
-                          <p className="font-black uppercase">{resp.user_answer !== null ? q.options[resp.user_answer] : "VOID"}</p>
+                        <div className="p-6 border border-white/10 rounded-xl">
+                          <p className="text-[10px] font-black uppercase text-white/40 mb-2">Your Answer</p>
+                          <p className="font-black uppercase text-white">{resp.user_answer !== null ? q.options[resp.user_answer] : "VOID"}</p>
                         </div>
-                        <div className="relative p-6 border-4 border-foreground bg-foreground text-background glowing-border-correct">
-                          <p className="text-[10px] font-black uppercase opacity-40 mb-2 relative z-10">Correct Answer</p>
+                        <div className="relative p-6 border border-white/20 bg-white/10 text-white rounded-xl">
+                          <p className="text-[10px] font-black uppercase text-white/60 mb-2 relative z-10">Correct Answer</p>
                           <p className="font-black uppercase relative z-10">{q.options[q.correctAnswer]}</p>
                         </div>
                       </div>
-                      <div className="p-8 bg-foreground/5 border-t-8 border-foreground">
-                        <p className="text-[10px] font-black uppercase tracking-widest mb-4 flex items-center gap-2 underline"><Sparkles className="h-4 w-4" /> Explanation</p>
-                        <p className="text-lg font-black uppercase tracking-tighter leading-snug">{q.explanation}</p>
+                      <div className="p-8 bg-white/5 border-t border-white/10 rounded-b-3xl">
+                        <p className="text-[10px] font-black uppercase tracking-widest mb-4 flex items-center gap-2 text-white/40"><Sparkles className="h-4 w-4" /> Explanation</p>
+                        <p className="text-lg font-black uppercase tracking-tighter leading-snug text-white">{q.explanation}</p>
                       </div>
                     </div>
                   </div>
                 );
-              }) : <div className="p-20 border-8 border-dashed border-foreground text-center font-black uppercase text-4xl opacity-10">PERFECT PERFORMANCE</div>}
+              }) : <div className="p-20 glass-card-depth rounded-3xl border-dashed border border-white/20 text-center font-black uppercase text-4xl text-white/10">PERFECT PERFORMANCE</div>}
             </div>
           </div>
 
-          <div className="border-8 border-foreground p-12 bg-black text-white">
-            <h3 className="font-display text-4xl font-black uppercase tracking-tighter mb-10 underline decoration-8 underline-offset-8 text-white">Focus Areas</h3>
+          <div className="glass-card-depth rounded-3xl p-12 border-glow">
+            <h3 className="font-display text-4xl font-black uppercase tracking-tighter mb-10 border-b border-white/10 pb-6 gradient-text">Focus Areas</h3>
             <div className="space-y-8">
               <div className="space-y-4">
                 {selectedTest.weak_topics?.map(t => (
-                  <div key={t} className="border-2 border-white/20 p-6 hover:bg-white hover:text-black transition-colors group cursor-default">
+                  <div key={t} className="border border-white/10 p-6 hover:bg-white/10 transition-all group cursor-default rounded-xl">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-[8px] font-black uppercase tracking-widest opacity-60">Topic Priority</span>
-                      <AlertCircle className="h-4 w-4" />
+                      <span className="text-[8px] font-black uppercase tracking-widest text-white/40">Topic Priority</span>
+                      <AlertCircle className="h-4 w-4 text-white" />
                     </div>
-                    <p className="font-black uppercase tracking-tight text-xl">{t}</p>
+                    <p className="font-black uppercase tracking-tight text-xl text-white">{t}</p>
                   </div>
                 ))}
-                {(!selectedTest.weak_topics || selectedTest.weak_topics.length === 0) && <p className="font-black text-xs opacity-50 uppercase tracking-widest text-center py-10 border-2 border-dashed border-white/20">Great Job! No weak areas.</p>}
+                {(!selectedTest.weak_topics || selectedTest.weak_topics.length === 0) && <p className="font-black text-xs text-white/30 uppercase tracking-widest text-center py-10 border border-dashed border-white/10 rounded-xl">Great Job! No weak areas.</p>}
               </div>
               <div className="pt-10 space-y-4 border-t border-white/10">
                 <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Overall Accuracy</p>
                 <div className="flex justify-between items-center">
-                  <span className="font-black uppercase">Accuracy</span>
-                  <span className="text-4xl font-black">{selectedTest.accuracy}%</span>
+                  <span className="font-black uppercase text-white">Accuracy</span>
+                  <span className="text-4xl font-black text-white">{selectedTest.accuracy}%</span>
                 </div>
-                <div className="h-4 w-full bg-white/10 border-2 border-white">
-                  <div className="h-full bg-white" style={{ width: `${selectedTest.accuracy}%` }} />
+                <div className="h-4 w-full bg-white/10 rounded-full overflow-hidden">
+                  <div className="h-full bg-white rounded-full" style={{ width: `${selectedTest.accuracy}%` }} />
                 </div>
               </div>
             </div>
@@ -683,18 +689,18 @@ export default function PracticeTest() {
 
   if (view === "break") {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen p-10 space-y-12">
+      <div className="flex flex-col items-center justify-center min-h-screen p-10 space-y-12 bg-black particle-bg">
         <div className="text-center space-y-6">
-          <h2 className="text-7xl font-display font-black uppercase tracking-tighter">TAKE A BREAK</h2>
-          <p className="text-xl font-black uppercase opacity-60">You have completed the Reading & Writing section.</p>
+          <h2 className="text-7xl font-display font-black uppercase tracking-tighter gradient-text">TAKE A BREAK</h2>
+          <p className="text-xl font-black uppercase text-white/60">You have completed the Reading & Writing section.</p>
         </div>
-        <div className="bg-foreground text-background p-12 border-8 border-foreground text-center">
-          <p className="text-[10px] font-black uppercase tracking-[0.4em] mb-4">Break Timer</p>
-          <div className="text-9xl font-black leading-none">{timer.formatted}</div>
+        <div className="glass-card-depth rounded-3xl p-12 border-glow">
+          <p className="text-[10px] font-black uppercase tracking-[0.4em] mb-4 text-white/40 text-center">Break Timer</p>
+          <div className="text-9xl font-black leading-none text-white">{timer.formatted}</div>
         </div>
         <button
           onClick={startMathSection}
-          className="bg-foreground text-background px-16 py-8 text-2xl font-black uppercase border-8 border-foreground hover:bg-background hover:text-foreground transition-all"
+          className="bg-white text-black px-16 py-8 text-2xl font-black uppercase rounded-xl hover:bg-white/90 glow-soft"
         >
           START MATH SECTION
         </button>
@@ -703,8 +709,8 @@ export default function PracticeTest() {
   }
 
   return (
-    <div className="flex h-[100vh] items-center justify-center bg-background">
-      <Loader2 className="h-16 w-16 animate-spin text-foreground" />
+    <div className="flex h-[100vh] items-center justify-center bg-black">
+      <Loader2 className="h-16 w-16 animate-spin text-white/20" />
     </div>
   );
 }

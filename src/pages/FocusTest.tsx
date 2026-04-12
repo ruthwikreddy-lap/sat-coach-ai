@@ -8,6 +8,8 @@ import { mockQuestions } from "@/data/mockData";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 
+const ease = [0.22, 1, 0.36, 1] as const;
+
 export default function FocusTest() {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -128,7 +130,7 @@ export default function FocusTest() {
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-foreground">
+    <div className="fixed inset-0 z-50 flex flex-col bg-black">
       {question.section === "math" && showCalculator && (
         <div className="relative">
           <Calculator />
@@ -141,25 +143,25 @@ export default function FocusTest() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] flex items-center justify-center bg-black"
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/90 backdrop-blur-sm"
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="w-full max-w-md border-8 border-white bg-black p-12 text-center"
+              className="w-full max-w-md glass-card-depth rounded-3xl p-12 text-center border-glow"
             >
               <AlertTriangle className="mx-auto mb-6 h-16 w-16 text-white" />
-              <h2 className="font-display text-3xl font-black uppercase tracking-tighter text-white">FOCUS REQUIRED</h2>
-              <p className="mt-4 text-xs font-black uppercase tracking-[0.2em] text-white">
+              <h2 className="font-display text-3xl font-black uppercase tracking-tighter gradient-text">FOCUS REQUIRED</h2>
+              <p className="mt-4 text-xs font-black uppercase tracking-[0.2em] text-white/40">
                 YOU STEPPED AWAY FROM THE TEST WINDOW.
               </p>
-              <p className="mt-4 text-[10px] font-black uppercase tracking-[0.3em] bg-white text-black py-2">
+              <p className="mt-4 text-[10px] font-black uppercase tracking-[0.3em] bg-white/10 text-white py-2 rounded-lg">
                 ATTEMPT #{tabSwitchCount} — PLEASE FOCUS
               </p>
               <button
                 onClick={() => setShowWarning(false)}
-                className="mt-10 w-full border-4 border-white bg-white py-4 text-xs font-black uppercase tracking-[0.4em] text-black hover:bg-black hover:text-white transition-all"
+                className="mt-10 w-full bg-white text-black py-4 text-xs font-black uppercase tracking-[0.4em] rounded-xl hover:bg-white/90 glow-soft"
               >
                 CONTINUE
               </button>
@@ -169,25 +171,25 @@ export default function FocusTest() {
       </AnimatePresence>
 
       {/* Minimal header */}
-      <div className="flex items-center justify-between border-b-4 border-white px-8 py-4 bg-black">
+      <div className="flex items-center justify-between border-b border-white/10 px-8 py-4">
         <div className={`font-display text-xl font-black uppercase tracking-widest ${timer.seconds < 300 ? "text-white animate-pulse" : "text-white"
           }`}>
           <Clock className="mr-3 inline h-5 w-5" />
           {timer.formatted}
         </div>
         <div className="flex items-center gap-6">
-          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white">
+          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">
             QUESTION {currentQ + 1} // {questions.length}
           </span>
           {tabSwitchCount > 0 && (
-            <span className="flex items-center gap-2 border-2 border-white px-3 py-1 text-[8px] font-black uppercase tracking-widest text-white">
+            <span className="flex items-center gap-2 border border-white/20 px-3 py-1 text-[8px] font-black uppercase tracking-widest text-white rounded-lg bg-white/5">
               <AlertTriangle className="h-3 w-3" /> {tabSwitchCount} SWITCHE{tabSwitchCount > 1 ? "S" : ""}
             </span>
           )}
           {question.section === "math" && (
             <button
               onClick={() => setShowCalculator(!showCalculator)}
-              className={`flex items-center gap-2 border-2 px-3 py-1 text-[8px] font-black uppercase tracking-widest transition-all ${showCalculator ? 'bg-white text-black' : 'border-white text-white hover:bg-white/10'}`}
+              className={`glass-button flex items-center gap-2 px-3 py-1 text-[8px] font-black uppercase tracking-widest transition-all rounded-lg ${showCalculator ? 'bg-white/20' : ''}`}
             >
               <Hash className="h-3 w-3" /> Calculator
             </button>
@@ -195,18 +197,18 @@ export default function FocusTest() {
         </div>
         <button
           onClick={() => navigate("/practice")}
-          className="border-2 border-white p-2 text-white hover:bg-white hover:text-black transition-all"
+          className="glass-button p-2 text-white rounded-lg"
         >
           <X className="h-5 w-5" />
         </button>
       </div>
 
       {/* Question area */}
-      <div className="flex flex-1 items-center justify-center px-6 bg-black">
+      <div className="flex flex-1 items-center justify-center px-6">
         <div className="w-full max-w-3xl">
-          <motion.div key={question.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-10">
+          <motion.div key={question.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3, ease }} className="space-y-10">
             <div className="space-y-4">
-              <span className="inline-block bg-white/20 text-white px-3 py-1 text-xs tracking-wider rounded border border-white/30">Single choice question — Select one option</span>
+              <span className="inline-block bg-white/10 text-white px-3 py-1 text-xs tracking-wider rounded-lg border border-white/20">Single choice question — Select one option</span>
               <h2 className="text-2xl font-semibold leading-relaxed text-white">
                 {question.question}
               </h2>
@@ -215,21 +217,21 @@ export default function FocusTest() {
               {question.options.map((opt, idx) => {
                 const isSelected = answers[question.id] === idx;
                 const isCorrect = question.correctAnswer === idx;
-                let style = "border-white bg-transparent text-white hover:bg-white hover:text-black";
+                let style = "border-white/10 bg-transparent text-white hover:bg-white/10";
                 if (submitted) {
-                  if (isCorrect) style = "border-white bg-white text-black";
-                  else if (isSelected) style = "border-white bg-transparent text-white line-through";
+                  if (isCorrect) style = "border-white/20 bg-white/10 text-white";
+                  else if (isSelected) style = "border-white/10 bg-transparent text-white/40";
                 } else if (isSelected) {
-                  style = "border-white bg-white text-black";
+                  style = "border-white/20 bg-white/10 text-white";
                 }
                 return (
                   <button
                     key={idx}
                     onClick={() => handleAnswer(idx)}
                     disabled={submitted}
-                    className={`flex items-start gap-6 border-4 p-6 text-left transition-all ${style}`}
+                    className={`flex items-start gap-6 border p-6 text-left transition-all rounded-xl ${style}`}
                   >
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-current text-sm font-bold">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center border border-current text-sm font-bold rounded-lg">
                       {String.fromCharCode(65 + idx)}
                     </span>
                     <span className="text-lg font-medium pt-1">{opt}</span>
@@ -240,7 +242,7 @@ export default function FocusTest() {
               })}
             </div>
             {submitted && (
-              <div className="border-4 border-white bg-transparent p-6">
+              <div className="glass-card-depth rounded-xl p-6 border-glow">
                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white">{question.explanation}</p>
               </div>
             )}
@@ -249,7 +251,7 @@ export default function FocusTest() {
       </div>
 
       {/* Footer nav */}
-      <div className="flex items-center justify-between border-t-4 border-white px-8 py-6 bg-black">
+      <div className="flex items-center justify-between border-t border-white/10 px-8 py-6">
         <button
           onClick={() => setCurrentQ((q) => Math.max(0, q - 1))}
           disabled={currentQ === 0}
@@ -258,13 +260,13 @@ export default function FocusTest() {
           <ChevronLeft className="h-5 w-5" /> PREVIOUS
         </button>
         {!submitted ? (
-          <button onClick={handleSubmit} className="border-4 border-white bg-white px-12 py-3 text-xs font-black uppercase tracking-[0.4em] text-black hover:bg-black hover:text-white transition-all">
+          <button onClick={handleSubmit} className="bg-white text-black px-12 py-3 text-xs font-black uppercase tracking-[0.4em] rounded-xl hover:bg-white/90 glow-soft">
             SUBMIT TEST
           </button>
         ) : (
           <div className="flex items-center gap-8">
             <span className="font-display text-4xl font-black uppercase tracking-tighter text-white">{score} // {questions.length}</span>
-            <button onClick={() => navigate("/")} className="border-4 border-white px-6 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-white hover:bg-white hover:text-black transition-all">
+            <button onClick={() => navigate("/")} className="glass-button px-6 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-white rounded-xl">
               DASHBOARD
             </button>
           </div>
