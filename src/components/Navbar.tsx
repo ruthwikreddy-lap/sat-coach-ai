@@ -18,6 +18,8 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 
+const ease = [0.22, 1, 0.36, 1] as const;
+
 const navItems = [
   { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { path: "/practice", label: "Practice", icon: BookOpen },
@@ -72,8 +74,8 @@ export default function Navbar() {
       {/* ─── Main bar ─── */}
       <nav
         className={`sticky top-0 z-50 transition-all duration-300 ${scrolled
-            ? "glass-nav shadow-lg shadow-black/5"
-            : "bg-background/90 backdrop-blur-md border-b border-foreground/[0.06]"
+            ? "glass-card-depth border-glow"
+            : "bg-black/90 backdrop-blur-md border-b border-white/10"
           }`}
       >
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-5 gap-4">
@@ -83,10 +85,15 @@ export default function Navbar() {
             to={user ? "/dashboard" : "/"}
             className="flex items-center gap-2 flex-shrink-0 group"
           >
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-foreground text-background group-hover:scale-110 transition-transform">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, duration: 0.5, type: "spring" }}
+              className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/10 border border-white/20 text-white group-hover:bg-white/20 transition-all"
+            >
               <Brain className="h-3.5 w-3.5" />
-            </div>
-            <span className="font-display text-[15px] font-black tracking-tighter text-foreground uppercase">
+            </motion.div>
+            <span className="font-display text-[15px] font-black tracking-tighter gradient-text uppercase">
               SATCOACH
             </span>
           </Link>
@@ -102,15 +109,15 @@ export default function Navbar() {
                     key={item.path}
                     to={item.path}
                     className={`relative flex items-center gap-1.5 px-3.5 py-2 text-[12.5px] font-semibold rounded-lg transition-colors duration-150 ${isActive
-                        ? "text-background"
-                        : "text-foreground/50 hover:text-foreground hover:bg-foreground/[0.06]"
+                        ? "text-white"
+                        : "text-white/40 hover:text-white hover:bg-white/10"
                       }`}
                   >
                     {/* Active pill (layout-animated) */}
                     {isActive && (
                       <motion.span
                         layoutId="nav-pill"
-                        className="absolute inset-0 rounded-lg bg-foreground"
+                        className="absolute inset-0 rounded-lg bg-white/20"
                         transition={{ type: "spring", stiffness: 380, damping: 30 }}
                       />
                     )}
@@ -128,7 +135,7 @@ export default function Navbar() {
             <button
               onClick={toggleTheme}
               title="Toggle theme"
-              className="p-2 rounded-lg text-foreground/40 hover:text-foreground hover:bg-foreground/[0.06] transition-colors"
+              className="glass-button p-2 rounded-lg text-white/40 hover:text-white transition-colors"
             >
               {isDark
                 ? <Sun className="h-[15px] w-[15px]" />
@@ -141,8 +148,8 @@ export default function Navbar() {
                   to="/profile"
                   title="Profile"
                   className={`p-2 rounded-lg transition-colors ${location.pathname === "/profile"
-                      ? "bg-foreground text-background"
-                      : "text-foreground/40 hover:text-foreground hover:bg-foreground/[0.06]"
+                      ? "bg-white/20 text-white"
+                      : "text-white/40 hover:text-white hover:bg-white/10"
                     }`}
                 >
                   <User className="h-[15px] w-[15px]" />
@@ -150,14 +157,14 @@ export default function Navbar() {
                 <button
                   onClick={signOut}
                   title="Sign out"
-                  className="p-2 rounded-lg text-foreground/40 hover:text-foreground hover:bg-foreground/[0.06] transition-colors"
+                  className="glass-button p-2 rounded-lg text-white/40 hover:text-white transition-colors"
                 >
                   <LogOut className="h-[15px] w-[15px]" />
                 </button>
 
                 {/* Mobile hamburger */}
                 <button
-                  className="lg:hidden ml-1 p-2 rounded-lg text-foreground/50 hover:text-foreground hover:bg-foreground/[0.06] transition-colors"
+                  className="lg:hidden ml-1 glass-button p-2 rounded-lg text-white/50 hover:text-white transition-colors"
                   onClick={() => setMobileOpen((v) => !v)}
                   aria-label="Toggle menu"
                 >
@@ -170,13 +177,13 @@ export default function Navbar() {
               <>
                 <Link
                   to="/auth"
-                  className="hidden sm:inline-flex text-[12px] font-semibold text-foreground/50 hover:text-foreground px-3.5 py-2 rounded-lg transition-colors"
+                  className="hidden sm:inline-flex glass-button text-[12px] font-semibold text-white/40 hover:text-white px-3.5 py-2 rounded-lg transition-colors"
                 >
                   Sign In
                 </Link>
                 <Link
                   to="/auth"
-                  className="bg-foreground text-background px-5 py-2 text-[11px] font-bold uppercase tracking-widest rounded-full hover:opacity-90 transition-opacity"
+                  className="bg-white text-black px-5 py-2 text-[11px] font-bold uppercase tracking-widest rounded-xl hover:bg-white/90 glow-soft transition-colors"
                 >
                   Start Free
                 </Link>
@@ -196,8 +203,8 @@ export default function Navbar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-40 bg-foreground/10 backdrop-blur-sm lg:hidden"
+              transition={{ duration: 0.2, ease }}
+              className="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm lg:hidden"
               onClick={() => setMobileOpen(false)}
             />
 
@@ -208,16 +215,16 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 320, damping: 32 }}
-              className="fixed top-0 right-0 z-50 h-full w-72 bg-background border-l border-foreground/8 shadow-2xl shadow-black/20 lg:hidden flex flex-col"
+              className="fixed top-0 right-0 z-50 h-full w-72 glass-card-depth border-glow lg:hidden flex flex-col"
             >
               {/* Drawer header */}
-              <div className="flex items-center justify-between px-6 h-14 border-b border-foreground/8">
-                <span className="font-display text-[14px] font-black tracking-tighter uppercase text-foreground">
+              <div className="flex items-center justify-between px-6 h-14 border-b border-white/10">
+                <span className="font-display text-[14px] font-black tracking-tighter uppercase gradient-text">
                   SATCOACH
                 </span>
                 <button
                   onClick={() => setMobileOpen(false)}
-                  className="p-1.5 rounded-lg text-foreground/40 hover:text-foreground hover:bg-foreground/[0.06] transition-colors"
+                  className="glass-button p-1.5 rounded-lg text-white/40 hover:text-white transition-colors"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -238,8 +245,8 @@ export default function Navbar() {
                       <Link
                         to={item.path}
                         className={`flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-[13px] transition-colors ${isActive
-                            ? "bg-foreground text-background"
-                            : "text-foreground/60 hover:text-foreground hover:bg-foreground/[0.06]"
+                            ? "bg-white/20 text-white"
+                            : "text-white/60 hover:text-white hover:bg-white/10"
                           }`}
                       >
                         <Icon className="h-4 w-4 flex-shrink-0" />
@@ -254,12 +261,12 @@ export default function Navbar() {
               </div>
 
               {/* Drawer footer */}
-              <div className="px-3 pb-6 pt-2 border-t border-foreground/8 flex flex-col gap-1">
+              <div className="px-3 pb-6 pt-2 border-t border-white/10 flex flex-col gap-1">
                 <Link
                   to="/profile"
                   className={`flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-[13px] transition-colors ${location.pathname === "/profile"
-                      ? "bg-foreground text-background"
-                      : "text-foreground/60 hover:text-foreground hover:bg-foreground/[0.06]"
+                      ? "bg-white/20 text-white"
+                      : "text-white/60 hover:text-white hover:bg-white/10"
                     }`}
                 >
                   <User className="h-4 w-4" />
@@ -267,14 +274,14 @@ export default function Navbar() {
                 </Link>
                 <button
                   onClick={() => { setMobileOpen(false); toggleTheme(); }}
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-[13px] text-foreground/60 hover:text-foreground hover:bg-foreground/[0.06] transition-colors w-full text-left"
+                  className="glass-button flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-[13px] text-white/60 hover:text-white transition-colors w-full text-left"
                 >
                   {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
                   {isDark ? "Light Mode" : "Dark Mode"}
                 </button>
                 <button
                   onClick={() => { setMobileOpen(false); signOut(); }}
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-[13px] text-foreground/60 hover:text-foreground hover:bg-foreground/[0.06] transition-colors w-full text-left"
+                  className="glass-button flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-[13px] text-white/60 hover:text-white transition-colors w-full text-left"
                 >
                   <LogOut className="h-4 w-4" />
                   Sign Out

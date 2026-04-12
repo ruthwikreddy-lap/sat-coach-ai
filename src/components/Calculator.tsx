@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Maximize2, Minimize2, Move, Info, ShieldCheck, Loader2, RefreshCcw, ExternalLink } from 'lucide-react';
 
+const ease = [0.22, 1, 0.36, 1] as const;
+
 export default function Calculator() {
     const [isMinimized, setIsMinimized] = useState(false);
     const [mode, setMode] = useState<'graphing' | 'scientific'>('graphing');
@@ -43,35 +45,35 @@ export default function Calculator() {
             drag
             dragMomentum={false}
             initial={{ x: 20, y: 100 }}
-            className={`fixed z-[300] border-[6px] border-foreground bg-background shadow-[20px_20px_0px_0px_rgba(0,0,0,1)] flex flex-col overflow-hidden transition-all duration-300 ease-out ${isMinimized ? 'h-16 w-80' : ''}`}
+            className={`fixed z-[300] glass-card-depth border-glow flex flex-col overflow-hidden transition-all duration-300 ease-out ${isMinimized ? 'h-16 w-80' : ''}`}
             style={{
                 width: isMinimized ? 320 : size.width,
                 height: isMinimized ? 64 : size.height,
                 cursor: isResizing ? 'nwse-resize' : 'default',
-                borderRadius: '2px'
+                borderRadius: '16px'
             }}
         >
             {/* Header / Drag Handle */}
-            <div className="flex items-center justify-between bg-foreground text-background px-5 py-4 cursor-move group select-none">
+            <div className="flex items-center justify-between bg-white/10 text-white px-5 py-4 cursor-move group select-none border-b border-white/10">
                 <div className="flex items-center gap-4">
-                    <div className="p-1.5 bg-background text-foreground rounded-sm">
+                    <div className="p-1.5 bg-white/5 text-white rounded-lg border border-white/10">
                         <Move className="h-3.5 w-3.5" />
                     </div>
                     <div className="flex flex-col">
                         <div className="flex items-center gap-2">
                             <span className="text-[11px] font-black uppercase tracking-[0.25em]">Desmos Official</span>
-                            <div className="h-1 w-1 bg-background/30 rounded-full" />
+                            <div className="h-1 w-1 bg-white/30 rounded-full" />
                             <span className="text-[9px] font-bold opacity-50 uppercase">{mode}</span>
                         </div>
                         <div className="flex items-center gap-2 mt-1">
                             <button
-                                className={`text-[8px] font-black uppercase px-2.5 py-0.5 border-2 rounded transition-all ${mode === 'graphing' ? 'bg-background text-foreground border-background' : 'border-background/20 opacity-40 hover:opacity-100 hover:border-background/50'}`}
+                                className={`text-[8px] font-black uppercase px-2.5 py-0.5 border rounded transition-all ${mode === 'graphing' ? 'bg-white text-black border-white' : 'border-white/20 opacity-40 hover:opacity-100 hover:border-white/40'}`}
                                 onClick={(e) => { e.stopPropagation(); setMode('graphing'); setIsLoading(true); }}
                             >
                                 Graphing
                             </button>
                             <button
-                                className={`text-[8px] font-black uppercase px-2.5 py-0.5 border-2 rounded transition-all ${mode === 'scientific' ? 'bg-background text-foreground border-background' : 'border-background/20 opacity-40 hover:opacity-100 hover:border-background/50'}`}
+                                className={`text-[8px] font-black uppercase px-2.5 py-0.5 border rounded transition-all ${mode === 'scientific' ? 'bg-white text-black border-white' : 'border-white/20 opacity-40 hover:opacity-100 hover:border-white/40'}`}
                                 onClick={(e) => { e.stopPropagation(); setMode('scientific'); setIsLoading(true); }}
                             >
                                 Scientific
@@ -81,16 +83,16 @@ export default function Calculator() {
                 </div>
 
                 <div className="flex items-center gap-3">
-                    <div className="hidden sm:flex items-center gap-2 bg-red-600 text-[8px] font-black px-2.5 py-1 rounded-sm text-white animate-pulse uppercase border-2 border-background/10">
+                    <div className="hidden sm:flex items-center gap-2 bg-red-500/20 text-[8px] font-black px-2.5 py-1 rounded-lg text-red-400 animate-pulse uppercase border border-red-500/30">
                         <ShieldCheck className="h-3 w-3" /> NON-CAS APPROVED
                     </div>
-                    <div className="flex items-center gap-1.5 border-l border-background/20 pl-3">
-                        <button onClick={(e) => { e.stopPropagation(); refresh(); }} className="p-1.5 hover:bg-background hover:text-foreground transition-all rounded-sm opacity-60 hover:opacity-100">
+                    <div className="flex items-center gap-1.5 border-l border-white/10 pl-3">
+                        <button onClick={(e) => { e.stopPropagation(); refresh(); }} className="glass-button p-1.5 rounded-lg opacity-60 hover:opacity-100">
                             <RefreshCcw className={`h-3.5 w-3.5 ${isLoading ? 'animate-spin' : ''}`} />
                         </button>
                         <button
                             onClick={(e) => { e.stopPropagation(); setIsMinimized(!isMinimized); }}
-                            className="p-1.5 hover:bg-background hover:text-foreground transition-all rounded-sm"
+                            className="glass-button p-1.5 rounded-lg"
                         >
                             {isMinimized ? <Maximize2 className="h-4 w-4" /> : <Minimize2 className="h-4 w-4" />}
                         </button>
@@ -109,10 +111,11 @@ export default function Calculator() {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-background/5 backdrop-blur-sm"
+                            transition={{ duration: 0.3, ease }}
+                            className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm"
                         >
-                            <Loader2 className="h-10 w-10 animate-spin text-foreground mb-4" />
-                            <p className="text-[10px] font-black uppercase tracking-widest text-foreground opacity-40 text-center px-10">
+                            <Loader2 className="h-10 w-10 animate-spin text-white/40 mb-4" />
+                            <p className="text-[10px] font-black uppercase tracking-widest text-white/40 text-center px-10">
                                 Calibrating secure calc environment...
                             </p>
                         </motion.div>
@@ -133,7 +136,7 @@ export default function Calculator() {
                         onMouseDown={handleResize}
                         className="absolute bottom-0 right-0 w-10 h-10 cursor-nwse-resize z-[310] flex items-end justify-end p-1.5 group"
                     >
-                        <div className="w-5 h-5 border-r-4 border-b-4 border-foreground opacity-10 group-hover:opacity-100 transition-opacity" />
+                        <div className="w-5 h-5 border-r-4 border-b-4 border-white/20 opacity-10 group-hover:opacity-100 transition-opacity rounded-br-lg" />
                     </div>
                 )}
             </div>

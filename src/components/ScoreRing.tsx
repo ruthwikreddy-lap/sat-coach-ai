@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 
+const ease = [0.22, 1, 0.36, 1] as const;
+
 interface ScoreRingProps {
   score: number;
   maxScore: number;
@@ -22,7 +24,7 @@ export default function ScoreRing({ score, maxScore, label, size = 120 }: ScoreR
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke="black"
+            stroke="white"
             strokeWidth={strokeWidth}
             fill="none"
             className="opacity-10"
@@ -31,7 +33,7 @@ export default function ScoreRing({ score, maxScore, label, size = 120 }: ScoreR
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke="black"
+            stroke="white"
             strokeWidth={strokeWidth}
             fill="none"
             strokeDasharray={circumference}
@@ -44,14 +46,15 @@ export default function ScoreRing({ score, maxScore, label, size = 120 }: ScoreR
           <motion.span
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="font-display text-5xl font-black text-foreground"
+            transition={{ duration: 0.5, ease }}
+            className="font-display text-5xl font-black text-white"
           >
             {score}
           </motion.span>
         </div>
       </div>
       <div className="space-y-1 text-center">
-        <span className="text-[10px] font-black uppercase tracking-[0.4em] block bg-foreground text-background px-2 py-0.5">{label}</span>
+        <span className="text-[10px] font-black uppercase tracking-[0.4em] block bg-white/10 text-white px-2 py-0.5 rounded-lg">{label}</span>
       </div>
     </div>
   );
