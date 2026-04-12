@@ -134,8 +134,8 @@ function LandingNav({
 /* ─────────── Hero ─────────── */
 function Hero() {
   return (
-    <section className="relative min-h-[95vh] flex items-center justify-center pt-28 pb-16 overflow-hidden bg-black">
-      {/* Subtle depth gradient background */}
+    <section className="relative min-h-[95vh] flex items-center justify-center pt-28 pb-16 overflow-hidden bg-black particle-bg">
+      {/* Enhanced depth gradient background */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-950/50 to-black" />
         <div className="absolute inset-0 opacity-[0.03]" style={{
@@ -143,9 +143,10 @@ function Hero() {
             "radial-gradient(circle, currentColor 1px, transparent 1px)",
           backgroundSize: "38px 38px",
         }} />
-        {/* Subtle ambient glow */}
+        {/* Enhanced ambient glow with multiple layers */}
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-[120px] animate-parallax-slow" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-white/3 rounded-full blur-[100px] animate-float-delayed" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-white/2 rounded-full blur-[200px]" />
       </div>
 
       <div className="mx-auto max-w-7xl px-6 w-full">
@@ -157,20 +158,36 @@ function Hero() {
             transition={{ duration: 0.8, ease }}
             className="text-center lg:text-left"
           >
-            <h1 className="font-display text-[clamp(3.5rem,12vw,7rem)] font-black tracking-tighter leading-[0.9] text-white mb-6 text-balance">
-              Master the
-              <br className="hidden sm:block" /> Digital SAT
-            </h1>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.8 }}
+            >
+              <h1 className="font-display text-[clamp(3.5rem,12vw,7rem)] font-black tracking-tighter leading-[0.9] gradient-text mb-6 text-balance">
+                Master the
+                <br className="hidden sm:block" /> Digital SAT
+              </h1>
+            </motion.div>
 
-            <p className="text-lg md:text-xl font-medium text-white/40 max-w-xl mx-auto lg:mx-0 mb-10 text-balance leading-relaxed">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+              className="text-lg md:text-xl font-medium text-white/40 max-w-xl mx-auto lg:mx-0 mb-10 text-balance leading-relaxed"
+            >
               The only platform that perfectly replicates the Bluebook interface
               with adaptive modules and instant AI feedback.
-            </p>
+            </motion.p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.8 }}
+              className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4"
+            >
               <Link
                 to="/auth"
-                className="w-full sm:w-auto bg-white text-black px-9 py-4 rounded-full font-bold text-sm uppercase tracking-widest flex items-center justify-center gap-2 group hover:bg-white/90 hover:scale-105 active:scale-95 transition-all shadow-lg shadow-white/10"
+                className="w-full sm:w-auto bg-white text-black px-9 py-4 rounded-full font-bold text-sm uppercase tracking-widest flex items-center justify-center gap-2 group hover:bg-white/90 hover:scale-105 active:scale-95 transition-all shadow-lg shadow-white/10 glow-soft"
               >
                 Start Practice Now
                 <ArrowRight
@@ -184,28 +201,34 @@ function Hero() {
               >
                 See How It Works
               </a>
-            </div>
+            </motion.div>
 
             {/* Stats */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.9, ease }}
+              transition={{ delay: 0.8, duration: 0.9, ease }}
               className="mt-16 pt-8 border-t border-white/8 grid grid-cols-3 gap-6 max-w-sm mx-auto lg:mx-0"
             >
               {[
                 { v: "25,000+", l: "Active Students" },
                 { v: "+170 PTS", l: "Average Gain" },
                 { v: "100%", l: "Digital Ready" },
-              ].map((s) => (
-                <div key={s.l} className="text-center">
+              ].map((s, i) => (
+                <motion.div
+                  key={s.l}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.9 + i * 0.1, duration: 0.5 }}
+                  className="text-center"
+                >
                   <div className="text-3xl sm:text-4xl font-black tracking-tighter text-white mb-1">
                     {s.v}
                   </div>
                   <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/30">
                     {s.l}
                   </div>
-                </div>
+                </motion.div>
               ))}
             </motion.div>
           </motion.div>
@@ -215,8 +238,8 @@ function Hero() {
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 30 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.8, ease }}
-              className="absolute top-0 right-0 w-72 glass-card-depth rounded-3xl p-6 animate-float"
+              transition={{ delay: 0.3, duration: 0.8, ease }}
+              className="absolute top-0 right-0 w-72 glass-card-depth rounded-3xl p-6 animate-float border-glow"
             >
               <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center mb-4">
                 <Zap size={24} className="text-white" />
@@ -232,8 +255,8 @@ function Hero() {
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 30 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.8, ease }}
-              className="absolute top-32 left-0 w-64 glass-card-depth rounded-3xl p-6 animate-float-delayed"
+              transition={{ delay: 0.5, duration: 0.8, ease }}
+              className="absolute top-32 left-0 w-64 glass-card-depth rounded-3xl p-6 animate-float-delayed border-glow"
             >
               <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center mb-4">
                 <Monitor size={24} className="text-white" />
@@ -249,8 +272,8 @@ function Hero() {
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 30 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.8, ease }}
-              className="absolute bottom-0 right-20 w-80 glass-card-depth rounded-3xl p-6 animate-float"
+              transition={{ delay: 0.7, duration: 0.8, ease }}
+              className="absolute bottom-0 right-20 w-80 glass-card-depth rounded-3xl p-6 animate-float border-glow"
             >
               <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center mb-4">
                 <BarChart3 size={24} className="text-white" />
@@ -284,7 +307,7 @@ function About() {
             <div className="text-[10px] font-bold uppercase tracking-[0.35em] text-white/30 mb-4">
               What is SATCOACH?
             </div>
-            <h2 className="font-display text-4xl sm:text-5xl font-black tracking-tighter mb-8 leading-[1.05] text-white">
+            <h2 className="font-display text-4xl sm:text-5xl font-black tracking-tighter mb-8 leading-[1.05] gradient-text">
               AI-powered Digital SAT prep platform
             </h2>
             <p className="text-white/50 leading-relaxed mb-5 text-[15px]">
@@ -307,10 +330,16 @@ function About() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease }}
-            className="aspect-video rounded-[2rem] glass-card-depth flex items-center justify-center"
+            whileHover={{ scale: 1.02 }}
+            className="aspect-video rounded-[2rem] glass-card-depth flex items-center justify-center border-glow"
           >
             <div className="text-center px-8">
-              <Brain size={48} className="mx-auto mb-4 text-white/20" />
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              >
+                <Brain size={48} className="mx-auto mb-4 text-white/20" />
+              </motion.div>
               <div className="text-[11px] font-bold uppercase tracking-[0.25em] text-white/40">
                 Mirroring the 2024 Bluebook Experience
               </div>
@@ -411,7 +440,7 @@ function Features() {
           <div className="text-[10px] font-bold uppercase tracking-[0.35em] text-white/30 mb-4">
             Core Benefits
           </div>
-          <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter mb-6 leading-[1.05] text-white">
+          <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter mb-6 leading-[1.05] gradient-text">
             Everything you need to succeed
           </h2>
           <p className="text-white/50 text-[15px] leading-relaxed">
@@ -425,14 +454,14 @@ function Features() {
           {features.map((f, i) => (
             <motion.div
               key={f.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.6, ease }}
-              whileHover={{ y: -8 }}
-              className="group p-7 rounded-3xl glass-card-depth cursor-default"
+              whileHover={{ y: -12, scale: 1.03 }}
+              className="group p-7 rounded-3xl glass-card-depth cursor-default border-glow"
             >
-              <div className="w-11 h-11 rounded-2xl bg-white/10 text-white flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform">
+              <div className="w-11 h-11 rounded-2xl bg-white/10 text-white flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 group-hover:bg-white/15 transition-all duration-300">
                 {f.icon}
               </div>
               <h3 className="font-display text-base font-black tracking-tight uppercase mb-3 text-white">
@@ -537,25 +566,39 @@ function CTA() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7, ease }}
-        className="mx-auto max-w-5xl glass-card-depth rounded-[3rem] p-12 md:p-24 text-center text-white relative overflow-hidden"
+        className="mx-auto max-w-5xl glass-card-depth rounded-[3rem] p-12 md:p-24 text-center text-white relative overflow-hidden border-glow"
       >
-        {/* Decorative ambient glow */}
+        {/* Enhanced decorative ambient glow */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-[100px]" />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white/3 rounded-full blur-[100px]" />
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-[100px] animate-parallax-slow" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white/3 rounded-full blur-[100px] animate-float-delayed" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/2 rounded-full blur-[150px]" />
         </div>
 
         <div className="relative z-10">
-          <h2 className="font-display text-4xl sm:text-6xl lg:text-7xl font-black tracking-tighter mb-10 leading-[1.05] text-balance text-white">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.7 }}
+            className="font-display text-4xl sm:text-6xl lg:text-7xl font-black tracking-tighter mb-10 leading-[1.05] text-balance gradient-text"
+          >
             Start your journey
             <br className="hidden sm:block" /> to a 1400+ score
-          </h2>
-          <Link
-            to="/auth"
-            className="inline-flex bg-white text-black px-12 py-4 rounded-full font-black text-sm uppercase tracking-widest hover:bg-white/90 hover:scale-105 active:scale-95 transition-transform shadow-lg shadow-white/10"
+          </motion.h2>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4, duration: 0.5 }}
           >
-            Start Practice Free
-          </Link>
+            <Link
+              to="/auth"
+              className="inline-flex bg-white text-black px-12 py-4 rounded-full font-black text-sm uppercase tracking-widest hover:bg-white/90 hover:scale-105 active:scale-95 transition-transform shadow-lg shadow-white/10 glow-soft"
+            >
+              Start Practice Free
+            </Link>
+          </motion.div>
         </div>
       </motion.div>
     </section>

@@ -176,6 +176,7 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2),
                 0 2px 8px rgba(0, 0, 0, 0.1),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .glass-card-depth:hover {
@@ -183,8 +184,9 @@
     border-color: rgba(255, 255, 255, 0.15);
     box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3),
                 0 4px 16px rgba(0, 0, 0, 0.15),
-                inset 0 1px 0 rgba(255, 255, 255, 0.15);
-    transform: translateY(-4px);
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                0 0 40px rgba(255, 255, 255, 0.05);
+    transform: translateY(-8px) scale(1.02);
   }
 
   .glass-nav-floating {
@@ -194,6 +196,13 @@
     border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
                 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .glass-nav-floating:hover {
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5),
+                0 4px 16px rgba(0, 0, 0, 0.25);
   }
 
   .glass-button {
@@ -201,13 +210,106 @@
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.15);
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glass-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s;
+  }
+
+  .glass-button:hover::before {
+    left: 100%;
   }
 
   .glass-button:hover {
     background: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.25);
-    box-shadow: 0 0 24px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 24px rgba(255, 255, 255, 0.1),
+                0 0 48px rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+  }
+
+  /* Premium Particle Background */
+  .particle-bg {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .particle-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.02) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.015) 0%, transparent 30%);
+    animation: particle-float 20s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .particle-bg::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      radial-gradient(circle at 60% 60%, rgba(255, 255, 255, 0.02) 0%, transparent 40%),
+      radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.015) 0%, transparent 35%);
+    animation: particle-float 25s ease-in-out infinite reverse;
+    pointer-events: none;
+  }
+
+  /* Premium Glow Effects */
+  .glow-soft {
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.05),
+                0 0 80px rgba(255, 255, 255, 0.03);
+  }
+
+  .glow-soft:hover {
+    box-shadow: 0 0 60px rgba(255, 255, 255, 0.08),
+                0 0 100px rgba(255, 255, 255, 0.05);
+  }
+
+  /* Premium Gradient Text */
+  .gradient-text {
+    background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.7) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Premium Border Glow */
+  .border-glow {
+    position: relative;
+  }
+
+  .border-glow::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.2));
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .border-glow:hover::before {
+    opacity: 1;
   }
 
   .btn-premium {

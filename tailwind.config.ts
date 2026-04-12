@@ -126,6 +126,46 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-30px)" },
         },
+        "gradient-x": {
+          "0%, 100%": {
+            "background-position": "0% 50%",
+          },
+          "50%": {
+            "background-position": "100% 50%",
+          },
+        },
+        "gradient-y": {
+          "0%, 100%": {
+            "background-position": "0% 0%",
+          },
+          "50%": {
+            "background-position": "0% 100%",
+          },
+        },
+        "particle-float": {
+          "0%, 100%": { transform: "translate(0, 0) scale(1)", opacity: "0.3" },
+          "25%": { transform: "translate(10px, -10px) scale(1.1)", opacity: "0.5" },
+          "50%": { transform: "translate(-5px, -20px) scale(1)", opacity: "0.4" },
+          "75%": { transform: "translate(-15px, -5px) scale(1.05)", opacity: "0.5" },
+        },
+        "reveal-up": {
+          "from": { opacity: "0", transform: "translateY(40px)" },
+          "to": { opacity: "1", transform: "translateY(0)" },
+        },
+        "reveal-scale": {
+          "from": { opacity: "0", transform: "scale(0.9)" },
+          "to": { opacity: "1", transform: "scale(1)" },
+        },
+        "magnetic-pull": {
+          "0%, 100%": { transform: "translate(0, 0)" },
+          "25%": { transform: "translate(2px, -2px)" },
+          "50%": { transform: "translate(-1px, 1px)" },
+          "75%": { transform: "translate(1px, -1px)" },
+        },
+        "glow-pulse": {
+          "0%, 100%": { boxShadow: "0 0 20px rgba(255, 255, 255, 0.1)" },
+          "50%": { boxShadow: "0 0 40px rgba(255, 255, 255, 0.2)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -137,6 +177,13 @@ export default {
         "shimmer": "shimmer 3s ease-in-out infinite",
         "glass-shine": "glass-shine 3s ease-in-out infinite",
         "parallax-slow": "parallax-slow 10s ease-in-out infinite",
+        "gradient-x": "gradient-x 15s ease infinite",
+        "gradient-y": "gradient-y 15s ease infinite",
+        "particle-float": "particle-float 20s ease-in-out infinite",
+        "reveal-up": "reveal-up 0.8s ease-out",
+        "reveal-scale": "reveal-scale 0.6s ease-out",
+        "magnetic-pull": "magnetic-pull 0.3s ease-in-out",
+        "glow-pulse": "glow-pulse 3s ease-in-out infinite",
       },
     },
   },
